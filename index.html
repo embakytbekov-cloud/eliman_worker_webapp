@@ -11,24 +11,41 @@
       padding: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     }
-
-    /* ФОН ВЕСЬ ЭКРАН, БЕЗ ЦЕНТРОВКИ КАРТОЙ */
     body {
       background: #020613;
       color: #f5f5f5;
       min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
     }
 
-    /* ТЕПЕРЬ ЭТО КАК ПОЛНЫЙ ЭКРАН ПРИЛОЖЕНИЯ */
+    /* сама карта приложения */
     .app {
       width: 100%;
-      max-width: 480px;      /* чтобы на больших экранах не растягивалось слишком */
-      min-height: 100vh;
-      margin: 0 auto;        /* центр по горизонтали */
+      max-width: 450px;
       background: radial-gradient(circle at top, #042b1c 0, #020613 55%);
-      border-radius: 0;      /* без больших углов — как экран */
-      padding: 20px 16px 24px;
+      border-radius: 24px;
+      padding: 20px 18px 24px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
       border: 1px solid rgba(0, 255, 120, 0.08);
+
+      /* важно: чтобы можно было прижать низ */
+      display: flex;
+      flex-direction: column;
+      min-height: 620px; /* чтобы по высоте было как на макете */
+    }
+
+    /* Экраны */
+    .screen {
+      display: none;
+      flex: 1;                 /* заполняет высоту карточки */
+      display: none;
+    }
+    .screen.active {
+      display: flex;
+      flex-direction: column;  /* сверху вниз: хедер, контент, низ */
     }
 
     /* Общие элементы */
@@ -152,12 +169,22 @@
       padding: 10px 0;
     }
 
-    /* Экраны */
-    .screen {
-      display: none;
+    /* --------- ВЕРТИКАЛЬНЫЕ ЛЕЙАУТЫ ДЛЯ ЭКРАНОВ --------- */
+
+    /* для логина: центрируем Welcome + карточку по вертикали */
+    .login-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;   /* центр по вертикали */
     }
-    .screen.active {
-      display: block;
+
+    /* для экрана с табами: всё содержимое, кроме bottom-nav */
+    .tabs-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 8px;
     }
 
     /* --------- NEW JOBS LIST ---------- */
@@ -417,7 +444,7 @@
     /* BOTTOM NAV */
 
     .bottom-nav {
-      margin-top: 16px;
+      margin-top: auto;               /* прижимаем вниз */
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -452,9 +479,6 @@
       border-color: #1fe388;
       box-shadow: 0 0 10px rgba(31, 227, 136, 0.7);
     }
-
-    .mt-4 { margin-top: 4px; }
-    .mt-8 { margin-top: 8px; }
   </style>
 </head>
 <body>
@@ -467,77 +491,84 @@
       <div id="loginStatusPill" class="status-pill offline">Offline</div>
     </div>
 
-    <h1>Welcome, worker</h1>
-    <div class="subtitle">
-      Login with your phone to see available jobs.
-    </div>
-
-    <div class="card">
-      <div class="section-title">Worker login</div>
-      <div class="input-row">
-        <input id="phoneInput" class="input" placeholder="+1 (312) 555-0147" />
-        <button id="loginBtn" class="btn btn-primary">Login</button>
+    <!-- центрируем этот блок по высоте -->
+    <div class="login-main">
+      <h1>Welcome, worker</h1>
+      <div class="subtitle">
+        Login with your phone to see available jobs.
       </div>
-      <div id="loginMessage" class="message"></div>
+
+      <div class="card">
+        <div class="section-title">Worker login</div>
+        <div class="input-row">
+          <input id="phoneInput" class="input" placeholder="+1 (312) 555-0147" />
+          <button id="loginBtn" class="btn btn-primary">Login</button>
+        </div>
+        <div id="loginMessage" class="message"></div>
+      </div>
     </div>
   </div>
 
   <!-- ========== TABS SCREEN (JOBS / ACTIVE / PROFILE) ========== -->
   <div id="screen-tabs" class="screen">
-    <div class="top-header">
-      <div class="logo">ELIMAN WORKER</div>
-      <div id="tabsStatusPill" class="status-pill">Online</div>
-    </div>
 
-    <div class="page-header">
-      <div id="tabsTitle" class="page-title">New Jobs</div>
-      <div id="tabsSubtitle" class="page-subtitle">
-        Smart-matched opportunities for your expertise.
+    <!-- всё содержимое экрана -->
+    <div class="tabs-main">
+      <div class="top-header">
+        <div class="logo">ELIMAN WORKER</div>
+        <div id="tabsStatusPill" class="status-pill">Online</div>
       </div>
-    </div>
 
-    <!-- Jobs Tab -->
-    <div id="tab-jobs" class="tab-content">
-      <div id="jobsList" class="jobs-list"></div>
-      <div id="jobsEmpty" class="empty-text">No new jobs yet.</div>
-    </div>
-
-    <!-- Active Jobs Tab -->
-    <div id="tab-active" class="tab-content" style="display:none;">
-      <div id="activeList"></div>
-      <div id="activeEmpty" class="empty-text">You have no active jobs.</div>
-    </div>
-
-    <!-- Profile Tab -->
-    <div id="tab-profile" class="tab-content" style="display:none;">
-      <div class="profile-card">
-        <div class="profile-top">
-          <div class="avatar"></div>
-          <div>
-            <div id="profileName" class="profile-name">Worker</div>
-            <div id="profileId" class="profile-id">ELM-0000</div>
-            <div class="rating-row">
-              <span id="profileStars" class="stars">★★★★★</span>
-              <span id="profileRating">5.0</span>
-              <span id="profileJobs" class="jobs-count">0 jobs completed</span>
-            </div>
-          </div>
+      <div class="page-header">
+        <div id="tabsTitle" class="page-title">New Jobs</div>
+        <div id="tabsSubtitle" class="page-subtitle">
+          Smart-matched opportunities for your expertise.
         </div>
       </div>
 
-      <div class="profile-actions">
-        <button class="profile-btn">
-          <span><span class="icon">✂</span> Edit Skills</span>
-          <span>›</span>
-        </button>
-        <button class="profile-btn">
-          <span><span class="icon">⏱</span> Job History</span>
-          <span>›</span>
-        </button>
+      <!-- Jobs Tab -->
+      <div id="tab-jobs" class="tab-content">
+        <div id="jobsList" class="jobs-list"></div>
+        <div id="jobsEmpty" class="empty-text">No new jobs yet.</div>
+      </div>
+
+      <!-- Active Jobs Tab -->
+      <div id="tab-active" class="tab-content" style="display:none;">
+        <div id="activeList"></div>
+        <div id="activeEmpty" class="empty-text">You have no active jobs.</div>
+      </div>
+
+      <!-- Profile Tab -->
+      <div id="tab-profile" class="tab-content" style="display:none;">
+        <div class="profile-card">
+          <div class="profile-top">
+            <div class="avatar"></div>
+            <div>
+              <div id="profileName" class="profile-name">Worker</div>
+              <div id="profileId" class="profile-id">ELM-0000</div>
+              <div class="rating-row">
+                <span id="profileStars" class="stars">★★★★★</span>
+                <span id="profileRating">5.0</span>
+                <span id="profileJobs" class="jobs-count">0 jobs completed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <button class="profile-btn">
+            <span><span class="icon">✂</span> Edit Skills</span>
+            <span>›</span>
+          </button>
+          <button class="profile-btn">
+            <span><span class="icon">⏱</span> Job History</span>
+            <span>›</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation ПРИЖАТ К НИЗУ КАРТОЧКИ -->
     <div class="bottom-nav">
       <div class="nav-btn active" data-tab="jobs">
         <div class="nav-icon">🧳</div>
@@ -567,28 +598,28 @@
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Названия таблиц в Supabase
+  // Названия таблиц
   const WORKERS_TABLE = "workers";
-  const ORDERS_TABLE = "orders";
+  const ORDERS_TABLE  = "orders";
 
   /* ----------------------------- ELEMENTS ----------------------------- */
 
-  const screenLogin   = document.getElementById("screen-login");
-  const screenTabs    = document.getElementById("screen-tabs");
-  const loginStatus   = document.getElementById("loginStatusPill");
-  const tabsStatus    = document.getElementById("tabsStatusPill");
+  const screenLogin  = document.getElementById("screen-login");
+  const screenTabs   = document.getElementById("screen-tabs");
+  const loginStatus  = document.getElementById("loginStatusPill");
+  const tabsStatus   = document.getElementById("tabsStatusPill");
 
-  const phoneInput    = document.getElementById("phoneInput");
-  const loginBtn      = document.getElementById("loginBtn");
-  const loginMessage  = document.getElementById("loginMessage");
+  const phoneInput   = document.getElementById("phoneInput");
+  const loginBtn     = document.getElementById("loginBtn");
+  const loginMessage = document.getElementById("loginMessage");
 
-  const tabsTitle     = document.getElementById("tabsTitle");
-  const tabsSubtitle  = document.getElementById("tabsSubtitle");
+  const tabsTitle    = document.getElementById("tabsTitle");
+  const tabsSubtitle = document.getElementById("tabsSubtitle");
 
-  const jobsList      = document.getElementById("jobsList");
-  const jobsEmpty     = document.getElementById("jobsEmpty");
-  const activeList    = document.getElementById("activeList");
-  const activeEmpty   = document.getElementById("activeEmpty");
+  const jobsList     = document.getElementById("jobsList");
+  const jobsEmpty    = document.getElementById("jobsEmpty");
+  const activeList   = document.getElementById("activeList");
+  const activeEmpty  = document.getElementById("activeEmpty");
 
   const profileName   = document.getElementById("profileName");
   const profileId     = document.getElementById("profileId");
@@ -596,7 +627,7 @@
   const profileRating = document.getElementById("profileRating");
   const profileJobs   = document.getElementById("profileJobs");
 
-  const navButtons    = document.querySelectorAll(".nav-btn");
+  const navButtons   = document.querySelectorAll(".nav-btn");
 
   let currentWorker = null;
   let currentTab = "jobs";
@@ -612,7 +643,7 @@
     loginBtn.disabled = true;
     loginBtn.textContent = "Checking...";
 
-    // ВРЕМЕННО: логинимся как первый worker в базе
+    // логинимся как первый worker в базе — телефон просто для вида
     const { data: workers, error } = await supabase
       .from(WORKERS_TABLE)
       .select("*")
@@ -637,19 +668,16 @@
 
     currentWorker = workers[0];
 
-    // Обновляем статус / текст
     loginStatus.classList.remove("offline");
     loginStatus.textContent = "Online";
 
     loginMessage.textContent = "Logged in successfully!";
     loginMessage.className = "message ok";
 
-    // Подгружаем данные профиля и работы
     updateProfileUI();
     await refreshJobs();
     await refreshActiveJobs();
 
-    // Переход на экран с табами
     setTimeout(() => {
       screenLogin.classList.remove("active");
       screenTabs.classList.add("active");
