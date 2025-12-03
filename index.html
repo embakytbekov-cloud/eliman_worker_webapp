@@ -726,79 +726,90 @@
 
   /* ----------------------------- DATA LOADERS ----------------------------- */
 
-  async function refreshJobs() {
-    if (!currentWorker) return;
+ async function refreshJobs() {
+  if (!currentWorker) return;
 
-    jobsList.innerHTML = "";
-    jobsEmpty.style.display = "none";
+  jobsList.innerHTML = "";
+  jobsEmpty.style.display = "none";
 
-    const { data: orders, error } = await supabase
-      .from(ORDERS_TABLE)
-      .select("*")
-      .is("worker_id", null)
-      .eq("status", "pending")
-      .order("created_at", { ascending: false });
+  // берём навыки (skills) рабочего из таблицы workers
+  const workerSkills = currentWorker.skills || [];
 
-    if (error) {
-      console.error(error);
-      jobsEmpty.textContent = "Error loading jobs.";
-      jobsEmpty.style.display = "block";
-      return;
-    }
+  // базовый запрос: только свободные и pending
+  let query = supabase
+    .from(ORDERS_TABLE)
+    .select("*")
+    .is("worker_id", null)
+    .eq("status", "pending")
+    .order("created_at", { ascending: false });
 
-    if (!orders || orders.length === 0) {
-      jobsEmpty.textContent = "No new jobs yet.";
-      jobsEmpty.style.display = "block";
-      return;
-    }
-
-    orders.forEach(order => {
-      const card = document.createElement("div");
-      card.className = "job-card";
-
-      const title = order.service_name || "Service";
-      const subtitle = order.notes || "No description from client.";
-      const address = order.address || "No address";
-      const dateStr = order.date || "Today";
-      const timeStr = order.time || "";
-      const priceStr = order.price ? `$${order.price}` : "$—";
-
-      card.innerHTML = `
-        <div class="job-row-top">
-          <div>
-            <div class="job-title">${title}</div>
-            <div class="job-subtitle">${subtitle}</div>
-          </div>
-          <div class="job-price">${priceStr}</div>
-        </div>
-
-        <div class="pill-row">
-          <span class="pill">
-            <span class="pill-icon">📍</span>${address}
-          </span>
-          <span class="pill">
-            <span class="pill-icon">🕒</span>${dateStr}, ${timeStr}
-          </span>
-        </div>
-
-        <div class="job-photos-row">
-          <div class="job-photo-dot"></div>
-          <div class="job-photo-dot"></div>
-          <div class="job-photo-dot"></div>
-          <div class="job-photos-text">3 photos</div>
-        </div>
-
-        <div class="job-footer">
-          <button class="btn btn-primary btn-details">View Details →</button>
-        </div>
-      `;
-
-      const btnDetails = card.querySelector(".btn-details");
-      btnDetails.addEventListener("click", () => acceptJob(order, card, btnDetails));
-
-      jobsList.appendChild(card);
-    });
+  // если у рабочего есть skills — фильтруем по ним
+  if (workerSkills.length > 0) {
+    query = query.in("service_type", workerSkills);
   }
+
+  const { data: orders, error } = await query;
+
+  if (error) {
+    console.error(error);
+    jobsEmpty.textContent = "Error loading jobs.";
+    jobsEmpty.style.display = "block";
+    return;
+  }
+
+  if (!orders || orders.length === 0) {
+    jobsEmpty.textContent = "No new jobs yet.";
+    jobsEmpty.style.display = "block";
+    return;
+  }
+
+  orders.forEach(order => {
+    const card = document.createElement("div");
+    card.className = "job-card";
+
+    const title = order.service_name || "Service";
+    const subtitle = order.notes || "No description from client.";
+    const address = order.address || "No address";
+    const dateStr = order.date || "Today";
+    const timeStr = order.time || "";
+    const priceStr = order.price ? $${order.price} : "$—";
+
+    card.innerHTML = `
+      <div class="job-row-top">
+        <div>
+          <div class="job-title">${title}</div>
+          <div class="job-subtitle">${subtitle}</div>
+        </div>
+        <div class="job-price">${priceStr}</div>
+      </div>
+
+      <div class="pill-row">
+        <span class="pill">
+          <span class="pill-icon">📍</span>${address}
+        </span>
+        <span class="pill">
+          <span class="pill-icon">🕒</span>${dateStr}, ${timeStr}
+        </span>
+      </div>
+
+      <div class="job-photos-row">
+        <div class="job-photo-dot"></div>
+        <div class="job-photo-dot"></div>
+        <div class="job-photo-dot"></div>
+        <div class="job-photos-text">3 photos</div>
+      </div>
+
+      <div class="job-footer">
+        <button class="btn btn-primary btn-details">View Details →</button>
+      </div>
+    `;
+
+    const btnDetails = card.querySelector(".btn-details");
+    btnDetails.addEventListener("click", () => acceptJob(order, card, btnDetails));
+
+    jobsList.appendChild(card);
+  });
+}
 
   async function refreshActiveJobs() {
     if (!currentWorker) return;
@@ -985,3 +996,4 @@
 </script>
 </body>
 </html>
+
