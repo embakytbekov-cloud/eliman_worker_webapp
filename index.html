@@ -11,22 +11,23 @@
       padding: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     }
+
+    /* ФОН ВЕСЬ ЭКРАН, БЕЗ ЦЕНТРОВКИ КАРТОЙ */
     body {
       background: #020613;
       color: #f5f5f5;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
     }
+
+    /* ТЕПЕРЬ ЭТО КАК ПОЛНЫЙ ЭКРАН ПРИЛОЖЕНИЯ */
     .app {
       width: 100%;
-      max-width: 450px;
+      max-width: 480px;      /* чтобы на больших экранах не растягивалось слишком */
+      min-height: 100vh;
+      margin: 0 auto;        /* центр по горизонтали */
       background: radial-gradient(circle at top, #042b1c 0, #020613 55%);
-      border-radius: 24px;
-      padding: 20px 18px 24px;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+      border-radius: 0;      /* без больших углов — как экран */
+      padding: 20px 16px 24px;
       border: 1px solid rgba(0, 255, 120, 0.08);
     }
 
@@ -452,8 +453,6 @@
       box-shadow: 0 0 10px rgba(31, 227, 136, 0.7);
     }
 
-    /* мелочи */
-
     .mt-4 { margin-top: 4px; }
     .mt-8 { margin-top: 8px; }
   </style>
@@ -613,8 +612,7 @@
     loginBtn.disabled = true;
     loginBtn.textContent = "Checking...";
 
-    // ВРЕМЕННО: логинимся всегда как первый worker в базе,
-    // телефон просто для красоты (можно вводить любой).
+    // ВРЕМЕННО: логинимся как первый worker в базе
     const { data: workers, error } = await supabase
       .from(WORKERS_TABLE)
       .select("*")
@@ -679,9 +677,9 @@
       btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
     });
 
-    document.getElementById("tab-jobs").style.display   = tab === "jobs"   ? "block" : "none";
-    document.getElementById("tab-active").style.display = tab === "active" ? "block" : "none";
-    document.getElementById("tab-profile").style.display= tab === "profile"? "block" : "none";
+    document.getElementById("tab-jobs").style.display    = tab === "jobs"    ? "block" : "none";
+    document.getElementById("tab-active").style.display  = tab === "active"  ? "block" : "none";
+    document.getElementById("tab-profile").style.display = tab === "profile" ? "block" : "none";
 
     if (tab === "jobs") {
       tabsTitle.textContent = "New Jobs";
@@ -920,7 +918,6 @@
       return;
     }
 
-    // Увеличиваем счётчик работника (на всякий случай можно не ждать ошибки)
     await supabase
       .from(WORKERS_TABLE)
       .update({ jobs_completed: (currentWorker.jobs_completed || 0) + 1 })
