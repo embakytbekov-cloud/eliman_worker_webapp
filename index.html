@@ -726,29 +726,19 @@
 
   /* ----------------------------- DATA LOADERS ----------------------------- */
 
- async function refreshJobs() {
+async function refreshJobs() {
   if (!currentWorker) return;
 
   jobsList.innerHTML = "";
   jobsEmpty.style.display = "none";
 
-  // берём навыки (skills) рабочего из таблицы workers
-  const workerSkills = currentWorker.skills || [];
-
-  // базовый запрос: только свободные и pending
-  let query = supabase
+  const { data: orders, error } = await supabase
     .from(ORDERS_TABLE)
     .select("*")
     .is("worker_id", null)
     .eq("status", "pending")
+    .in("service_type", currentWorker.skills || [])
     .order("created_at", { ascending: false });
-
-  // если у рабочего есть skills — фильтруем по ним
-  if (workerSkills.length > 0) {
-    query = query.in("service_type", workerSkills);
-  }
-
-  const { data: orders, error } = await query;
 
   if (error) {
     console.error(error);
@@ -784,12 +774,8 @@
       </div>
 
       <div class="pill-row">
-        <span class="pill">
-          <span class="pill-icon">📍</span>${address}
-        </span>
-        <span class="pill">
-          <span class="pill-icon">🕒</span>${dateStr}, ${timeStr}
-        </span>
+        <span class="pill"><span class="pill-icon">📍</span>${address}</span>
+        <span class="pill"><span class="pill-icon">🕒</span>${dateStr}, ${timeStr}</span>
       </div>
 
       <div class="job-photos-row">
@@ -996,4 +982,5 @@
 </script>
 </body>
 </html>
+
 
