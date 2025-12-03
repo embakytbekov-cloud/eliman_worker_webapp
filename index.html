@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>ELIMAN Worker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
     * {
       box-sizing: border-box;
@@ -66,6 +65,86 @@
       border: 1px solid rgba(122, 255, 171, 0.12);
       margin-bottom: 14px;
     }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .card-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: #6bff9d;
+    }
+    .pill-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(24, 36, 56, 0.9);
+      color: #c3d0e4;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pill-icon {
+      font-size: 13px;
+    }
+    .card-line {
+      font-size: 12px;
+      color: #91a2be;
+      margin-bottom: 2px;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .small-tag {
+      font-size: 11px;
+      color: #7df29b;
+      opacity: 0.85;
+    }
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #12c97c, #57ffb1);
+      color: #020613;
+      box-shadow: 0 0 20px rgba(69, 255, 155, 0.35);
+    }
+    .btn-primary:active {
+      transform: scale(0.97);
+      box-shadow: 0 0 10px rgba(69, 255, 155, 0.3);
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(114, 133, 163, 0.6);
+      color: #c3d0e4;
+    }
+    .btn-ghost:active {
+      transform: scale(0.97);
+      background: rgba(9, 20, 40, 0.9);
+    }
     .section-title {
       font-size: 14px;
       font-weight: 600;
@@ -86,72 +165,27 @@
       color: #f2f4ff;
       outline: none;
     }
-    .btn {
-      border: none;
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      background: linear-gradient(135deg, #12c97c, #57ffb1);
-      color: #020613;
+    .input::placeholder {
+      color: #6c7a93;
     }
     .message {
       font-size: 12px;
       margin-bottom: 6px;
     }
-    .message.ok { color: #7df29b; }
-    .message.error { color: #ff8090; }
-
+    .message.ok {
+      color: #7df29b;
+    }
+    .message.error {
+      color: #ff8090;
+    }
     .empty-text {
       font-size: 12px;
       color: #7d8aa4;
       text-align: center;
       padding: 10px 0;
     }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
-    }
-    .card-title { font-size: 15px; font-weight: 600; }
-    .card-price { font-size: 16px; font-weight: 700; color: #6bff9d; }
-
-    .pill-row {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-    .pill {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(24, 36, 56, 0.9);
-      color: #c3d0e4;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .pill-icon { font-size: 13px; }
-
-    .card-line {
-      font-size: 12px;
-      color: #91a2be;
-      margin-bottom: 2px;
-    }
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-    }
   </style>
 </head>
-
 <body>
 <div class="app">
   <div class="header">
@@ -160,150 +194,222 @@
   </div>
 
   <h1 id="workerName">Welcome, worker</h1>
-  <div class="subtitle" id="workerSubtitle">Login with your phone to see available jobs.</div>
+  <div class="subtitle" id="workerSubtitle">
+    Login with your phone to see available jobs.
+  </div>
 
-  <div class="card">
+  <!-- LOGIN -->
+  <div class="card" style="margin-bottom: 18px;">
     <div class="section-title">Worker login</div>
     <div class="login-row">
       <input id="phoneInput" class="input" placeholder="+1 (312) 555-0147" />
-      <button id="loginBtn" class="btn">Login</button>
+      <button id="loginBtn" class="btn btn-primary">Login</button>
     </div>
     <div id="loginMessage" class="message"></div>
   </div>
 
+  <!-- NEW JOBS SECTION -->
   <div class="section-title">New Jobs</div>
   <div id="jobsContainer"></div>
-  <div id="jobsEmpty" class="empty-text" style="display:none;">No new jobs.</div>
+  <div id="jobsEmpty" class="empty-text" style="display:none;">
+    No new jobs yet. Pull to refresh or wait for new requests.
+  </div>
 </div>
 
+<script type="module">
+  /* --------------------------- SUPABASE CLIENT --------------------------- */
 
-<!-- ================== SUPABASE CDN ================== -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
 
-<script>
-/* ---------- SUPABASE CLIENT ---------- */
-const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
-const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-console.log("Supabase OK:", supabase);
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  // важное: в Supabase таблица называется "wokers" (с одной r)
+  const WORKERS_TABLE = "wokers";
+  const ORDERS_TABLE = "orders";
 
-/* ---------- ELEMENTS ---------- */
-const phoneInput = document.getElementById("phoneInput");
-const loginBtn = document.getElementById("loginBtn");
-const loginMessage = document.getElementById("loginMessage");
-const workerStatus = document.getElementById("workerStatus");
-const workerName = document.getElementById("workerName");
-const workerSubtitle = document.getElementById("workerSubtitle");
-const jobsContainer = document.getElementById("jobsContainer");
-const jobsEmpty = document.getElementById("jobsEmpty");
+  /* ------------------------------ ELEMENTS ------------------------------- */
 
-let currentWorker = null;
+  const phoneInput = document.getElementById("phoneInput");
+  const loginBtn = document.getElementById("loginBtn");
+  const loginMessage = document.getElementById("loginMessage");
+  const workerStatus = document.getElementById("workerStatus");
+  const workerName = document.getElementById("workerName");
+  const workerSubtitle = document.getElementById("workerSubtitle");
+  const jobsContainer = document.getElementById("jobsContainer");
+  const jobsEmpty = document.getElementById("jobsEmpty");
 
+  let currentWorker = null;
 
-/* ---------- LOGIN ---------- */
-loginBtn.onclick = async () => {
-  const phone = phoneInput.value.trim();
+  /* ------------------------------- LOGIN --------------------------------- */
 
-  loginMessage.textContent = "";
-  loginBtn.textContent = "Checking...";
-  loginBtn.disabled = true;
+  loginBtn.addEventListener("click", async () => {
+    const phone = phoneInput.value.trim();
 
-  // --------------------
-  // ВРЕМЕННО: ВХОД БЕЗ ПРОВЕРКИ
-  // --------------------
-  const { data: workers } = await supabase
-    .from("workers")
-    .select("*")
-    .limit(1);
+    loginMessage.textContent = "";
+    loginMessage.className = "message";
 
-  if (!workers || workers.length === 0) {
-    loginMessage.textContent = "No workers found in DB.";
-    loginMessage.className = "message error";
+    // временно: если поле пустое — логинимся как первый воркер
+    if (!phone) {
+      loginMessage.textContent = "Phone empty, logging in as first worker (debug).";
+      loginMessage.className = "message ok";
+
+      const { data: workers, error } = await supabase
+        .from(WORKERS_TABLE)
+        .select("*")
+        .limit(1);
+
+      if (error) {
+        loginMessage.textContent = "Supabase error: " + error.message;
+        loginMessage.className = "message error";
+        return;
+      }
+      if (!workers || workers.length === 0) {
+        loginMessage.textContent = "No workers in DB at all.";
+        loginMessage.className = "message error";
+        return;
+      }
+
+      currentWorker = workers[0];
+      onWorkerLoggedIn();
+      await loadNewJobs();
+      return;
+    }
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = "Checking...";
+
+    // нормальный логин по номеру
+    const { data: workers, error } = await supabase
+      .from(WORKERS_TABLE)
+      .select("*")
+      .eq("phone", phone)
+      .limit(1);
+
+    if (error) {
+      loginMessage.textContent = "Supabase error: " + error.message;
+      loginMessage.className = "message error";
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Login";
+      return;
+    }
+
+    if (!workers || workers.length === 0) {
+      loginMessage.textContent = "No workers found in DB.";
+      loginMessage.className = "message error";
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Login";
+      return;
+    }
+
+    currentWorker = workers[0];
+    onWorkerLoggedIn();
+    await loadNewJobs();
+
     loginBtn.disabled = false;
     loginBtn.textContent = "Login";
-    return;
-  }
-
-  currentWorker = workers[0];
-
-  workerStatus.textContent = "Online";
-  workerStatus.style.color = "#8bf6b0";
-
-  workerName.textContent = currentWorker.full_name || "Worker";
-  workerSubtitle.textContent = currentWorker.service_area || "Area unknown";
-
-  loginMessage.textContent = "Logged in!";
-  loginMessage.className = "message ok";
-
-  await loadNewJobs();
-
-  loginBtn.disabled = false;
-  loginBtn.textContent = "Login";
-};
-
-
-/* ---------- LOAD JOBS ---------- */
-async function loadNewJobs() {
-  jobsContainer.innerHTML = "";
-
-  const { data: orders, error } = await supabase
-    .from("orders")
-    .select("*")
-    .is("worker_id", null)
-    .eq("status", "pending");
-
-  if (!orders || orders.length === 0) {
-    jobsEmpty.style.display = "block";
-    return;
-  }
-
-  jobsEmpty.style.display = "none";
-
-  orders.forEach(order => {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    card.innerHTML = `
-      <div class="card-header">
-        <div class="card-title">${order.service_name || "Service"}</div>
-        <div class="card-price">$${order.price || "—"}</div>
-      </div>
-      <div class="pill-row">
-        <span class="pill">📍 ${order.address || "No address"}</span>
-        <span class="pill">🕒 ${order.date || ""} ${order.time || ""}</span>
-      </div>
-      <div class="card-line">${order.notes || ""}</div>
-      <div class="card-footer">
-        <span class="pill small-tag">${order.service_type || ""}</span>
-        <button class="btn">Accept</button>
-      </div>
-    `;
-
-    card.querySelector("button").onclick = () =>
-      acceptJob(order.id, card);
-
-    jobsContainer.appendChild(card);
   });
-}
 
+  function onWorkerLoggedIn() {
+    workerStatus.textContent = "Online";
+    workerStatus.style.background = "rgba(0, 255, 120, 0.12)";
+    workerStatus.style.color = "#8bf6b0";
 
-/* ---------- ACCEPT JOB ---------- */
-async function acceptJob(orderId, card) {
-  const { error } = await supabase
-    .from("orders")
-    .update({ worker_id: currentWorker.id, status: "accepted" })
-    .eq("id", orderId);
+    workerName.textContent = currentWorker.full_name || "Worker";
+    workerSubtitle.textContent =
+      `ID: ${currentWorker.id.slice(0, 6).toUpperCase()} • ` +
+      (currentWorker.service_area || "No area");
 
-  if (!error) {
-    card.style.opacity = 0.5;
-    card.querySelector("button").textContent = "Accepted";
+    loginMessage.textContent = "Logged in successfully";
+    loginMessage.className = "message ok";
   }
-}
 
+  /* --------------------------- LOAD NEW JOBS ----------------------------- */
+
+  async function loadNewJobs() {
+    if (!currentWorker) return;
+
+    jobsContainer.innerHTML = "";
+    jobsEmpty.style.display = "none";
+
+    const { data: orders, error } = await supabase
+      .from(ORDERS_TABLE)
+      .select("*")
+      .is("worker_id", null)
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      jobsEmpty.textContent = "Error loading jobs.";
+      jobsEmpty.style.display = "block";
+      return;
+    }
+
+    if (!orders || orders.length === 0) {
+      jobsEmpty.textContent = "No new jobs right now.";
+      jobsEmpty.style.display = "block";
+      return;
+    }
+
+    orders.forEach((order) => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-title">${order.service_name || "Service"}</div>
+          <div class="card-price">$${order.price || "—"}</div>
+        </div>
+        <div class="pill-row">
+          <span class="pill"><span class="pill-icon">📍</span>${order.address || "No address"}</span>
+          <span class="pill"><span class="pill-icon">🕒</span>${order.date || ""} ${order.time || ""}</span>
+          <span class="pill"><span class="pill-icon">👤</span>${order.client_name || ""}</span>
+        </div>
+        <div class="card-line">${order.notes || "No description from client."}</div>
+        <div class="card-footer">
+          <div class="small-tag">New request • ${order.service_type || ""}</div>
+          <button class="btn btn-primary">Accept</button>
+        </div>
+      `;
+
+      const acceptBtn = card.querySelector("button");
+      acceptBtn.addEventListener("click", () =>
+        acceptJob(order.id, card, acceptBtn)
+      );
+
+      jobsContainer.appendChild(card);
+    });
+  }
+
+  async function acceptJob(orderId, card, button) {
+    if (!currentWorker) return;
+
+    button.disabled = true;
+    button.textContent = "Accepting...";
+
+    const { error } = await supabase
+      .from(ORDERS_TABLE)
+      .update({
+        worker_id: currentWorker.id,
+        status: "accepted",
+      })
+      .eq("id", orderId);
+
+    if (error) {
+      console.error(error);
+      button.disabled = false;
+      button.textContent = "Accept";
+      alert("Error accepting job");
+      return;
+    }
+
+    card.style.opacity = "0.4";
+    button.textContent = "Accepted";
+  }
 </script>
-
 </body>
 </html>
