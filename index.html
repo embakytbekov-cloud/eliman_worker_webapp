@@ -5,7 +5,12 @@
   <title>ELIMAN Worker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    }
     body {
       background: #020613;
       color: #f5f5f5;
@@ -24,14 +29,44 @@
       box-shadow: 0 18px 40px rgba(0,0,0,0.6);
       border: 1px solid rgba(0, 255, 120, 0.08);
     }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .logo { font-weight: 700; letter-spacing: 0.08em; font-size: 14px; color: #7df29b; }
-    .status-pill {
-      font-size: 11px; padding: 4px 10px; border-radius: 999px;
-      background: rgba(0, 255, 120, 0.08); border: 1px solid rgba(0, 255, 120, 0.3); color: #8bf6b0;
+
+    /* Общие элементы */
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
     }
-    h1 { font-size: 22px; margin-bottom: 8px; }
-    .subtitle { font-size: 13px; color: #a5b2c7; margin-bottom: 18px; }
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 14px;
+      color: #7df29b;
+    }
+    .status-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 255, 120, 0.08);
+      border: 1px solid rgba(0, 255, 120, 0.3);
+      color: #8bf6b0;
+    }
+    .status-pill.offline {
+      background: rgba(140, 150, 170, 0.08);
+      border-color: rgba(140, 150, 170, 0.35);
+      color: #c5cede;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #a5b2c7;
+      margin-bottom: 18px;
+    }
+
     .card {
       background: rgba(2, 10, 24, 0.9);
       border-radius: 18px;
@@ -39,198 +74,889 @@
       border: 1px solid rgba(122, 255, 171, 0.12);
       margin-bottom: 14px;
     }
-    .section-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-    .login-row { display: flex; gap: 8px; margin-bottom: 10px; }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
     .input {
-      flex: 1; border-radius: 999px; border: 1px solid rgba(80, 110, 150, 0.8);
-      background: rgba(5, 12, 28, 0.9); padding: 8px 12px; font-size: 13px; color: #f2f4ff;
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(80, 110, 150, 0.8);
+      background: rgba(5, 12, 28, 0.9);
+      padding: 8px 12px;
+      font-size: 13px;
+      color: #f2f4ff;
+      outline: none;
     }
-    .message { font-size: 12px; margin-bottom: 6px; }
-    .message.ok { color: #7df29b; }
-    .message.error { color: #ff8090; }
-    .empty-text { font-size: 12px; color: #7d8aa4; text-align: center; padding: 10px 0; }
-    .card-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
-    .card-title { font-size: 15px; font-weight: 600; }
-    .card-price { font-size: 16px; font-weight: 700; color: #6bff9d; }
-    .pill-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-    .pill {
-      font-size: 11px; padding: 4px 8px; border-radius: 999px;
-      background: rgba(24, 36, 56, 0.9); color: #c3d0e4;
-      display: inline-flex; align-items: center; gap: 4px;
+    .input::placeholder {
+      color: #6c7a93;
     }
-    .btn { border: none; border-radius: 999px; padding: 8px 16px; font-size: 13px;
-      font-weight: 600; cursor: pointer; }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
     .btn-primary {
       background: linear-gradient(135deg, #12c97c, #57ffb1);
-      color: #020613; box-shadow: 0 0 20px rgba(69, 255, 155, 0.35);
+      color: #020613;
+      box-shadow: 0 0 20px rgba(69, 255, 155, 0.35);
     }
+    .btn-primary:active {
+      transform: scale(0.97);
+      box-shadow: 0 0 10px rgba(69, 255, 155, 0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(114, 133, 163, 0.6);
+      color: #c3d0e4;
+    }
+    .btn-outline:active {
+      transform: scale(0.97);
+      background: rgba(9, 20, 40, 0.9);
+    }
+
+    .message {
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .message.ok {
+      color: #7df29b;
+    }
+    .message.error {
+      color: #ff8090;
+    }
+
+    .empty-text {
+      font-size: 12px;
+      color: #7d8aa4;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    /* Экраны */
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+
+    /* --------- NEW JOBS LIST ---------- */
+
+    .page-header {
+      margin-bottom: 16px;
+    }
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .page-subtitle {
+      font-size: 13px;
+      color: #a5b2c7;
+    }
+
+    .jobs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .job-card {
+      background: rgba(2, 10, 24, 0.94);
+      border-radius: 20px;
+      border: 1px solid rgba(101, 255, 157, 0.25);
+      padding: 14px 14px 14px;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
+    }
+    .job-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+    .job-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .job-subtitle {
+      font-size: 13px;
+      color: #c3d0e4;
+    }
+    .job-price {
+      font-size: 20px;
+      font-weight: 700;
+      color: #6bff9d;
+      margin-left: 10px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0 10px;
+    }
+    .pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(24, 36, 56, 0.9);
+      color: #c3d0e4;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pill-icon {
+      font-size: 13px;
+    }
+
+    .job-photos-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .job-photo-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #f5f5f5 0, #0d1c32 45%, #020613 90%);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .job-photos-text {
+      font-size: 11px;
+      color: #c3d0e4;
+    }
+
+    .job-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+    .btn-details {
+      font-size: 13px;
+      padding-inline: 18px;
+    }
+
+    /* ACTIVE JOBS */
+
+    .active-card {
+      background: rgba(2, 10, 24, 0.94);
+      border-radius: 20px;
+      border: 1px solid rgba(101, 255, 157, 0.25);
+      padding: 16px 14px 16px;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
+    }
+    .active-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .active-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .active-subtitle {
+      font-size: 13px;
+      color: #c3d0e4;
+    }
+
+    .info-block {
+      margin-bottom: 8px;
+    }
+    .info-label {
+      font-size: 11px;
+      color: #7d8aa4;
+      margin-bottom: 2px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(8, 24, 44, 0.95);
+    }
+    .info-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #d7e0f2;
+    }
+    .info-main span.icon {
+      font-size: 15px;
+    }
+    .info-action {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .info-action.map {
+      background: rgba(25, 180, 105, 0.18);
+      color: #7df29b;
+      border: 1px solid rgba(125, 242, 155, 0.6);
+    }
+    .info-action.call {
+      background: linear-gradient(135deg, #12c97c, #57ffb1);
+      color: #020613;
+      box-shadow: 0 0 12px rgba(69, 255, 155, 0.5);
+    }
+
+    .btn-complete {
+      margin-top: 14px;
+      width: 100%;
+      justify-content: center;
+      padding-block: 10px;
+      font-size: 14px;
+    }
+
+    /* PROFILE */
+
+    .profile-card {
+      background: rgba(2, 10, 24, 0.94);
+      border-radius: 22px;
+      border: 1px solid rgba(101, 255, 157, 0.25);
+      padding: 18px 16px 18px;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
+      margin-bottom: 14px;
+    }
+    .profile-top {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #f5f5f5 0, #0d1c32 50%, #020613 95%);
+      border: 2px solid #1fe388;
+      box-shadow: 0 0 18px rgba(31, 227, 136, 0.5);
+    }
+    .profile-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .profile-id {
+      font-size: 12px;
+      color: #7df29b;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(20, 120, 80, 0.18);
+      display: inline-block;
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      font-size: 13px;
+      color: #d7e0f2;
+    }
+    .stars {
+      color: #35f28c;
+      font-size: 15px;
+    }
+    .jobs-count {
+      font-size: 12px;
+      color: #9aa8c3;
+    }
+
+    .profile-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .profile-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(8, 24, 44, 0.95);
+      border: 1px solid rgba(72, 101, 138, 0.7);
+      font-size: 14px;
+      color: #d7e0f2;
+      cursor: pointer;
+    }
+    .profile-btn span.icon {
+      font-size: 16px;
+    }
+
+    /* BOTTOM NAV */
+
+    .bottom-nav {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid rgba(40, 60, 90, 0.8);
+    }
+    .nav-btn {
+      flex: 1;
+      text-align: center;
+      font-size: 11px;
+      color: #7d8aa4;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 1px solid rgba(120, 140, 170, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .nav-btn.active {
+      color: #7df29b;
+    }
+    .nav-btn.active .nav-icon {
+      border-color: #1fe388;
+      box-shadow: 0 0 10px rgba(31, 227, 136, 0.7);
+    }
+
+    /* мелочи */
+
+    .mt-4 { margin-top: 4px; }
+    .mt-8 { margin-top: 8px; }
   </style>
 </head>
-
 <body>
 <div class="app">
-  <div class="header">
-    <div class="logo">ELIMAN WORKER</div>
-    <div class="status-pill" id="workerStatus">Offline</div>
-  </div>
 
-  <h1 id="workerName">Welcome, worker</h1>
-  <div class="subtitle" id="workerSubtitle">Login with your phone to see available jobs.</div>
-
-  <div class="card">
-    <div class="section-title">Worker login</div>
-    <div class="login-row">
-      <input id="phoneInput" class="input" placeholder="+1 (312) 555-0147" />
-      <button id="loginBtn" class="btn btn-primary">Login</button>
+  <!-- ========== LOGIN SCREEN ========== -->
+  <div id="screen-login" class="screen active">
+    <div class="top-header">
+      <div class="logo">ELIMAN WORKER</div>
+      <div id="loginStatusPill" class="status-pill offline">Offline</div>
     </div>
-    <div id="loginMessage" class="message"></div>
+
+    <h1>Welcome, worker</h1>
+    <div class="subtitle">
+      Login with your phone to see available jobs.
+    </div>
+
+    <div class="card">
+      <div class="section-title">Worker login</div>
+      <div class="input-row">
+        <input id="phoneInput" class="input" placeholder="+1 (312) 555-0147" />
+        <button id="loginBtn" class="btn btn-primary">Login</button>
+      </div>
+      <div id="loginMessage" class="message"></div>
+    </div>
   </div>
 
-  <div class="section-title">New Jobs</div>
-  <div id="jobsContainer"></div>
-  <div id="jobsEmpty" class="empty-text" style="display:none;">No new jobs yet.</div>
+  <!-- ========== TABS SCREEN (JOBS / ACTIVE / PROFILE) ========== -->
+  <div id="screen-tabs" class="screen">
+    <div class="top-header">
+      <div class="logo">ELIMAN WORKER</div>
+      <div id="tabsStatusPill" class="status-pill">Online</div>
+    </div>
+
+    <div class="page-header">
+      <div id="tabsTitle" class="page-title">New Jobs</div>
+      <div id="tabsSubtitle" class="page-subtitle">
+        Smart-matched opportunities for your expertise.
+      </div>
+    </div>
+
+    <!-- Jobs Tab -->
+    <div id="tab-jobs" class="tab-content">
+      <div id="jobsList" class="jobs-list"></div>
+      <div id="jobsEmpty" class="empty-text">No new jobs yet.</div>
+    </div>
+
+    <!-- Active Jobs Tab -->
+    <div id="tab-active" class="tab-content" style="display:none;">
+      <div id="activeList"></div>
+      <div id="activeEmpty" class="empty-text">You have no active jobs.</div>
+    </div>
+
+    <!-- Profile Tab -->
+    <div id="tab-profile" class="tab-content" style="display:none;">
+      <div class="profile-card">
+        <div class="profile-top">
+          <div class="avatar"></div>
+          <div>
+            <div id="profileName" class="profile-name">Worker</div>
+            <div id="profileId" class="profile-id">ELM-0000</div>
+            <div class="rating-row">
+              <span id="profileStars" class="stars">★★★★★</span>
+              <span id="profileRating">5.0</span>
+              <span id="profileJobs" class="jobs-count">0 jobs completed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="profile-btn">
+          <span><span class="icon">✂</span> Edit Skills</span>
+          <span>›</span>
+        </button>
+        <button class="profile-btn">
+          <span><span class="icon">⏱</span> Job History</span>
+          <span>›</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <div class="nav-btn active" data-tab="jobs">
+        <div class="nav-icon">🧳</div>
+        <div>Jobs</div>
+      </div>
+      <div class="nav-btn" data-tab="active">
+        <div class="nav-icon">✔</div>
+        <div>Active</div>
+      </div>
+      <div class="nav-btn" data-tab="profile">
+        <div class="nav-icon">👤</div>
+        <div>Profile</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script type="module">
+  /* ----------------------------- SUPABASE CLIENT ----------------------------- */
 
-/* ------------------ SUPABASE ------------------ */
-const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
-const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
+  const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const WORKERS_TABLE = "workers";
-const ORDERS_TABLE = "orders";
+  // Названия таблиц в Supabase
+  const WORKERS_TABLE = "workers";
+  const ORDERS_TABLE = "orders";
 
-/* ------------------ ELEMENTS ------------------ */
-const phoneInput = document.getElementById("phoneInput");
-const loginBtn = document.getElementById("loginBtn");
-const loginMessage = document.getElementById("loginMessage");
-const workerStatus = document.getElementById("workerStatus");
-const workerName = document.getElementById("workerName");
-const workerSubtitle = document.getElementById("workerSubtitle");
-const jobsContainer = document.getElementById("jobsContainer");
-const jobsEmpty = document.getElementById("jobsEmpty");
+  /* ----------------------------- ELEMENTS ----------------------------- */
 
-let currentWorker = null;
+  const screenLogin   = document.getElementById("screen-login");
+  const screenTabs    = document.getElementById("screen-tabs");
+  const loginStatus   = document.getElementById("loginStatusPill");
+  const tabsStatus    = document.getElementById("tabsStatusPill");
 
-/* ------------------ LOGIN (ANY PHONE) ------------------ */
+  const phoneInput    = document.getElementById("phoneInput");
+  const loginBtn      = document.getElementById("loginBtn");
+  const loginMessage  = document.getElementById("loginMessage");
 
-loginBtn.addEventListener("click", async () => {
-  loginMessage.textContent = "Logging in...";
-  loginMessage.className = "message ok";
+  const tabsTitle     = document.getElementById("tabsTitle");
+  const tabsSubtitle  = document.getElementById("tabsSubtitle");
 
-  const { data: workers, error } = await supabase
-    .from(WORKERS_TABLE)
-    .select("*")
-    .limit(1);
+  const jobsList      = document.getElementById("jobsList");
+  const jobsEmpty     = document.getElementById("jobsEmpty");
+  const activeList    = document.getElementById("activeList");
+  const activeEmpty   = document.getElementById("activeEmpty");
 
-  if (error) {
-    loginMessage.textContent = "Supabase error: " + error.message;
-    loginMessage.className = "message error";
-    return;
-  }
+  const profileName   = document.getElementById("profileName");
+  const profileId     = document.getElementById("profileId");
+  const profileStars  = document.getElementById("profileStars");
+  const profileRating = document.getElementById("profileRating");
+  const profileJobs   = document.getElementById("profileJobs");
 
-  if (!workers || workers.length === 0) {
-    loginMessage.textContent = "No workers in DB.";
-    loginMessage.className = "message error";
-    return;
-  }
+  const navButtons    = document.querySelectorAll(".nav-btn");
 
-  currentWorker = workers[0];
+  let currentWorker = null;
+  let currentTab = "jobs";
 
-  workerStatus.textContent = "Online";
-  workerStatus.style.color = "#8bf6b0";
-  workerStatus.style.background = "rgba(0,255,120,0.12)";
+  /* ----------------------------- LOGIN LOGIC ----------------------------- */
 
-  workerName.textContent = currentWorker.full_name || "Worker";
-  workerSubtitle.textContent =
-    `ELM-${currentWorker.id.slice(0, 6).toUpperCase()} • ${currentWorker.service_area || ""}`;
+  loginBtn.addEventListener("click", async () => {
+    const phone = phoneInput.value.trim();
 
-  loginMessage.textContent = "Logged in successfully!";
-  loginMessage.className = "message ok";
+    loginMessage.textContent = "";
+    loginMessage.className = "message";
 
-  loadNewJobs();
-});
+    loginBtn.disabled = true;
+    loginBtn.textContent = "Checking...";
 
-/* ------------------ LOAD NEW JOBS ------------------ */
+    // ВРЕМЕННО: логинимся всегда как первый worker в базе,
+    // телефон просто для красоты (можно вводить любой).
+    const { data: workers, error } = await supabase
+      .from(WORKERS_TABLE)
+      .select("*")
+      .limit(1);
 
-async function loadNewJobs() {
-  jobsContainer.innerHTML = "";
-  jobsEmpty.style.display = "none";
+    if (error) {
+      console.error(error);
+      loginMessage.textContent = "Supabase error: " + error.message;
+      loginMessage.className = "message error";
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Login";
+      return;
+    }
 
-  const { data: orders, error } = await supabase
-    .from(ORDERS_TABLE)
-    .select("*")
-    .is("worker_id", null)
-    .eq("status", "pending")
-    .order("created_at", { ascending: false });
+    if (!workers || workers.length === 0) {
+      loginMessage.textContent = "No workers in DB.";
+      loginMessage.className = "message error";
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Login";
+      return;
+    }
 
-  if (error) {
-    jobsEmpty.textContent = "Error loading jobs.";
-    jobsEmpty.style.display = "block";
-    return;
-  }
+    currentWorker = workers[0];
 
-  if (!orders || orders.length === 0) {
-    jobsEmpty.style.display = "block";
-    return;
-  }
+    // Обновляем статус / текст
+    loginStatus.classList.remove("offline");
+    loginStatus.textContent = "Online";
 
-  orders.forEach(order => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="card-header">
-        <div class="card-title">${order.service_name}</div>
-        <div class="card-price">$${order.price}</div>
-      </div>
-      <div class="pill-row">
-        <span class="pill">📍 ${order.address}</span>
-        <span class="pill">🕒 ${order.date} ${order.time}</span>
-        <span class="pill">👤 ${order.client_name}</span>
-      </div>
-      <div style="font-size:12px;color:#91a2be;">${order.notes || ""}</div>
-      <div style="margin-top:10px;">
-        <button class="btn btn-primary">Accept</button>
-      </div>
-    `;
+    loginMessage.textContent = "Logged in successfully!";
+    loginMessage.className = "message ok";
 
-    const btn = card.querySelector("button");
-    btn.onclick = () => acceptJob(order.id, btn, card);
+    // Подгружаем данные профиля и работы
+    updateProfileUI();
+    await refreshJobs();
+    await refreshActiveJobs();
 
-    jobsContainer.appendChild(card);
+    // Переход на экран с табами
+    setTimeout(() => {
+      screenLogin.classList.remove("active");
+      screenTabs.classList.add("active");
+      tabsStatus.textContent = "Online";
+      setTab("jobs");
+    }, 500);
+
+    loginBtn.disabled = false;
+    loginBtn.textContent = "Login";
   });
-}
 
-/* ------------------ ACCEPT JOB ------------------ */
+  /* ----------------------------- TABS LOGIC ----------------------------- */
 
-async function acceptJob(orderId, btn, card) {
-  btn.textContent = "Accepting...";
-  btn.disabled = true;
+  navButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tab = btn.getAttribute("data-tab");
+      setTab(tab);
+    });
+  });
 
-  const { error } = await supabase
-    .from(ORDERS_TABLE)
-    .update({
-      worker_id: currentWorker.id,
-      status: "accepted"
-    })
-    .eq("id", orderId);
+  function setTab(tab) {
+    currentTab = tab;
 
-  if (error) {
-    alert("Error accepting job");
-    btn.disabled = false;
-    btn.textContent = "Accept";
-    return;
+    navButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
+    });
+
+    document.getElementById("tab-jobs").style.display   = tab === "jobs"   ? "block" : "none";
+    document.getElementById("tab-active").style.display = tab === "active" ? "block" : "none";
+    document.getElementById("tab-profile").style.display= tab === "profile"? "block" : "none";
+
+    if (tab === "jobs") {
+      tabsTitle.textContent = "New Jobs";
+      tabsSubtitle.textContent = "Smart-matched opportunities for your expertise.";
+      refreshJobs();
+    } else if (tab === "active") {
+      tabsTitle.textContent = "Active Jobs";
+      tabsSubtitle.textContent = "Mission control for your accepted work.";
+      refreshActiveJobs();
+    } else if (tab === "profile") {
+      tabsTitle.textContent = "Profile";
+      tabsSubtitle.textContent = "Your rating, skills and job history.";
+      updateProfileUI();
+    }
   }
 
-  card.style.opacity = "0.4";
-  btn.textContent = "Accepted";
-}
+  /* ----------------------------- DATA LOADERS ----------------------------- */
 
+  async function refreshJobs() {
+    if (!currentWorker) return;
+
+    jobsList.innerHTML = "";
+    jobsEmpty.style.display = "none";
+
+    const { data: orders, error } = await supabase
+      .from(ORDERS_TABLE)
+      .select("*")
+      .is("worker_id", null)
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      jobsEmpty.textContent = "Error loading jobs.";
+      jobsEmpty.style.display = "block";
+      return;
+    }
+
+    if (!orders || orders.length === 0) {
+      jobsEmpty.textContent = "No new jobs yet.";
+      jobsEmpty.style.display = "block";
+      return;
+    }
+
+    orders.forEach(order => {
+      const card = document.createElement("div");
+      card.className = "job-card";
+
+      const title = order.service_name || "Service";
+      const subtitle = order.notes || "No description from client.";
+      const address = order.address || "No address";
+      const dateStr = order.date || "Today";
+      const timeStr = order.time || "";
+      const priceStr = order.price ? `$${order.price}` : "$—";
+
+      card.innerHTML = `
+        <div class="job-row-top">
+          <div>
+            <div class="job-title">${title}</div>
+            <div class="job-subtitle">${subtitle}</div>
+          </div>
+          <div class="job-price">${priceStr}</div>
+        </div>
+
+        <div class="pill-row">
+          <span class="pill">
+            <span class="pill-icon">📍</span>${address}
+          </span>
+          <span class="pill">
+            <span class="pill-icon">🕒</span>${dateStr}, ${timeStr}
+          </span>
+        </div>
+
+        <div class="job-photos-row">
+          <div class="job-photo-dot"></div>
+          <div class="job-photo-dot"></div>
+          <div class="job-photo-dot"></div>
+          <div class="job-photos-text">3 photos</div>
+        </div>
+
+        <div class="job-footer">
+          <button class="btn btn-primary btn-details">View Details →</button>
+        </div>
+      `;
+
+      const btnDetails = card.querySelector(".btn-details");
+      btnDetails.addEventListener("click", () => acceptJob(order, card, btnDetails));
+
+      jobsList.appendChild(card);
+    });
+  }
+
+  async function refreshActiveJobs() {
+    if (!currentWorker) return;
+
+    activeList.innerHTML = "";
+    activeEmpty.style.display = "none";
+
+    const { data: orders, error } = await supabase
+      .from(ORDERS_TABLE)
+      .select("*")
+      .eq("worker_id", currentWorker.id)
+      .eq("status", "accepted")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      activeEmpty.textContent = "Error loading active jobs.";
+      activeEmpty.style.display = "block";
+      return;
+    }
+
+    if (!orders || orders.length === 0) {
+      activeEmpty.textContent = "You have no active jobs.";
+      activeEmpty.style.display = "block";
+      return;
+    }
+
+    orders.forEach(order => {
+      const card = document.createElement("div");
+      card.className = "active-card";
+
+      const title = order.service_name || "Service";
+      const subtitle = order.notes || "No description from client.";
+      const address = order.address || "No address";
+      const dateStr = order.date || "Today";
+      const timeStr = order.time || "";
+      const clientPhone = order.client_phone || phoneInput.value.trim() || "+1 (312) 555-0147";
+      const priceStr = order.price ? `$${order.price}` : "$—";
+
+      card.innerHTML = `
+        <div class="active-title-row">
+          <div>
+            <div class="active-title">${title}</div>
+            <div class="active-subtitle">${subtitle}</div>
+          </div>
+          <div class="job-price">${priceStr}</div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-label">ADDRESS</div>
+          <div class="info-row">
+            <div class="info-main">
+              <span class="icon">📍</span>
+              <span>${address}</span>
+            </div>
+            <button class="info-action map">Maps</button>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-label">TIME</div>
+          <div class="info-row">
+            <div class="info-main">
+              <span class="icon">🕒</span>
+              <span>${dateStr}, ${timeStr}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-label">CLIENT</div>
+          <div class="info-row">
+            <div class="info-main">
+              <span class="icon">📞</span>
+              <span>${clientPhone}</span>
+            </div>
+            <button class="info-action call">CALL</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-complete">Mark as Completed</button>
+      `;
+
+      const mapBtn = card.querySelector(".info-action.map");
+      mapBtn.addEventListener("click", () => {
+        const url = "https://maps.google.com/?q=" + encodeURIComponent(address);
+        window.open(url, "_blank");
+      });
+
+      const callBtn = card.querySelector(".info-action.call");
+      callBtn.addEventListener("click", () => {
+        window.open("tel:" + clientPhone.replace(/[^+\d]/g, ""), "_blank");
+      });
+
+      const completeBtn = card.querySelector(".btn-complete");
+      completeBtn.addEventListener("click", () => completeJob(order, card, completeBtn));
+
+      activeList.appendChild(card);
+    });
+  }
+
+  /* ----------------------------- ACTIONS ----------------------------- */
+
+  async function acceptJob(order, card, button) {
+    if (!currentWorker) return;
+    button.disabled = true;
+    button.textContent = "Accepting...";
+
+    const { error } = await supabase
+      .from(ORDERS_TABLE)
+      .update({
+        worker_id: currentWorker.id,
+        status: "accepted"
+      })
+      .eq("id", order.id);
+
+    if (error) {
+      console.error(error);
+      alert("Error accepting job");
+      button.disabled = false;
+      button.textContent = "View Details →";
+      return;
+    }
+
+    card.style.opacity = 0.5;
+    button.textContent = "Accepted";
+    await refreshActiveJobs();
+  }
+
+  async function completeJob(order, card, button) {
+    if (!currentWorker) return;
+    button.disabled = true;
+    button.textContent = "Completing...";
+
+    const { error } = await supabase
+      .from(ORDERS_TABLE)
+      .update({ status: "completed" })
+      .eq("id", order.id);
+
+    if (error) {
+      console.error(error);
+      alert("Error completing job");
+      button.disabled = false;
+      button.textContent = "Mark as Completed";
+      return;
+    }
+
+    // Увеличиваем счётчик работника (на всякий случай можно не ждать ошибки)
+    await supabase
+      .from(WORKERS_TABLE)
+      .update({ jobs_completed: (currentWorker.jobs_completed || 0) + 1 })
+      .eq("id", currentWorker.id);
+
+    currentWorker.jobs_completed = (currentWorker.jobs_completed || 0) + 1;
+    updateProfileUI();
+
+    card.style.opacity = 0.4;
+    button.textContent = "Completed";
+    await refreshActiveJobs();
+  }
+
+  /* ----------------------------- PROFILE UI ----------------------------- */
+
+  function updateProfileUI() {
+    if (!currentWorker) return;
+
+    profileName.textContent = currentWorker.full_name || "Worker";
+
+    const shortId = String(currentWorker.id || "")
+      .slice(0, 5)
+      .toUpperCase();
+    profileId.textContent = "ELM-" + shortId;
+
+    const rating = Number(currentWorker.rating || 5).toFixed(1);
+    profileRating.textContent = rating;
+
+    const starsCount = Math.round(Number(currentWorker.rating || 5));
+    const stars =
+      "★★★★★".slice(0, starsCount) + "☆☆☆☆☆".slice(0, 5 - starsCount);
+    profileStars.textContent = stars;
+
+    const jobs = currentWorker.jobs_completed || 0;
+    profileJobs.textContent = `${jobs} jobs completed`;
+  }
 </script>
 </body>
 </html>
