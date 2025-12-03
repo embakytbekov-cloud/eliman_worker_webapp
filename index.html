@@ -166,27 +166,25 @@ loginBtn.addEventListener('click', async () => {
   loginMessage.textContent = "Checking...";
   loginMessage.style.color = "#ccc";
 
-  const { data: workers, error } = await supabase
-    .from("workers")
-    .select("*")
-    .eq("phone", phone)
-    .limit(1);
+ // ❗ ТЕСТОВЫЙ РЕЖИМ — ПУСКАТЬ ВСЕХ
+currentWorker = {
+  id: 'test-worker-id',
+  full_name: 'Test Worker',
+  service_area: 'Chicago'
+};
 
-  if (error) {
-    loginMessage.textContent = "Server error";
-    loginMessage.style.color = "red";
-    return;
-  }
+workerStatus.textContent = 'Online';
+workerName.textContent = currentWorker.full_name;
+workerSubtitle.textContent = ELM-TEST • ${currentWorker.service_area};
 
-  if (!workers || workers.length === 0) {
-    loginMessage.textContent = "Worker not found";
-    loginMessage.style.color = "red";
-    workerStatus.textContent = "Offline";
-    return;
-  }
+loginMessage.textContent = 'Logged in (TEST MODE)';
+loginMessage.className = 'message ok';
 
-  /* ------ LOGIN OK ------ */
-  currentWorker = workers[0];
+// Загрузить заказы
+await loadNewJobs();
+
+// Сразу выходим из функции — не проверяем номер
+return; 
 
   workerStatus.textContent = "Online";
   workerStatus.style.background = "rgba(0,255,120,0.2)";
@@ -272,4 +270,5 @@ async function acceptJob(orderId, card, btn) {
 </script>
 </body>
 </html>
+
 
