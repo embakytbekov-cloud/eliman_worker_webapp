@@ -29,7 +29,7 @@
     .glass-card {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
@@ -56,6 +56,19 @@
       opacity: 0.6;
       cursor: not-allowed;
       transform: none;
+    }
+
+    .secondary-button {
+      border-radius: 16px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .status-pill {
@@ -176,6 +189,95 @@
       backdrop-filter: blur(20px);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
+
+    .textarea-bio {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #e5e7eb;
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .textarea-bio::placeholder {
+      color: #64748b;
+    }
+
+    .textarea-bio:focus {
+      outline: none;
+      border-color: #22c55e;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5);
+    }
+
+    .toggle-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    .toggle {
+      width: 46px;
+      height: 26px;
+      border-radius: 999px;
+      background: #1f2937;
+      border: 1px solid #4b5563;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: #9ca3af;
+      transition: all 0.25s ease;
+    }
+
+    .toggle.on {
+      background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
+      border-color: transparent;
+    }
+
+    .toggle.on .toggle-thumb {
+      transform: translateX(18px);
+      background: #020617;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+    }
+
+    .chip-lang {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chip-lang.active {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.15);
+      color: #bbf7d0;
+    }
+
+    #avatarImg {
+      object-fit: cover;
+    }
   </style>
 </head>
 <body class="min-h-screen pb-20">
@@ -257,36 +359,107 @@
           <h2 id="profileTitle" class="text-2xl font-bold mb-1">Profile</h2>
         </div>
 
-        <div class="glass-card p-6 mb-6">
+        <!-- NEW PROFILE BLOCK -->
+        <div class="glass-card p-6 mb-4">
+          <!-- Фото + Имя + ID -->
           <div class="flex items-center mb-4">
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-2xl font-bold mr-4 shadow-lg">
-              <span id="profileInitials">WW</span>
-            </div>
+            <button id="avatarButton"
+                    class="relative w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-emerald-400 shadow-lg flex items-center justify-center bg-gradient-to-br from-green-400 to-emerald-600">
+              <img id="avatarImg" src="" alt="avatar" class="w-full h-full hidden" />
+              <span id="profileInitials" class="text-2xl font-bold">WW</span>
+              <div class="absolute bottom-[-2px] right-[-2px] bg-black rounded-full p-[3px] border border-emerald-400">
+                <i class="fas fa-camera text-[10px] text-emerald-300"></i>
+              </div>
+            </button>
             <div>
               <h3 id="profileName" class="text-xl font-semibold">Worker</h3>
               <p id="profileId" class="text-gray-400 text-sm">ID: •••••••</p>
             </div>
           </div>
-          <div class="flex items-center mb-4">
-            <div class="text-yellow-400 text-lg mr-2">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
+
+          <!-- Рейтинг + Заказы -->
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+              <div class="text-yellow-400 text-lg mr-2">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <span id="profileRatingLabel" class="text-sm text-gray-400">5.0 rating</span>
             </div>
-            <span id="profileRatingLabel" class="text-sm text-gray-400">5.0 rating</span>
+            <div class="text-right">
+              <div id="jobsCompleted" class="text-2xl font-bold text-green-400">0</div>
+              <div id="profileJobsLabel" class="text-sm text-gray-400">jobs completed</div>
+            </div>
           </div>
-          <div class="text-center">
-            <div id="jobsCompleted" class="text-2xl font-bold text-green-400">0</div>
-            <div id="profileJobsLabel" class="text-sm text-gray-400">jobs completed</div>
+
+          <!-- О себе -->
+          <div class="mb-4">
+            <div class="flex items-center justify-between mb-2">
+              <span id="aboutMeLabel" class="text-sm font-medium text-gray-200">About me</span>
+            </div>
+            <textarea id="aboutMeInput"
+                      class="textarea-bio"
+                      placeholder="Handyman with 5+ years experience. Professional and fast."></textarea>
+            <div class="flex justify-end mt-2">
+              <button id="saveAboutButton" class="secondary-button text-xs">
+                <i class="fas fa-save text-[11px]"></i>
+                <span id="saveAboutText">Save bio</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Навыки -->
+          <div class="mb-4">
+            <div class="flex items-center justify-between mb-2">
+              <span id="skillsLabel" class="text-sm font-medium text-gray-200">Skills</span>
+            </div>
+            <div id="skillsTextList" class="flex flex-wrap gap-2 text-xs text-gray-300">
+              <!-- chips -->
+            </div>
+          </div>
+
+          <!-- Notifications -->
+          <div class="mb-1">
+            <div class="flex items-center justify-between">
+              <div>
+                <div id="notificationsLabel" class="text-sm font-medium text-gray-200">Notifications</div>
+                <div id="notificationsStatusText" class="text-xs text-gray-400">
+                  Receive new job alerts
+                </div>
+              </div>
+              <button id="notificationsToggle" class="toggle">
+                <div class="toggle-thumb"></div>
+              </button>
+            </div>
           </div>
         </div>
 
-        <button id="editSkillsButton" class="neon-button w-full mb-3">
-          <span id="editSkillsText">Edit Skills</span>
-        </button>
+        <!-- КНОПКИ: навыки / фото / язык -->
+        <div class="space-y-3">
+          <button id="editSkillsButton" class="neon-button w-full">
+            <span id="editSkillsText">Edit Skills</span>
+          </button>
+
+          <button id="changePhotoButton" class="secondary-button w-full justify-center">
+            <i class="fas fa-image"></i>
+            <span id="changePhotoText">Change profile photo</span>
+          </button>
+
+          <div class="glass-card p-4">
+            <div class="flex items-center justify-between mb-3">
+              <span id="languageLabel" class="text-sm font-medium text-gray-200">Language</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button class="chip chip-lang" data-lang="en">English</button>
+              <button class="chip chip-lang" data-lang="ru">Русский</button>
+              <button class="chip chip-lang" data-lang="es">Español</button>
+              <button class="chip chip-lang" data-lang="ky">Кыргызча</button>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -353,17 +526,18 @@
     </div>
   </div>
 
+  <!-- HIDDEN INPUT FOR AVATAR -->
+  <input id="avatarFileInput" type="file" accept="image/*" class="hidden" />
+
   <!-- APP LOGIC -->
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    // 🔐 ТВОЙ Supabase
     const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
     const SUPABASE_ANON_KEY =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.expand();
@@ -388,9 +562,15 @@
         profileTitle: "Profile",
         profileRatingLabel: "rating",
         profileJobsLabel: "jobs completed",
-        editSkillsButton: "Edit Skills",
-        saveButton: "Save",
-        cancelButton: "Cancel",
+        aboutMeLabel: "About me",
+        aboutPlaceholder: "Handyman with 5+ years experience. Professional and fast.",
+        saveAboutText: "Save bio",
+        skillsLabel: "Skills",
+        notificationsLabel: "Notifications",
+        notificationsOn: "Receive new job alerts",
+        notificationsOff: "Notifications are off",
+        changePhotoText: "Change profile photo",
+        languageLabel: "Language",
         noJobsText: "No jobs available right now",
         noActiveJobsText: "No active jobs",
         viewDetailsButton: "View Details →",
@@ -401,7 +581,6 @@
         timeLabel: "Time",
         clientLabel: "Client",
         priceLabel: "Price",
-        skillsLabel: "Skills",
         notesLabel: "Notes",
         errorLoadingJobs: "Error loading jobs",
         errorUpdatingJob: "Error updating job",
@@ -410,6 +589,12 @@
         jobStartedToast: "Job started!",
         jobCompletedToast: "Job completed!",
         skillsUpdatedToast: "Skills updated!",
+        bioSavedToast: "Bio saved!",
+        avatarUpdatedToast: "Profile photo updated!",
+        notifOnToast: "Notifications enabled",
+        notifOffToast: "Notifications disabled",
+        avatarErrorToast: "Error uploading photo",
+        languageChangedToast: "Language changed",
       },
       ru: {
         welcomeTitle: "Добро пожаловать, работник",
@@ -427,9 +612,15 @@
         profileTitle: "Профиль",
         profileRatingLabel: "рейтинг",
         profileJobsLabel: "завершённых заказов",
-        editSkillsButton: "Изменить навыки",
-        saveButton: "Сохранить",
-        cancelButton: "Отмена",
+        aboutMeLabel: "О себе",
+        aboutPlaceholder: "Handyman с 5+ годами опыта. Быстро и профессионально.",
+        saveAboutText: "Сохранить описание",
+        skillsLabel: "Навыки",
+        notificationsLabel: "Уведомления",
+        notificationsOn: "Получать уведомления о новых заказах",
+        notificationsOff: "Уведомления выключены",
+        changePhotoText: "Изменить фото профиля",
+        languageLabel: "Язык",
         noJobsText: "Нет доступных заказов",
         noActiveJobsText: "Нет активных заказов",
         viewDetailsButton: "Подробнее →",
@@ -440,7 +631,6 @@
         timeLabel: "Время",
         clientLabel: "Клиент",
         priceLabel: "Цена",
-        skillsLabel: "Навыки",
         notesLabel: "Заметки",
         errorLoadingJobs: "Ошибка загрузки заказов",
         errorUpdatingJob: "Ошибка обновления заказа",
@@ -449,6 +639,12 @@
         jobStartedToast: "Работа начата!",
         jobCompletedToast: "Работа завершена!",
         skillsUpdatedToast: "Навыки обновлены!",
+        bioSavedToast: "Описание сохранено!",
+        avatarUpdatedToast: "Фото профиля обновлено!",
+        notifOnToast: "Уведомления включены",
+        notifOffToast: "Уведомления выключены",
+        avatarErrorToast: "Ошибка загрузки фото",
+        languageChangedToast: "Язык изменён",
       },
       es: {
         welcomeTitle: "Bienvenido, trabajador",
@@ -466,9 +662,15 @@
         profileTitle: "Perfil",
         profileRatingLabel: "calificación",
         profileJobsLabel: "trabajos completados",
-        editSkillsButton: "Editar habilidades",
-        saveButton: "Guardar",
-        cancelButton: "Cancelar",
+        aboutMeLabel: "Sobre mí",
+        aboutPlaceholder: "Handyman con más de 5 años de experiencia. Rápido y profesional.",
+        saveAboutText: "Guardar descripción",
+        skillsLabel: "Habilidades",
+        notificationsLabel: "Notificaciones",
+        notificationsOn: "Recibir avisos de nuevos trabajos",
+        notificationsOff: "Notificaciones desactivadas",
+        changePhotoText: "Cambiar foto de perfil",
+        languageLabel: "Idioma",
         noJobsText: "No hay trabajos disponibles",
         noActiveJobsText: "No hay trabajos activos",
         viewDetailsButton: "Ver detalles →",
@@ -479,7 +681,6 @@
         timeLabel: "Hora",
         clientLabel: "Cliente",
         priceLabel: "Precio",
-        skillsLabel: "Habilidades",
         notesLabel: "Notas",
         errorLoadingJobs: "Error al cargar trabajos",
         errorUpdatingJob: "Error al actualizar trabajo",
@@ -488,6 +689,12 @@
         jobStartedToast: "¡Trabajo iniciado!",
         jobCompletedToast: "¡Trabajo completado!",
         skillsUpdatedToast: "¡Habilidades actualizadas!",
+        bioSavedToast: "¡Descripción guardada!",
+        avatarUpdatedToast: "¡Foto de perfil actualizada!",
+        notifOnToast: "Notificaciones activadas",
+        notifOffToast: "Notificaciones desactivadas",
+        avatarErrorToast: "Error al subir foto",
+        languageChangedToast: "Idioma cambiado",
       },
       ky: {
         welcomeTitle: "Кош келиңиз, жумушчу",
@@ -505,10 +712,16 @@
         profileTitle: "Профиль",
         profileRatingLabel: "рейтинг",
         profileJobsLabel: "аяктаган жумуштар",
-        editSkillsButton: "Жөндөмдөрдү өзгөртүү",
-        saveButton: "Сактоо",
-        cancelButton: "Жокко чыгаруу",
-        noJobsText: "Жумуштар азыр жок",
+        aboutMeLabel: "Өзүм жөнүндө",
+        aboutPlaceholder: "5+ жылдык тажрыйбалуу handyman. Ыкчам жана кесипкөй.",
+        saveAboutText: "Сүрөттөмөнү сактоо",
+        skillsLabel: "Жөндөмдөр",
+        notificationsLabel: "Билдирмелер",
+        notificationsOn: "Жаңы жумуштар боюнча билдирме алуу",
+        notificationsOff: "Билдирмелер өчүрүлгөн",
+        changePhotoText: "Профиль сүрөтүн алмаштыруу",
+        languageLabel: "Тил",
+        noJobsText: "Азырынча жумуштар жок",
         noActiveJobsText: "Активдүү жумуштар жок",
         viewDetailsButton: "Кененирээк →",
         acceptJobButton: "Жумушту кабыл алуу",
@@ -518,7 +731,6 @@
         timeLabel: "Убакыт",
         clientLabel: "Кардар",
         priceLabel: "Баа",
-        skillsLabel: "Жөндөмдөр",
         notesLabel: "Эскертмелер",
         errorLoadingJobs: "Жумуштарды жүктөөдө ката",
         errorUpdatingJob: "Жумушту жаңыртууда ката",
@@ -527,6 +739,12 @@
         jobStartedToast: "Жумуш башталды!",
         jobCompletedToast: "Жумуш аяктады!",
         skillsUpdatedToast: "Жөндөмдөр жаңыртылды!",
+        bioSavedToast: "Сүрөттөмө сакталды!",
+        avatarUpdatedToast: "Профиль сүрөтү жаңырды!",
+        notifOnToast: "Билдирмелер күйгүзүлдү",
+        notifOffToast: "Билдирмелер өчүрүлдү",
+        avatarErrorToast: "Сүрөт жүктөөдө ката",
+        languageChangedToast: "Тил өзгөртүлдү",
       },
     };
 
@@ -547,8 +765,16 @@
     ];
 
     const $ = (id) => document.getElementById(id);
-
     const t = (key) => i18n[currentLanguage][key] || key;
+
+    function showToast(message) {
+      const toast = document.createElement("div");
+      toast.className =
+        "fixed top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-6 py-3 rounded-lg z-[9999] shadow-lg text-sm";
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    }
 
     function updateTexts() {
       $("welcomeTitle").textContent = t("welcomeTitle");
@@ -563,26 +789,30 @@
       $("profileTitle").textContent = t("profileTitle");
       $("profileRatingLabel").textContent = "5.0 " + t("profileRatingLabel");
       $("profileJobsLabel").textContent = t("profileJobsLabel");
-      $("editSkillsText").textContent = t("editSkillsButton");
+
+      $("aboutMeLabel").textContent = t("aboutMeLabel");
+      $("aboutMeInput").placeholder = t("aboutPlaceholder");
+      $("saveAboutText").textContent = t("saveAboutText");
+      $("skillsLabel").textContent = t("skillsLabel");
+      $("notificationsLabel").textContent = t("notificationsLabel");
+      $("changePhotoText").textContent = t("changePhotoText");
+      $("languageLabel").textContent = t("languageLabel");
+
+      $("skillsModalTitle").textContent = t("skillsLabel");
+      $("editSkillsText").textContent = t("editSkillsButton") || "Edit Skills";
       $("saveButtonText").textContent = t("saveButton");
       $("cancelButtonText").textContent = t("cancelButton");
-      $("skillsModalTitle").textContent = t("skillsModalTitle") || t("editSkillsButton");
       $("modalTitle").textContent = t("modalTitle") || "Job Details";
+
       $("jobsTabLabel").textContent = t("jobsTabLabel");
       $("activeTabLabel").textContent = t("activeTabLabel");
       $("profileTabLabel").textContent = t("profileTabLabel");
 
       $("noJobsText").querySelector("p").textContent = t("noJobsText");
       $("noActiveJobsText").querySelector("p").textContent = t("noActiveJobsText");
-    }
 
-    function showToast(message) {
-      const toast = document.createElement("div");
-      toast.className =
-        "fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg z-[9999] shadow-lg text-sm";
-      toast.textContent = message;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 2500);
+      updateNotificationText();
+      updateLangChips();
     }
 
     function showLoginError(msg) {
@@ -611,11 +841,73 @@
         .slice(0, 2)
         .toUpperCase();
 
-      $("profileInitials").textContent = initials || "W";
-      $("profileName").textContent = name;
       const idStr = String(currentWorker.id || "");
+      $("profileName").textContent = name;
       $("profileId").textContent = "ID: ••••" + idStr.slice(-4);
       $("jobsCompleted").textContent = currentWorker.jobs_completed || 0;
+
+      const avatarUrl = currentWorker.avatar_url;
+      const avatarImg = $("avatarImg");
+      const initialsEl = $("profileInitials");
+      if (avatarUrl) {
+        avatarImg.src = avatarUrl;
+        avatarImg.classList.remove("hidden");
+        initialsEl.classList.add("hidden");
+      } else {
+        avatarImg.classList.add("hidden");
+        initialsEl.classList.remove("hidden");
+        initialsEl.textContent = initials || "W";
+      }
+
+      $("aboutMeInput").value = currentWorker.about_me || "";
+
+      const skillsContainer = $("skillsTextList");
+      skillsContainer.innerHTML = "";
+      const workerSkills = currentWorker.skills || [];
+      if (!workerSkills.length) {
+        const span = document.createElement("span");
+        span.className = "text-xs text-gray-500";
+        span.textContent = "No skills selected";
+        skillsContainer.appendChild(span);
+      } else {
+        workerSkills.forEach((s) => {
+          const chip = document.createElement("span");
+          chip.className = "chip";
+          chip.textContent = s.replace("_", " ");
+          skillsContainer.appendChild(chip);
+        });
+      }
+
+      const notifEnabled =
+        currentWorker.notifications_enabled === null ||
+        currentWorker.notifications_enabled === undefined
+          ? true
+          : currentWorker.notifications_enabled;
+
+      const toggle = $("notificationsToggle");
+      if (notifEnabled) toggle.classList.add("on");
+      else toggle.classList.remove("on");
+
+      updateNotificationText();
+      updateLangChips();
+    }
+
+    function updateNotificationText() {
+      if (!currentWorker) return;
+      const notifEnabled =
+        currentWorker.notifications_enabled === null ||
+        currentWorker.notifications_enabled === undefined
+          ? true
+          : currentWorker.notifications_enabled;
+      $("notificationsStatusText").textContent = notifEnabled
+        ? t("notificationsOn")
+        : t("notificationsOff");
+    }
+
+    function updateLangChips() {
+      document.querySelectorAll(".chip-lang").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.lang === currentLanguage);
+      });
     }
 
     async function telegramLogin() {
@@ -636,7 +928,6 @@
       updateTexts();
 
       try {
-        // Ищем worker по telegram_id
         let { data: worker, error } = await supabase
           .from("workers")
           .select("*")
@@ -653,6 +944,7 @@
               full_name,
               language: currentLanguage,
               skills: [],
+              notifications_enabled: true,
             })
             .select()
             .single();
@@ -729,7 +1021,6 @@
       }
 
       empty.classList.add("hidden");
-
       list.innerHTML = "";
       jobs.forEach((job) => {
         const card = document.createElement("div");
@@ -803,7 +1094,7 @@
         card.className = "glass-card p-4 fade-in";
         const serviceName = job.service_name || job.service_type;
         const shortAddress = (job.address || "").split(",")[0] || job.address || "";
-        const when = [job.date, job.time].filter(Boolean).join(" ");
+        const when = [job.date, job.time].filter(Boolean).join(" ";
 
         const buttonLabel =
           job.status === "accepted" ? t("startJobButton") : t("completeJobButton");
@@ -1020,6 +1311,102 @@
       }
     }
 
+    async function saveBio() {
+      if (!currentWorker) return;
+      const bio = $("aboutMeInput").value.trim();
+      try {
+        const { error } = await supabase
+          .from("workers")
+          .update({ about_me: bio })
+          .eq("id", currentWorker.id);
+
+        if (error) throw error;
+
+        currentWorker.about_me = bio;
+        showToast(t("bioSavedToast"));
+      } catch (e) {
+        console.error("saveBio error:", e);
+        showToast(t("errorSavingSkills"));
+      }
+    }
+
+    async function toggleNotifications() {
+      if (!currentWorker) return;
+      const prev =
+        currentWorker.notifications_enabled === null ||
+        currentWorker.notifications_enabled === undefined
+          ? true
+          : currentWorker.notifications_enabled;
+      const next = !prev;
+
+      try {
+        const { error } = await supabase
+          .from("workers")
+          .update({ notifications_enabled: next })
+          .eq("id", currentWorker.id);
+
+        if (error) throw error;
+
+        currentWorker.notifications_enabled = next;
+        const toggle = $("notificationsToggle");
+        if (next) toggle.classList.add("on");
+        else toggle.classList.remove("on");
+        updateNotificationText();
+        showToast(next ? t("notifOnToast") : t("notifOffToast"));
+      } catch (e) {
+        console.error("toggleNotifications error:", e);
+        showToast(t("errorUpdatingJob"));
+      }
+    }
+
+    async function changeLanguage(lang) {
+      currentLanguage = lang;
+      updateTexts();
+      if (!currentWorker) return;
+      try {
+        await supabase
+          .from("workers")
+          .update({ language: lang })
+          .eq("id", currentWorker.id);
+        currentWorker.language = lang;
+        showToast(t("languageChangedToast"));
+      } catch (e) {
+        console.error("changeLanguage error:", e);
+      }
+    }
+
+    async function uploadAvatar(file) {
+      if (!currentWorker || !file) return;
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${currentWorker.id}-${Date.now()}.${fileExt}`;
+      const filePath = `public/${fileName}`;
+
+      try {
+        const { error: uploadError } = await supabase.storage
+          .from("avatars")
+          .upload(filePath, file, { upsert: true });
+
+        if (uploadError) throw uploadError;
+
+        const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
+        const publicUrl = data.publicUrl;
+
+        const { error: updateError } = await supabase
+          .from("workers")
+          .update({ avatar_url: publicUrl })
+          .eq("id", currentWorker.id);
+
+        if (updateError) throw updateError;
+
+        currentWorker.avatar_url = publicUrl;
+        updateProfileUI();
+        showToast(t("avatarUpdatedToast"));
+      } catch (e) {
+        console.error("uploadAvatar error:", e);
+        showToast(t("avatarErrorToast"));
+      }
+    }
+
     function switchTab(tabName) {
       document.querySelectorAll(".tab-button").forEach((btn) => {
         btn.classList.toggle("active", btn.dataset.tab === tabName);
@@ -1051,6 +1438,19 @@
 
     $("saveSkills").addEventListener("click", saveSkills);
     $("editSkillsButton").addEventListener("click", showSkillsEditor);
+    $("saveAboutButton").addEventListener("click", saveBio);
+    $("notificationsToggle").addEventListener("click", toggleNotifications);
+
+    $("avatarButton").addEventListener("click", () => {
+      $("avatarFileInput").click();
+    });
+    $("changePhotoButton").addEventListener("click", () => {
+      $("avatarFileInput").click();
+    });
+    $("avatarFileInput").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) uploadAvatar(file);
+    });
 
     document.querySelectorAll("[data-tab]").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -1058,7 +1458,14 @@
       });
     });
 
-    // Telegram BackButton справляемся с модалками
+    document.querySelectorAll(".chip-lang").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const lang = btn.dataset.lang;
+        changeLanguage(lang);
+      });
+    });
+
+    // Telegram BackButton → закрывает модалки
     if (tg) {
       tg.BackButton.onClick(() => {
         if (!$("jobModal").classList.contains("hidden")) {
@@ -1080,7 +1487,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", async () => {
-      // auto detect language from Telegram if есть
       if (tg?.initDataUnsafe?.user?.language_code) {
         const lc = tg.initDataUnsafe.user.language_code;
         if (lc === "ru") currentLanguage = "ru";
@@ -1090,11 +1496,9 @@
       updateTexts();
 
       if (tg?.initDataUnsafe?.user?.id) {
-        // Авто-логин сразу
         await telegramLogin();
       }
     });
   </script>
 </body>
 </html>
-
