@@ -1,4 +1,7 @@
 
+ggghh hjjnn
+Сегодня, 19:11
+Кому:вам
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +19,8 @@
       background: #020613;
       color: #f5f5f5;
       min-height: 100vh;
+      margin: 0;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -128,6 +133,11 @@
       transform: scale(0.97);
       box-shadow: 0 0 10px rgba(69, 255, 155, 0.3);
     }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(114, 133, 163, 0.6);
+      color: #c3d0e4;
+    }
 
     .message {
       font-size: 12px;
@@ -148,9 +158,8 @@
     }
 
     .screen {
-      display: none;
       flex: 1;
-      display: flex;
+      display: none;
       flex-direction: column;
       justify-content: space-between;
     }
@@ -327,7 +336,7 @@
       box-shadow: 0 0 12px rgba(69, 255, 155, 0.5);
     }
 
-    .btn-complete {
+    .btn-status {
       margin-top: 14px;
       width: 100%;
       justify-content: center;
@@ -449,6 +458,58 @@
 
     .mt-4 { margin-top: 4px; }
     .mt-8 { margin-top: 8px; }
+
+    /* JOB DETAILS OVERLAY */
+    .details-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(1, 5, 15, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .details-overlay.visible {
+      display: flex;
+    }
+    .details-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(3, 10, 24, 0.98);
+      border-radius: 22px;
+      border: 1px solid rgba(101, 255, 157, 0.4);
+      padding: 18px 16px 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    }
+    .details-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .details-subtitle {
+      font-size: 13px;
+      color: #c3d0e4;
+      margin-bottom: 10px;
+    }
+    .details-row {
+      font-size: 13px;
+      color: #d7e0f2;
+      margin-bottom: 6px;
+    }
+    .details-label {
+      font-size: 11px;
+      color: #7d8aa4;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+    .details-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px;
+    }
   </style>
 </head>
 <body>
@@ -523,7 +584,7 @@
         </div>
 
         <div class="profile-actions">
-          <button class="profile-btn">
+          <button id="editSkillsBtn" class="profile-btn">
             <span><span class="icon">✂</span> Edit Skills</span>
             <span>›</span>
           </button>
@@ -552,6 +613,39 @@
     </div>
   </div>
 
+</div>
+
+<!-- JOB DETAILS OVERLAY -->
+<div id="jobDetailsOverlay" class="details-overlay">
+  <div class="details-card">
+    <div class="details-title" id="detailsTitle">Service name</div>
+    <div class="details-subtitle" id="detailsSubtitle">Notes from client</div>
+
+    <div class="details-row">
+      <div class="details-label">ADDRESS</div>
+      <div id="detailsAddress">No address</div>
+    </div>
+
+    <div class="details-row">
+      <div class="details-label">TIME</div>
+      <div id="detailsTime">Today, 00:00</div>
+    </div>
+
+    <div class="details-row">
+      <div class="details-label">PRICE</div>
+      <div id="detailsPrice">$—</div>
+    </div>
+
+    <div class="details-row">
+      <div class="details-label">SERVICE TYPE</div>
+      <div id="detailsServiceType">cleaning</div>
+    </div>
+
+    <div class="details-footer">
+      <button id="detailsCloseBtn" class="btn btn-secondary">Close</button>
+      <button id="detailsAcceptBtn" class="btn btn-primary">Accept Job</button>
+    </div>
+  </div>
 </div>
 
 <script type="module">
@@ -589,10 +683,26 @@
   const profileRating = document.getElementById("profileRating");
   const profileJobs   = document.getElementById("profileJobs");
 
-  const navButtons = document.querySelectorAll(".nav-btn");
+  const navButtons    = document.querySelectorAll(".nav-btn");
+  const editSkillsBtn = document.getElementById("editSkillsBtn");
+
+  // Job details overlay elements
+  const jobDetailsOverlay = document.getElementById("jobDetailsOverlay");
+  const detailsTitle      = document.getElementById("detailsTitle");
+  const detailsSubtitle   = document.getElementById("detailsSubtitle");
+  const detailsAddress    = document.getElementById("detailsAddress");
+  const detailsTime       = document.getElementById("detailsTime");
+  const detailsPrice      = document.getElementById("detailsPrice");
+  const detailsServiceType= document.getElementById("detailsServiceType");
+  const detailsCloseBtn   = document.getElementById("detailsCloseBtn");
+  const detailsAcceptBtn  = document.getElementById("detailsAcceptBtn");
 
   let currentWorker = null;
   let currentTab = "jobs";
+
+  // Для Job Details
+  let selectedOrder = null;
+  let selectedOrderCard = null;
 
   // ------------ LOGIN -------------
   loginBtn.addEventListener("click", async () => {
@@ -605,6 +715,7 @@
     loginBtn.textContent = "Checking...";
 
     try {
+      // ВРЕМЕННО: просто берём первого рабочего из БД
       const { data: workers, error } = await supabase
         .from(WORKERS_TABLE)
         .select("*")
@@ -688,17 +799,36 @@
   }
 
   // ------------ DATA LOADERS -------------
+
+  // NEW JOBS с фильтром по skills
   async function refreshJobs() {
     if (!currentWorker) return;
 
     jobsList.innerHTML = "";
     jobsEmpty.style.display = "none";
 
+    let workerSkills = currentWorker.skills || [];
+    if (!Array.isArray(workerSkills)) {
+      // если вдруг строка через запятую
+      if (typeof workerSkills === "string" && workerSkills.trim() !== "") {
+        workerSkills = workerSkills.split(",").map(s => s.trim());
+      } else {
+        workerSkills = [];
+      }
+    }
+
+    if (workerSkills.length === 0) {
+      jobsEmpty.textContent = "Your skill list is empty. No jobs available.";
+      jobsEmpty.style.display = "block";
+      return;
+    }
+
     const { data: orders, error } = await supabase
       .from(ORDERS_TABLE)
       .select("*")
       .is("worker_id", null)
       .eq("status", "pending")
+      .in("service_type", workerSkills)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -756,12 +886,13 @@
       `;
 
       const btnDetails = card.querySelector(".btn-details");
-      btnDetails.addEventListener("click", () => acceptJob(order, card, btnDetails));
+      btnDetails.addEventListener("click", () => openJobDetails(order, card));
 
       jobsList.appendChild(card);
     });
   }
 
+  // ACTIVE JOBS
   async function refreshActiveJobs() {
     if (!currentWorker) return;
 
@@ -772,7 +903,7 @@
       .from(ORDERS_TABLE)
       .select("*")
       .eq("worker_id", currentWorker.id)
-      .eq("status", "accepted")
+      .in("status", ["accepted", "in_progress"]) // показываем только активные
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -800,6 +931,8 @@
       const clientPhone = order.client_phone || "+1 (312) 555-0147";
       const priceStr = order.price ? `$${order.price}` : "$—";
 
+      const statusLabel = order.status === "in_progress" ? "In progress" : "Accepted";
+
       card.innerHTML = `
         <div class="active-title-row">
           <div>
@@ -807,6 +940,16 @@
             <div class="active-subtitle">${subtitle}</div>
           </div>
           <div class="job-price">${priceStr}</div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-label">STATUS</div>
+          <div class="info-row">
+            <div class="info-main">
+              <span class="icon">⚡</span>
+              <span>${statusLabel}</span>
+            </div>
+          </div>
         </div>
 
         <div class="info-block">
@@ -841,7 +984,7 @@
           </div>
         </div>
 
-        <button class="btn btn-primary btn-complete">Mark as Completed</button>
+        <button class="btn btn-primary btn-status"></button>
       `;
 
       const mapBtn = card.querySelector(".info-action.map");
@@ -855,18 +998,71 @@
         window.open("tel:" + clientPhone.replace(/[^+\d]/g, ""), "_blank");
       });
 
-      const completeBtn = card.querySelector(".btn-complete");
-      completeBtn.addEventListener("click", () => completeJob(order, card, completeBtn));
+      const statusBtn = card.querySelector(".btn-status");
+      if (order.status === "accepted") {
+        statusBtn.textContent = "Start Job";
+      } else if (order.status === "in_progress") {
+        statusBtn.textContent = "Mark as Completed";
+      } else {
+        statusBtn.textContent = "Completed";
+        statusBtn.disabled = true;
+      }
+
+      statusBtn.addEventListener("click", () => handleStatusAction(order, card, statusBtn));
 
       activeList.appendChild(card);
     });
   }
 
+  // ------------ JOB DETAILS OVERLAY -------------
+
+  function openJobDetails(order, card) {
+    selectedOrder = order;
+    selectedOrderCard = card;
+
+    detailsTitle.textContent = order.service_name || "Service";
+    detailsSubtitle.textContent = order.notes || "No description from client.";
+    detailsAddress.textContent = order.address || "No address";
+
+    const dateStr = order.date || "Today";
+    const timeStr = order.time || "";
+    detailsTime.textContent = `${dateStr}${timeStr ? ", " + timeStr : ""}`;
+
+    detailsPrice.textContent = order.price ? `$${order.price}` : "$—";
+    detailsServiceType.textContent = order.service_type || "-";
+
+    jobDetailsOverlay.classList.add("visible");
+  }
+
+  function closeJobDetails() {
+    jobDetailsOverlay.classList.remove("visible");
+    selectedOrder = null;
+    selectedOrderCard = null;
+  }
+
+  detailsCloseBtn.addEventListener("click", () => {
+    closeJobDetails();
+  });
+
+  detailsAcceptBtn.addEventListener("click", async () => {
+    if (!selectedOrder) return;
+    detailsAcceptBtn.disabled = true;
+    detailsAcceptBtn.textContent = "Accepting...";
+
+    await acceptJob(selectedOrder, selectedOrderCard, detailsAcceptBtn, true);
+
+    detailsAcceptBtn.disabled = false;
+    detailsAcceptBtn.textContent = "Accept Job";
+    closeJobDetails();
+  });
+
   // ------------ ACTIONS -------------
-  async function acceptJob(order, card, button) {
+
+  async function acceptJob(order, card, button, fromDetails = false) {
     if (!currentWorker) return;
-    button.disabled = true;
-    button.textContent = "Accepting...";
+    if (button) {
+      button.disabled = true;
+    }
 
     const { error } = await supabase
       .from(ORDERS_TABLE)
@@ -879,15 +1075,52 @@
     if (error) {
       console.error(error);
       alert("Error accepting job");
-      button.disabled = false;
-      button.textContent = "View Details →";
+      if (button) {
+        button.disabled = false;
+        button.textContent = fromDetails ? "Accept Job" : "View Details →";
+      }
       return;
     }
 
-    card.style.opacity = 0.5;
-    button.textContent = "Accepted";
+    // Автоматически скрываем заказ из New Jobs
+    if (card) {
+      card.style.opacity = 0.0;
+      setTimeout(() => {
+        if (card.parentNode) {
+          card.parentNode.removeChild(card);
+        }
+      }, 200);
+    }
+
     await refreshActiveJobs();
     await refreshJobs();
+  }
+
+  async function handleStatusAction(order, card, button) {
+    if (!currentWorker) return;
+
+    if (order.status === "accepted") {
+      // START JOB → in_progress
+      button.disabled = true;
+      button.textContent = "Starting...";
+      const { error } = await supabase
+        .from(ORDERS_TABLE)
+        .update({ status: "in_progress" })
+        .eq("id", order.id);
+
+      if (error) {
+        console.error(error);
+        alert("Error starting job");
+        button.disabled = false;
+        button.textContent = "Start Job";
+        return;
+      }
+
+      await refreshActiveJobs();
+    } else if (order.status === "in_progress") {
+      // COMPLETE JOB
+      await completeJob(order, card, button);
+    }
   }
 
   async function completeJob(order, card, button) {
@@ -908,20 +1141,27 @@
       return;
     }
 
+    // увеличиваем счётчик
+    const newCount = (currentWorker.jobs_completed || 0) + 1;
+
     await supabase
       .from(WORKERS_TABLE)
-      .update({ jobs_completed: (currentWorker.jobs_completed || 0) + 1 })
+      .update({ jobs_completed: newCount })
       .eq("id", currentWorker.id);
 
-    currentWorker.jobs_completed = (currentWorker.jobs_completed || 0) + 1;
+    currentWorker.jobs_completed = newCount;
     updateProfileUI();
 
-    card.style.opacity = 0.4;
+    if (card) {
+      card.style.opacity = 0.4;
+    }
     button.textContent = "Completed";
+
     await refreshActiveJobs();
   }
 
-  // ------------ PROFILE UI -------------
+  // ------------ PROFILE UI / SKILLS EDITOR -------------
+
   function updateProfileUI() {
     if (!currentWorker) return;
 
@@ -940,6 +1180,47 @@
     const jobs = currentWorker.jobs_completed || 0;
     profileJobs.textContent = `${jobs} jobs completed`;
   }
+
+  editSkillsBtn.addEventListener("click", async () => {
+    if (!currentWorker) return;
+
+    let currentSkills = currentWorker.skills || [];
+    if (!Array.isArray(currentSkills)) {
+      if (typeof currentSkills === "string" && currentSkills.trim() !== "") {
+        currentSkills = currentSkills.split(",").map(s => s.trim());
+      } else {
+        currentSkills = [];
+      }
+    }
+
+    const currentStr = currentSkills.join(", ");
+    const input = window.prompt(
+      "Edit your skills (comma separated).\nExample: cleaning, handyman, moving",
+      currentStr
+    );
+
+    if (input === null) return; // cancel
+
+    const newSkills = input
+      .split(",")
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    const { error } = await supabase
+      .from(WORKERS_TABLE)
+      .update({ skills: newSkills })
+      .eq("id", currentWorker.id);
+
+    if (error) {
+      console.error(error);
+      alert("Error updating skills");
+      return;
+    }
+
+    currentWorker.skills = newSkills;
+    alert("Skills updated!");
+    await refreshJobs();
+  });
 </script>
 </body>
 </html>
