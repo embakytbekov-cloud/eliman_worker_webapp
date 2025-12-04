@@ -20,32 +20,18 @@
       align-items: center;
       padding: 16px;
     }
-
-    /* сама карта приложения */
     .app {
       width: 100%;
-      max-width: 450px;
+      max-width: 420px;
+      min-height: 740px;
       background: radial-gradient(circle at top, #042b1c 0, #020613 55%);
       border-radius: 24px;
       padding: 20px 18px 24px;
       box-shadow: 0 18px 40px rgba(0,0,0,0.6);
       border: 1px solid rgba(0, 255, 120, 0.08);
-
-      /* важно: чтобы можно было прижать низ */
       display: flex;
       flex-direction: column;
-      min-height: 620px; /* чтобы по высоте было как на макете */
-    }
-
-    /* Экраны */
-    .screen {
-      display: none;
-      flex: 1;                 /* заполняет высоту карточки */
-      display: none;
-    }
-    .screen.active {
-      display: flex;
-      flex-direction: column;  /* сверху вниз: хедер, контент, низ */
+      justify-content: space-between;
     }
 
     /* Общие элементы */
@@ -141,15 +127,6 @@
       transform: scale(0.97);
       box-shadow: 0 0 10px rgba(69, 255, 155, 0.3);
     }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid rgba(114, 133, 163, 0.6);
-      color: #c3d0e4;
-    }
-    .btn-outline:active {
-      transform: scale(0.97);
-      background: rgba(9, 20, 40, 0.9);
-    }
 
     .message {
       font-size: 12px;
@@ -169,26 +146,21 @@
       padding: 10px 0;
     }
 
-    /* --------- ВЕРТИКАЛЬНЫЕ ЛЕЙАУТЫ ДЛЯ ЭКРАНОВ --------- */
-
-    /* для логина: центрируем Welcome + карточку по вертикали */
-    .login-main {
+    .screen {
+      display: none;
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;   /* центр по вертикали */
+      justify-content: space-between;
     }
-
-    /* для экрана с табами: всё содержимое, кроме bottom-nav */
-    .tabs-main {
-      flex: 1;
+    .screen.hidden {
+      display: none;
+    }
+    .screen.visible {
       display: flex;
-      flex-direction: column;
-      padding-bottom: 8px;
     }
 
-    /* --------- NEW JOBS LIST ---------- */
-
+    /* ---------- TABS HEADER ---------- */
     .page-header {
       margin-bottom: 16px;
     }
@@ -202,6 +174,7 @@
       color: #a5b2c7;
     }
 
+    /* NEW JOBS */
     .jobs-list {
       display: flex;
       flex-direction: column;
@@ -281,19 +254,15 @@
       justify-content: flex-end;
       margin-top: 6px;
     }
-    .btn-details {
-      font-size: 13px;
-      padding-inline: 18px;
-    }
 
     /* ACTIVE JOBS */
-
     .active-card {
       background: rgba(2, 10, 24, 0.94);
       border-radius: 20px;
       border: 1px solid rgba(101, 255, 157, 0.25);
       padding: 16px 14px 16px;
       box-shadow: 0 12px 26px rgba(0,0,0,0.6);
+      margin-bottom: 14px;
     }
     .active-title-row {
       display: flex;
@@ -366,7 +335,6 @@
     }
 
     /* PROFILE */
-
     .profile-card {
       background: rgba(2, 10, 24, 0.94);
       border-radius: 22px;
@@ -402,7 +370,6 @@
       background: rgba(20, 120, 80, 0.18);
       display: inline-block;
     }
-
     .rating-row {
       display: flex;
       align-items: center;
@@ -442,9 +409,8 @@
     }
 
     /* BOTTOM NAV */
-
     .bottom-nav {
-      margin-top: auto;               /* прижимаем вниз */
+      margin-top: 8px;
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -479,20 +445,22 @@
       border-color: #1fe388;
       box-shadow: 0 0 10px rgba(31, 227, 136, 0.7);
     }
+
+    .mt-4 { margin-top: 4px; }
+    .mt-8 { margin-top: 8px; }
   </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- ========== LOGIN SCREEN ========== -->
-  <div id="screen-login" class="screen active">
-    <div class="top-header">
-      <div class="logo">ELIMAN WORKER</div>
-      <div id="loginStatusPill" class="status-pill offline">Offline</div>
-    </div>
+  <!-- LOGIN SCREEN -->
+  <div id="screen-login" class="screen visible">
+    <div>
+      <div class="top-header">
+        <div class="logo">ELIMAN WORKER</div>
+        <div id="loginStatusPill" class="status-pill offline">Offline</div>
+      </div>
 
-    <!-- центрируем этот блок по высоте -->
-    <div class="login-main">
       <h1>Welcome, worker</h1>
       <div class="subtitle">
         Login with your phone to see available jobs.
@@ -509,11 +477,9 @@
     </div>
   </div>
 
-  <!-- ========== TABS SCREEN (JOBS / ACTIVE / PROFILE) ========== -->
-  <div id="screen-tabs" class="screen">
-
-    <!-- всё содержимое экрана -->
-    <div class="tabs-main">
+  <!-- TABS SCREEN -->
+  <div id="screen-tabs" class="screen hidden">
+    <div>
       <div class="top-header">
         <div class="logo">ELIMAN WORKER</div>
         <div id="tabsStatusPill" class="status-pill">Online</div>
@@ -527,19 +493,19 @@
       </div>
 
       <!-- Jobs Tab -->
-      <div id="tab-jobs" class="tab-content">
+      <div id="tab-jobs">
         <div id="jobsList" class="jobs-list"></div>
         <div id="jobsEmpty" class="empty-text">No new jobs yet.</div>
       </div>
 
-      <!-- Active Jobs Tab -->
-      <div id="tab-active" class="tab-content" style="display:none;">
+      <!-- Active Tab -->
+      <div id="tab-active" style="display:none;">
         <div id="activeList"></div>
         <div id="activeEmpty" class="empty-text">You have no active jobs.</div>
       </div>
 
       <!-- Profile Tab -->
-      <div id="tab-profile" class="tab-content" style="display:none;">
+      <div id="tab-profile" style="display:none;">
         <div class="profile-card">
           <div class="profile-top">
             <div class="avatar"></div>
@@ -568,7 +534,7 @@
       </div>
     </div>
 
-    <!-- Bottom Navigation ПРИЖАТ К НИЗУ КАРТОЧКИ -->
+    <!-- Bottom Nav -->
     <div class="bottom-nav">
       <div class="nav-btn active" data-tab="jobs">
         <div class="nav-icon">🧳</div>
@@ -588,27 +554,22 @@
 </div>
 
 <script type="module">
-  /* ----------------------------- SUPABASE CLIENT ----------------------------- */
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
   const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
 
-  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Названия таблиц
   const WORKERS_TABLE = "workers";
   const ORDERS_TABLE  = "orders";
 
-  /* ----------------------------- ELEMENTS ----------------------------- */
-
   const screenLogin  = document.getElementById("screen-login");
   const screenTabs   = document.getElementById("screen-tabs");
+
   const loginStatus  = document.getElementById("loginStatusPill");
   const tabsStatus   = document.getElementById("tabsStatusPill");
-
   const phoneInput   = document.getElementById("phoneInput");
   const loginBtn     = document.getElementById("loginBtn");
   const loginMessage = document.getElementById("loginMessage");
@@ -616,10 +577,10 @@
   const tabsTitle    = document.getElementById("tabsTitle");
   const tabsSubtitle = document.getElementById("tabsSubtitle");
 
-  const jobsList     = document.getElementById("jobsList");
-  const jobsEmpty    = document.getElementById("jobsEmpty");
-  const activeList   = document.getElementById("activeList");
-  const activeEmpty  = document.getElementById("activeEmpty");
+  const jobsList   = document.getElementById("jobsList");
+  const jobsEmpty  = document.getElementById("jobsEmpty");
+  const activeList = document.getElementById("activeList");
+  const activeEmpty= document.getElementById("activeEmpty");
 
   const profileName   = document.getElementById("profileName");
   const profileId     = document.getElementById("profileId");
@@ -627,13 +588,12 @@
   const profileRating = document.getElementById("profileRating");
   const profileJobs   = document.getElementById("profileJobs");
 
-  const navButtons   = document.querySelectorAll(".nav-btn");
+  const navButtons = document.querySelectorAll(".nav-btn");
 
   let currentWorker = null;
   let currentTab = "jobs";
 
-  /* ----------------------------- LOGIN LOGIC ----------------------------- */
-
+  // ------------ LOGIN -------------
   loginBtn.addEventListener("click", async () => {
     const phone = phoneInput.value.trim();
 
@@ -643,54 +603,56 @@
     loginBtn.disabled = true;
     loginBtn.textContent = "Checking...";
 
-    // логинимся как первый worker в базе — телефон просто для вида
-    const { data: workers, error } = await supabase
-      .from(WORKERS_TABLE)
-      .select("*")
-      .limit(1);
+    try {
+      const { data: workers, error } = await supabase
+        .from(WORKERS_TABLE)
+        .select("*")
+        .limit(1);
 
-    if (error) {
-      console.error(error);
-      loginMessage.textContent = "Supabase error: " + error.message;
-      loginMessage.className = "message error";
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Login";
-      return;
-    }
+      if (error) {
+        console.error(error);
+        loginMessage.textContent = "Supabase error: " + error.message;
+        loginMessage.className = "message error";
+        return;
+      }
 
-    if (!workers || workers.length === 0) {
-      loginMessage.textContent = "No workers in DB.";
-      loginMessage.className = "message error";
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Login";
-      return;
-    }
+      if (!workers || workers.length === 0) {
+        loginMessage.textContent = "No workers in DB.";
+        loginMessage.className = "message error";
+        return;
+      }
 
-    currentWorker = workers[0];
+      currentWorker = workers[0];
 
-    loginStatus.classList.remove("offline");
-    loginStatus.textContent = "Online";
+      loginStatus.classList.remove("offline");
+      loginStatus.textContent = "Online";
 
-    loginMessage.textContent = "Logged in successfully!";
-    loginMessage.className = "message ok";
+      loginMessage.textContent = "Logged in!";
+      loginMessage.className = "message ok";
 
-    updateProfileUI();
-    await refreshJobs();
-    await refreshActiveJobs();
+      updateProfileUI();
+      await refreshJobs();
+      await refreshActiveJobs();
 
-    setTimeout(() => {
-      screenLogin.classList.remove("active");
-      screenTabs.classList.add("active");
+      // Переход на табы
+      screenLogin.classList.add("hidden");
+      screenLogin.classList.remove("visible");
+      screenTabs.classList.remove("hidden");
+      screenTabs.classList.add("visible");
       tabsStatus.textContent = "Online";
       setTab("jobs");
-    }, 500);
 
-    loginBtn.disabled = false;
-    loginBtn.textContent = "Login";
+    } catch (e) {
+      console.error(e);
+      loginMessage.textContent = "Unexpected error";
+      loginMessage.className = "message error";
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Login";
+    }
   });
 
-  /* ----------------------------- TABS LOGIC ----------------------------- */
-
+  // ------------ TABS -------------
   navButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const tab = btn.getAttribute("data-tab");
@@ -717,85 +679,87 @@
       tabsTitle.textContent = "Active Jobs";
       tabsSubtitle.textContent = "Mission control for your accepted work.";
       refreshActiveJobs();
-    } else if (tab === "profile") {
+    } else {
       tabsTitle.textContent = "Profile";
       tabsSubtitle.textContent = "Your rating, skills and job history.";
       updateProfileUI();
     }
   }
 
-  /* ----------------------------- DATA LOADERS ----------------------------- */
+  // ------------ DATA LOADERS -------------
+  async function refreshJobs() {
+    if (!currentWorker) return;
 
-async function refreshJobs() {
-  if (!currentWorker) return;
+    jobsList.innerHTML = "";
+    jobsEmpty.style.display = "none";
 
-  jobsList.innerHTML = "";
-  jobsEmpty.style.display = "none";
+    const { data: orders, error } = await supabase
+      .from(ORDERS_TABLE)
+      .select("*")
+      .is("worker_id", null)
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
 
-  const { data: orders, error } = await supabase
-    .from(ORDERS_TABLE)
-    .select("*")
-    .is("worker_id", null)
-    .eq("status", "pending")
-    .in("service_type", currentWorker.skills || [])
-    .order("created_at", { ascending: false });
+    if (error) {
+      console.error(error);
+      jobsEmpty.textContent = "Error loading jobs.";
+      jobsEmpty.style.display = "block";
+      return;
+    }
 
-  if (error) {
-    console.error(error);
-    jobsEmpty.textContent = "Error loading jobs.";
-    jobsEmpty.style.display = "block";
-    return;
-  }
+    if (!orders || orders.length === 0) {
+      jobsEmpty.textContent = "No new jobs yet.";
+      jobsEmpty.style.display = "block";
+      return;
+    }
 
-  if (!orders || orders.length === 0) {
-    jobsEmpty.textContent = "No new jobs yet.";
-    jobsEmpty.style.display = "block";
-    return;
-  }
+    orders.forEach(order => {
+      const card = document.createElement("div");
+      card.className = "job-card";
 
-  orders.forEach(order => {
-    const card = document.createElement("div");
-    card.className = "job-card";
+      const title    = order.service_name || "Service";
+      const subtitle = order.notes || "No description from client.";
+      const address  = order.address || "No address";
+      const dateStr  = order.date || "Today";
+      const timeStr  = order.time || "";
+      const priceStr = order.price ? `$${order.price}` : "$—";
 
-    const title = order.service_name || "Service";
-    const subtitle = order.notes || "No description from client.";
-    const address = order.address || "No address";
-    const dateStr = order.date || "Today";
-    const timeStr = order.time || "";
-    const priceStr = order.price ? $${order.price} : "$—";
-
-    card.innerHTML = `
-      <div class="job-row-top">
-        <div>
-          <div class="job-title">${title}</div>
-          <div class="job-subtitle">${subtitle}</div>
+      card.innerHTML = `
+        <div class="job-row-top">
+          <div>
+            <div class="job-title">${title}</div>
+            <div class="job-subtitle">${subtitle}</div>
+          </div>
+          <div class="job-price">${priceStr}</div>
         </div>
-        <div class="job-price">${priceStr}</div>
-      </div>
 
-      <div class="pill-row">
-        <span class="pill"><span class="pill-icon">📍</span>${address}</span>
-        <span class="pill"><span class="pill-icon">🕒</span>${dateStr}, ${timeStr}</span>
-      </div>
+        <div class="pill-row">
+          <span class="pill">
+            <span class="pill-icon">📍</span>${address}
+          </span>
+          <span class="pill">
+            <span class="pill-icon">🕒</span>${dateStr}, ${timeStr}
+          </span>
+        </div>
 
-      <div class="job-photos-row">
-        <div class="job-photo-dot"></div>
-        <div class="job-photo-dot"></div>
-        <div class="job-photo-dot"></div>
-        <div class="job-photos-text">3 photos</div>
-      </div>
+        <div class="job-photos-row">
+          <div class="job-photo-dot"></div>
+          <div class="job-photo-dot"></div>
+          <div class="job-photo-dot"></div>
+          <div class="job-photos-text">3 photos</div>
+        </div>
 
-      <div class="job-footer">
-        <button class="btn btn-primary btn-details">View Details →</button>
-      </div>
-    `;
+        <div class="job-footer">
+          <button class="btn btn-primary btn-details">View Details →</button>
+        </div>
+      `;
 
-    const btnDetails = card.querySelector(".btn-details");
-    btnDetails.addEventListener("click", () => acceptJob(order, card, btnDetails));
+      const btnDetails = card.querySelector(".btn-details");
+      btnDetails.addEventListener("click", () => acceptJob(order, card, btnDetails));
 
-    jobsList.appendChild(card);
-  });
-}
+      jobsList.appendChild(card);
+    });
+  }
 
   async function refreshActiveJobs() {
     if (!currentWorker) return;
@@ -827,12 +791,12 @@ async function refreshJobs() {
       const card = document.createElement("div");
       card.className = "active-card";
 
-      const title = order.service_name || "Service";
+      const title    = order.service_name || "Service";
       const subtitle = order.notes || "No description from client.";
-      const address = order.address || "No address";
-      const dateStr = order.date || "Today";
-      const timeStr = order.time || "";
-      const clientPhone = order.client_phone || phoneInput.value.trim() || "+1 (312) 555-0147";
+      const address  = order.address || "No address";
+      const dateStr  = order.date || "Today";
+      const timeStr  = order.time || "";
+      const clientPhone = order.client_phone || "+1 (312) 555-0147";
       const priceStr = order.price ? `$${order.price}` : "$—";
 
       card.innerHTML = `
@@ -897,8 +861,7 @@ async function refreshJobs() {
     });
   }
 
-  /* ----------------------------- ACTIONS ----------------------------- */
-
+  // ------------ ACTIONS -------------
   async function acceptJob(order, card, button) {
     if (!currentWorker) return;
     button.disabled = true;
@@ -923,6 +886,7 @@ async function refreshJobs() {
     card.style.opacity = 0.5;
     button.textContent = "Accepted";
     await refreshActiveJobs();
+    await refreshJobs();
   }
 
   async function completeJob(order, card, button) {
@@ -956,25 +920,21 @@ async function refreshJobs() {
     await refreshActiveJobs();
   }
 
-  /* ----------------------------- PROFILE UI ----------------------------- */
-
+  // ------------ PROFILE UI -------------
   function updateProfileUI() {
     if (!currentWorker) return;
 
     profileName.textContent = currentWorker.full_name || "Worker";
 
-    const shortId = String(currentWorker.id || "")
-      .slice(0, 5)
-      .toUpperCase();
+    const shortId = String(currentWorker.id || "").slice(0, 5).toUpperCase();
     profileId.textContent = "ELM-" + shortId;
 
     const rating = Number(currentWorker.rating || 5).toFixed(1);
     profileRating.textContent = rating;
 
     const starsCount = Math.round(Number(currentWorker.rating || 5));
-    const stars =
-      "★★★★★".slice(0, starsCount) + "☆☆☆☆☆".slice(0, 5 - starsCount);
-    profileStars.textContent = stars;
+    const starsStr = "★★★★★".slice(0, starsCount) + "☆☆☆☆☆".slice(0, 5 - starsCount);
+    profileStars.textContent = starsStr;
 
     const jobs = currentWorker.jobs_completed || 0;
     profileJobs.textContent = `${jobs} jobs completed`;
@@ -982,5 +942,3 @@ async function refreshJobs() {
 </script>
 </body>
 </html>
-
-
