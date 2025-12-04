@@ -6,220 +6,243 @@
     <title>ELIMAN WORKER</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --neon-green: #00ff88;
-            --dark-bg: #0a0a0a;
-            --card-bg: #1a1a1a;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            background: var(--dark-bg);
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #020613;
+            background: radial-gradient(circle at 50% 0%, #0a0e1a 0%, #020613 100%);
+            color: #ffffff;
+            overflow-x: hidden;
         }
         
-        .neon-glow {
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
-        .card {
-            background: var(--card-bg);
-            border: 1px solid #333;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            border-color: var(--neon-green);
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--neon-green), #00cc6a);
-            color: var(--dark-bg);
-            font-weight: 600;
+        .neon-button {
+            background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
+            color: #020613;
+            font-weight: 700;
             border: none;
-            border-radius: 8px;
-            padding: 12px 24px;
+            border-radius: 16px;
+            padding: 16px 24px;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(31, 227, 136, 0.3);
         }
         
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.4);
+        .neon-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(31, 227, 136, 0.5);
         }
         
-        .btn-secondary {
-            background: transparent;
-            color: var(--neon-green);
-            border: 2px solid var(--neon-green);
-            border-radius: 8px;
-            padding: 10px 20px;
+        .neon-button:active {
+            transform: translateY(0);
+        }
+        
+        .neon-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status-pill {
+            background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
+            color: #020613;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-pill.offline {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            color: #ffffff;
+        }
+        
+        .job-card {
+            transition: all 0.3s ease;
             cursor: pointer;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .tab-button {
             transition: all 0.3s ease;
+            border-radius: 12px;
+            padding: 12px;
+            color: #64748b;
         }
         
-        .btn-secondary:hover {
-            background: var(--neon-green);
-            color: var(--dark-bg);
+        .tab-button.active {
+            background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
+            color: #020613;
+            font-weight: 600;
         }
         
-        .status-online {
-            background: var(--neon-green);
-            color: var(--dark-bg);
-        }
-        
-        .status-offline {
-            background: #666;
-            color: white;
-        }
-        
-        .bottom-nav {
-            background: var(--card-bg);
-            border-top: 1px solid #333;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-        }
-        
-        .nav-item {
-            color: var(--text-secondary);
-            transition: all 0.3s ease;
-        }
-        
-        .nav-item.active {
-            color: var(--neon-green);
-        }
-        
-        .modal {
+        .modal-overlay {
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
         }
         
-        .modal-content {
-            background: var(--card-bg);
-            border: 1px solid #333;
-            border-radius: 16px;
+        .skill-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #1FE388;
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
         }
         
-        .skill-tag {
-            background: #2a2a2a;
-            color: var(--neon-green);
-            border: 1px solid var(--neon-green);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 12px;
-            margin: 2px;
-            display: inline-block;
+        .skill-checkbox:checked {
+            background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
         }
         
-        .rating-stars {
-            color: #ffd700;
+        .skill-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: #020613;
+            font-size: 14px;
+            font-weight: bold;
         }
         
-        .hidden { display: none; }
-        .fade-in { animation: fadeIn 0.3s ease-in; }
+        .loading-spinner {
+            border: 2px solid rgba(31, 227, 136, 0.3);
+            border-top: 2px solid #1FE388;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
         
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--neon-green);
-            color: var(--dark-bg);
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            z-index: 2000;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
         }
         
-        .toast.show {
-            transform: translateX(0);
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
         }
         
-        .avatar {
-            width: 60px;
-            height: 60px;
+        .rating-stars {
+            color: #fbbf24;
+        }
+        
+        .price-tag {
+            background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
+            color: #020613;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .photo-placeholder {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--neon-green), #00cc6a);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(31, 227, 136, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--dark-bg);
+            color: #1FE388;
         }
         
-        .avatar img {
+        .bottom-nav {
+            background: rgba(2, 6, 19, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            color: #ffffff;
+            font-size: 16px;
             width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #1FE388;
+            box-shadow: 0 0 0 3px rgba(31, 227, 136, 0.1);
+        }
+        
+        .input-field::placeholder {
+            color: #64748b;
         }
     </style>
 <base target="_blank">
 </head>
-<body class="pb-20">
-    <!-- Toast Notification -->
-    <div id="toast" class="toast"></div>
-
-    <!-- Telegram Login Check -->
-    <div id="telegramCheck" class="min-h-screen flex items-center justify-center p-4 hidden">
-        <div class="card p-8 max-w-md w-full text-center">
-            <i class="fas fa-exclamation-triangle text-6xl text-yellow-400 mb-4"></i>
-            <h2 class="text-2xl font-bold mb-4" data-i18n="telegram_required">This mini app works only inside Telegram</h2>
-            <p class="text-gray-400 mb-6" data-i18n="open_via_bot">Open via bot to use the application</p>
-            <button onclick="location.reload()" class="btn-primary" data-i18n="try_telegram_login">Try Telegram Login</button>
+<body class="min-h-screen pb-20">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-screen flex flex-col items-center justify-center p-6">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2">ELIMAN WORKER</h1>
+            <div class="status-pill offline inline-block mb-6" id="loginStatus">Offline</div>
+            <h2 class="text-2xl font-semibold mb-2" id="welcomeTitle">Welcome, worker</h2>
+            <p class="text-gray-400 text-sm" id="welcomeSubtitle">Sign in to start accepting jobs in your area</p>
+        </div>
+        
+        <div class="w-full max-w-sm">
+            <div class="glass-card p-6 mb-6">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2" id="phoneLabel">Phone Number</label>
+                    <input type="tel" id="phoneInput" class="input-field" placeholder="+1 (312) 555-0147" maxlength="17">
+                </div>
+                <button id="loginButton" class="neon-button w-full">
+                    <span id="loginButtonText">Sign In</span>
+                </button>
+                <div id="loginError" class="text-red-400 text-sm mt-3 text-center hidden"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Loading Screen -->
-    <div id="loadingScreen" class="min-h-screen flex items-center justify-center">
-        <div class="text-center">
-            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-green-400 mx-auto mb-4"></div>
-            <p class="text-xl" data-i18n="loading">Loading...</p>
-        </div>
-    </div>
-
-    <!-- Main App -->
-    <div id="mainApp" class="hidden">
+    <!-- Main App Screen -->
+    <div id="mainScreen" class="hidden min-h-screen">
         <!-- Header -->
-        <div class="bg-gray-900 p-4 border-b border-gray-700">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="avatar" id="headerAvatar">
-                        <span id="headerInitials">JD</span>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-lg" id="headerName">John Doe</h1>
-                        <div class="flex items-center space-x-2">
-                            <span id="headerStatus" class="px-2 py-1 rounded-full text-xs font-medium status-offline" data-i18n="offline">Offline</span>
-                            <span class="text-sm text-gray-400" id="headerLocation">IL</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <div class="rating-stars text-sm">
-                        <i class="fas fa-star"></i>
-                        <span id="headerRating">5.0</span>
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        <span id="headerJobs">0</span> <span data-i18n="jobs_completed">jobs</span>
-                    </div>
-                </div>
+        <div class="sticky top-0 z-40 bg-black/50 backdrop-blur-lg border-b border-white/10">
+            <div class="flex items-center justify-between p-4">
+                <h1 class="text-xl font-bold">ELIMAN WORKER</h1>
+                <div class="status-pill" id="onlineStatus">Online</div>
             </div>
         </div>
 
@@ -227,1182 +250,848 @@
         <div id="tabContent" class="p-4">
             <!-- Jobs Tab -->
             <div id="jobsTab" class="tab-content hidden">
-                <h2 class="text-2xl font-bold mb-4" data-i18n="available_jobs">Available Jobs</h2>
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold mb-1" id="newJobsTitle">New Jobs</h2>
+                    <p class="text-gray-400 text-sm" id="newJobsSubtitle">Available jobs matching your skills</p>
+                </div>
                 <div id="jobsList" class="space-y-4">
                     <!-- Jobs will be loaded here -->
+                </div>
+                <div id="noJobsText" class="text-center text-gray-400 py-8 hidden">
+                    <i class="fas fa-inbox text-4xl mb-4"></i>
+                    <p>No jobs available right now</p>
                 </div>
             </div>
 
             <!-- Active Tab -->
             <div id="activeTab" class="tab-content hidden">
-                <h2 class="text-2xl font-bold mb-4" data-i18n="active_jobs">Active Jobs</h2>
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold mb-1" id="activeJobsTitle">Active Jobs</h2>
+                    <p class="text-gray-400 text-sm" id="activeJobsSubtitle">Jobs you're currently working on</p>
+                </div>
                 <div id="activeJobsList" class="space-y-4">
                     <!-- Active jobs will be loaded here -->
+                </div>
+                <div id="noActiveJobsText" class="text-center text-gray-400 py-8 hidden">
+                    <i class="fas fa-clock text-4xl mb-4"></i>
+                    <p>No active jobs</p>
                 </div>
             </div>
 
             <!-- Profile Tab -->
             <div id="profileTab" class="tab-content hidden">
-                <div class="space-y-6">
-                    <!-- Profile Overview -->
-                    <div class="card p-6">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div class="avatar" id="profileAvatar">
-                                <span id="profileInitials">JD</span>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-xl font-bold" id="profileName">John Doe</h3>
-                                <p class="text-sm text-gray-400" id="profileId">ID: ••••abcd</p>
-                                <div class="flex items-center space-x-4 mt-2">
-                                    <div class="rating-stars">
-                                        <i class="fas fa-star"></i>
-                                        <span id="profileRating">5.0</span> <span data-i18n="rating">rating</span>
-                                    </div>
-                                    <span class="text-sm text-gray-400" id="profileJobs">0 <span data-i18n="jobs_completed">jobs completed</span></span>
-                                </div>
-                            </div>
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold mb-1" id="profileTitle">Profile</h2>
+                </div>
+                <div class="glass-card p-6 mb-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-2xl font-bold mr-4">
+                            <span id="profileInitials">JW</span>
                         </div>
-                        
-                        <!-- Online/Offline Toggle -->
-                        <div class="flex items-center justify-between mb-4">
-                            <span data-i18n="status">Status</span>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="onlineToggle" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                            </label>
+                        <div>
+                            <h3 class="text-xl font-semibold" id="profileName">John Worker</h3>
+                            <p class="text-gray-400 text-sm" id="profileId">ID: •••••••</p>
                         </div>
                     </div>
-
-                    <!-- About Me -->
-                    <div class="card p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h4 class="font-bold" data-i18n="about_me">About Me</h4>
-                            <button onclick="editBio()" class="text-green-400 text-sm" data-i18n="edit">Edit</button>
+                    <div class="flex items-center mb-4">
+                        <div class="rating-stars text-lg mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
                         </div>
-                        <p id="profileBio" class="text-gray-300" data-i18n="add_bio">Add a short description about you</p>
+                        <span class="text-sm text-gray-400" id="profileRatingLabel">5.0 rating</span>
                     </div>
-
-                    <!-- Skills -->
-                    <div class="card p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h4 class="font-bold" data-i18n="skills">Skills</h4>
-                            <button onclick="editSkills()" class="text-green-400 text-sm" data-i18n="edit">Edit</button>
-                        </div>
-                        <div id="skillsList" class="flex flex-wrap">
-                            <!-- Skills will be loaded here -->
-                        </div>
-                    </div>
-
-                    <!-- Settings -->
-                    <div class="card p-6">
-                        <h4 class="font-bold mb-4" data-i18n="settings">Settings</h4>
-                        
-                        <!-- Language -->
-                        <div class="flex items-center justify-between mb-4">
-                            <span data-i18n="language">Language</span>
-                            <button onclick="changeLanguage()" class="btn-secondary text-sm py-2 px-3" id="languageBtn">English</button>
-                        </div>
-                        
-                        <!-- Notifications -->
-                        <div class="flex items-center justify-between mb-4">
-                            <span data-i18n="notifications">Notifications</span>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="notificationsToggle" class="sr-only peer" checked>
-                                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Statistics -->
-                    <div class="card p-6">
-                        <h4 class="font-bold mb-4" data-i18n="statistics">Statistics</h4>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span data-i18n="rank_in_state">Rank in State</span>
-                                <span id="stateRank" class="text-green-400">#1 of 5</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Order History -->
-                    <div class="card p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h4 class="font-bold" data-i18n="order_history">Order History</h4>
-                            <button onclick="showOrderHistory()" class="text-green-400 text-sm" data-i18n="view_all">View All</button>
-                        </div>
-                        <div id="orderHistory" class="space-y-2">
-                            <!-- Order history will be loaded here -->
-                        </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-400" id="jobsCompleted">47</div>
+                        <div class="text-sm text-gray-400" id="profileJobsLabel">jobs completed</div>
                     </div>
                 </div>
+                <button id="editSkillsButton" class="neon-button w-full">
+                    <span id="editSkillsText">Edit Skills</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="fixed bottom-0 left-0 right-0 bottom-nav z-50">
+            <div class="flex justify-around p-2">
+                <button class="tab-button active flex flex-col items-center flex-1" data-tab="jobs">
+                    <i class="fas fa-briefcase text-xl mb-1"></i>
+                    <span class="text-xs" id="jobsTabLabel">Jobs</span>
+                </button>
+                <button class="tab-button flex flex-col items-center flex-1" data-tab="active">
+                    <i class="fas fa-clock text-xl mb-1"></i>
+                    <span class="text-xs" id="activeTabLabel">Active</span>
+                </button>
+                <button class="tab-button flex flex-col items-center flex-1" data-tab="profile">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs" id="profileTabLabel">Profile</span>
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Job Details Modal -->
-    <div id="jobModal" class="modal fixed inset-0 z-50 hidden">
+    <div id="jobModal" class="fixed inset-0 z-50 hidden modal-overlay">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="modal-content p-6 max-w-md w-full">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold" data-i18n="job_details">Job Details</h3>
-                    <button onclick="closeJobModal()" class="text-gray-400 hover:text-white">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                
-                <div id="jobModalContent">
-                    <!-- Job details will be loaded here -->
-                </div>
-                
-                <div class="flex space-x-3 mt-6">
-                    <button onclick="openMaps()" class="btn-secondary flex-1">
-                        <i class="fas fa-map-marker-alt mr-2"></i>
-                        <span data-i18n="open_maps">Open Maps</span>
-                    </button>
-                    <button onclick="acceptJob()" class="btn-primary flex-1" data-i18n="accept_job">Accept Job</button>
+            <div class="glass-card max-w-md w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold" id="modalTitle">Job Details</h3>
+                        <button id="closeModal" class="text-gray-400 hover:text-white">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <div id="modalContent">
+                        <!-- Content will be loaded here -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Edit Bio Modal -->
-    <div id="bioModal" class="modal fixed inset-0 z-50 hidden">
+    <!-- Skills Editor Modal -->
+    <div id="skillsModal" class="fixed inset-0 z-50 hidden modal-overlay">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="modal-content p-6 max-w-md w-full">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold" data-i18n="edit_bio">Edit Bio</h3>
-                    <button onclick="closeBioModal()" class="text-gray-400 hover:text-white">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                
-                <textarea id="bioTextarea" class="w-full h-32 bg-gray-800 border border-gray-600 rounded-lg p-3 text-white resize-none" placeholder="Tell about yourself..."></textarea>
-                
-                <div class="flex space-x-3 mt-4">
-                    <button onclick="closeBioModal()" class="btn-secondary flex-1" data-i18n="cancel">Cancel</button>
-                    <button onclick="saveBio()" class="btn-primary flex-1" data-i18n="save">Save</button>
+            <div class="glass-card max-w-md w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold" id="skillsModalTitle">Edit Skills</h3>
+                        <button id="closeSkillsModal" class="text-gray-400 hover:text-white">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <div id="skillsList" class="space-y-3 mb-6">
+                        <!-- Skills will be loaded here -->
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="saveSkills" class="neon-button flex-1">
+                            <span id="saveButtonText">Save</span>
+                        </button>
+                        <button id="cancelSkills" class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-16px font-semibold">
+                            <span id="cancelButtonText">Cancel</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Edit Skills Modal -->
-    <div id="skillsModal" class="modal fixed inset-0 z-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="modal-content p-6 max-w-md w-full">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold" data-i18n="edit_skills">Edit Skills</h3>
-                    <button onclick="closeSkillsModal()" class="text-gray-400 hover:text-white">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                
-                <div id="skillsCheckboxes" class="space-y-2 max-h-64 overflow-y-auto">
-                    <!-- Skills checkboxes will be loaded here -->
-                </div>
-                
-                <div class="flex space-x-3 mt-4">
-                    <button onclick="closeSkillsModal()" class="btn-secondary flex-1" data-i18n="cancel">Cancel</button>
-                    <button onclick="saveSkills()" class="btn-primary flex-1" data-i18n="save">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Language Modal -->
-    <div id="languageModal" class="modal fixed inset-0 z-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="modal-content p-6 max-w-md w-full">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold" data-i18n="change_language">Change Language</h3>
-                    <button onclick="closeLanguageModal()" class="text-gray-400 hover:text-white">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                
-                <div class="space-y-2">
-                    <button onclick="setLanguage('en')" class="w-full p-3 text-left rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
-                        English
-                    </button>
-                    <button onclick="setLanguage('ru')" class="w-full p-3 text-left rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
-                        Русский
-                    </button>
-                    <button onclick="setLanguage('es')" class="w-full p-3 text-left rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
-                        Español
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="flex items-center justify-around py-3">
-            <button onclick="switchTab('jobs')" class="nav-item active flex flex-col items-center space-y-1 px-4 py-2">
-                <i class="fas fa-briefcase text-xl"></i>
-                <span class="text-xs" data-i18n="jobs">Jobs</span>
-            </button>
-            <button onclick="switchTab('active')" class="nav-item flex flex-col items-center space-y-1 px-4 py-2">
-                <i class="fas fa-clock text-xl"></i>
-                <span class="text-xs" data-i18n="active">Active</span>
-            </button>
-            <button onclick="switchTab('profile')" class="nav-item flex flex-col items-center space-y-1 px-4 py-2">
-                <i class="fas fa-user text-xl"></i>
-                <span class="text-xs" data-i18n="profile">Profile</span>
-            </button>
         </div>
     </div>
 
     <script type="module">
-        // Supabase configuration
-        const SUPABASE_URL = 'https://zmjvhedwxdopieuteiky.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA';
-
         // Import Supabase
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+        // Supabase configuration
+        const SUPABASE_URL = 'https://zmjvhedwxdopieuteiky.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzl1NilsInR5cC16IkpXVCJ9.eyJpсЗМiOiJzdХBhYmFzZSIsInJIZil6InptanZoZWR3eGRvcGlldXRlaWt5liwicm9sZS|6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTkslmV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA';
         
-        // Initialize Supabase
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Global variables
-        let tg = window.Telegram.WebApp;
-        let currentUser = null;
-        let currentWorker = null;
-        let currentLanguage = 'en';
-        let selectedJob = null;
+        // Telegram WebApp initialization
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.expand();
+            tg.disableVerticalSwipes();
+        }
 
-        // Translation dictionary
-        const translations = {
+        // i18n Dictionary
+        const i18n = {
             en: {
-                loading: 'Loading...',
-                telegram_required: 'This mini app works only inside Telegram',
-                open_via_bot: 'Open via bot to use the application',
-                try_telegram_login: 'Try Telegram Login',
-                available_jobs: 'Available Jobs',
-                active_jobs: 'Active Jobs',
-                jobs: 'Jobs',
-                active: 'Active',
-                profile: 'Profile',
-                offline: 'Offline',
-                online: 'Online',
-                jobs_completed: 'jobs completed',
-                job_details: 'Job Details',
-                open_maps: 'Open Maps',
-                accept_job: 'Accept Job',
-                edit_bio: 'Edit Bio',
-                edit_skills: 'Edit Skills',
-                change_language: 'Change Language',
-                about_me: 'About Me',
-                skills: 'Skills',
-                settings: 'Settings',
-                language: 'Language',
-                notifications: 'Notifications',
-                statistics: 'Statistics',
-                rank_in_state: 'Rank in State',
-                order_history: 'Order History',
-                view_all: 'View All',
-                cancel: 'Cancel',
-                save: 'Save',
-                add_bio: 'Add a short description about you',
-                edit: 'Edit',
-                status: 'Status',
-                rating: 'rating',
-                job_accepted: 'Job accepted!',
-                job_started: 'Job started!',
-                job_completed: 'Job completed!',
-                skills_updated: 'Skills updated!',
-                bio_updated: 'Bio updated!',
-                language_changed: 'Language changed!'
+                welcome_title: "Welcome, worker",
+                welcome_subtitle: "Sign in to start accepting jobs in your area",
+                login_button: "Sign In",
+                login_error_no_worker: "Worker not found. Please contact support.",
+                jobs_tab_label: "Jobs",
+                active_tab_label: "Active",
+                profile_tab_label: "Profile",
+                new_jobs_title: "New Jobs",
+                new_jobs_subtitle: "Available jobs matching your skills",
+                active_jobs_title: "Active Jobs",
+                active_jobs_subtitle: "Jobs you're currently working on",
+                profile_title: "Profile",
+                profile_rating_label: "rating",
+                profile_jobs_completed_label: "jobs completed",
+                edit_skills_button: "Edit Skills",
+                save_button: "Save",
+                cancel_button: "Cancel",
+                no_jobs_text: "No jobs available right now",
+                no_active_jobs_text: "No active jobs",
+                view_details_button: "View Details →",
+                accept_job_button: "Accept Job",
+                start_job_button: "Start Job",
+                complete_job_button: "Complete Job",
+                address_label: "Address",
+                time_label: "Time",
+                client_label: "Client",
+                price_label: "Price",
+                skills_label: "Skills",
+                error_loading_jobs: "Error loading jobs",
+                error_updating_job: "Error updating job",
+                error_saving_skills: "Error saving skills",
+                phoneLabel: "Phone Number",
+                editSkillsText: "Edit Skills",
+                saveButtonText: "Save",
+                cancelButtonText: "Cancel",
+                skillsModalTitle: "Edit Skills",
+                modalTitle: "Job Details",
+                loginButtonText: "Sign In"
             },
             ru: {
-                loading: 'Загрузка...',
-                telegram_required: 'Это мини-приложение работает только в Telegram',
-                open_via_bot: 'Откройте через бота для использования',
-                try_telegram_login: 'Попробовать вход в Telegram',
-                available_jobs: 'Доступные заказы',
-                active_jobs: 'Активные заказы',
-                jobs: 'Заказы',
-                active: 'Активные',
-                profile: 'Профиль',
-                offline: 'Офлайн',
-                online: 'Онлайн',
-                jobs_completed: 'заказов выполнено',
-                job_details: 'Детали заказа',
-                open_maps: 'Открыть карты',
-                accept_job: 'Принять заказ',
-                edit_bio: 'Редактировать био',
-                edit_skills: 'Редактировать навыки',
-                change_language: 'Сменить язык',
-                about_me: 'О себе',
-                skills: 'Навыки',
-                settings: 'Настройки',
-                language: 'Язык',
-                notifications: 'Уведомления',
-                statistics: 'Статистика',
-                rank_in_state: 'Рейтинг в штате',
-                order_history: 'История заказов',
-                view_all: 'Показать все',
-                cancel: 'Отмена',
-                save: 'Сохранить',
-                add_bio: 'Добавьте короткое описание о себе',
-                edit: 'Редактировать',
-                status: 'Статус',
-                rating: 'рейтинг',
-                job_accepted: 'Заказ принят!',
-                job_started: 'Заказ начат!',
-                job_completed: 'Заказ завершен!',
-                skills_updated: 'Навыки обновлены!',
-                bio_updated: 'Био обновлено!',
-                language_changed: 'Язык изменен!'
+                welcome_title: "Добро пожаловать, работник",
+                welcome_subtitle: "Войдите, чтобы начать принимать заказы",
+                login_button: "Войти",
+                login_error_no_worker: "Работник не найден. Обратитесь в поддержку.",
+                jobs_tab_label: "Заказы",
+                active_tab_label: "Активные",
+                profile_tab_label: "Профиль",
+                new_jobs_title: "Новые Заказы",
+                new_jobs_subtitle: "Доступные заказы по вашим навыкам",
+                active_jobs_title: "Активные Заказы",
+                active_jobs_subtitle: "Заказы, над которыми вы работаете",
+                profile_title: "Профиль",
+                profile_rating_label: "рейтинг",
+                profile_jobs_completed_label: "завершенных заказов",
+                edit_skills_button: "Изменить Навыки",
+                save_button: "Сохранить",
+                cancel_button: "Отмена",
+                no_jobs_text: "Нет доступных заказов",
+                no_active_jobs_text: "Нет активных заказов",
+                view_details_button: "Подробности →",
+                accept_job_button: "Принять Заказ",
+                start_job_button: "Начать Работу",
+                complete_job_button: "Завершить Работу",
+                address_label: "Адрес",
+                time_label: "Время",
+                client_label: "Клиент",
+                price_label: "Цена",
+                skills_label: "Навыки",
+                error_loading_jobs: "Ошибка загрузки заказов",
+                error_updating_job: "Ошибка обновления заказа",
+                error_saving_skills: "Ошибка сохранения навыков",
+                phoneLabel: "Номер Телефона",
+                editSkillsText: "Изменить Навыки",
+                saveButtonText: "Сохранить",
+                cancelButtonText: "Отмена",
+                skillsModalTitle: "Изменить Навыки",
+                modalTitle: "Детали Заказа",
+                loginButtonText: "Войти"
             },
             es: {
-                loading: 'Cargando...',
-                telegram_required: 'Esta mini aplicación funciona solo dentro de Telegram',
-                open_via_bot: 'Abra a través del bot para usar la aplicación',
-                try_telegram_login: 'Intentar inicio en Telegram',
-                available_jobs: 'Trabajos Disponibles',
-                active_jobs: 'Trabajos Activos',
-                jobs: 'Trabajos',
-                active: 'Activos',
-                profile: 'Perfil',
-                offline: 'Desconectado',
-                online: 'Conectado',
-                jobs_completed: 'trabajos completados',
-                job_details: 'Detalles del Trabajo',
-                open_maps: 'Abrir Mapas',
-                accept_job: 'Aceptar Trabajo',
-                edit_bio: 'Editar Biografía',
-                edit_skills: 'Editar Habilidades',
-                change_language: 'Cambiar Idioma',
-                about_me: 'Acerca de Mí',
-                skills: 'Habilidades',
-                settings: 'Configuración',
-                language: 'Idioma',
-                notifications: 'Notificaciones',
-                statistics: 'Estadísticas',
-                rank_in_state: 'Rango en el Estado',
-                order_history: 'Historial de Pedidos',
-                view_all: 'Ver Todos',
-                cancel: 'Cancelar',
-                save: 'Guardar',
-                add_bio: 'Agrega una breve descripción sobre ti',
-                edit: 'Editar',
-                status: 'Estado',
-                rating: 'calificación',
-                job_accepted: '¡Trabajo aceptado!',
-                job_started: '¡Trabajo iniciado!',
-                job_completed: '¡Trabajo completado!',
-                skills_updated: '¡Habilidades actualizadas!',
-                bio_updated: '¡Biografía actualizada!',
-                language_changed: '¡Idioma cambiado!'
+                welcome_title: "Bienvenido, trabajador",
+                welcome_subtitle: "Inicia sesión para comenzar a aceptar trabajos",
+                login_button: "Iniciar Sesión",
+                login_error_no_worker: "Trabajador no encontrado. Contacte soporte.",
+                jobs_tab_label: "Trabajos",
+                active_tab_label: "Activos",
+                profile_tab_label: "Perfil",
+                new_jobs_title: "Nuevos Trabajos",
+                new_jobs_subtitle: "Trabajos disponibles según tus habilidades",
+                active_jobs_title: "Trabajos Activos",
+                active_jobs_subtitle: "Trabajos que estás realizando",
+                profile_title: "Perfil",
+                profile_rating_label: "calificación",
+                profile_jobs_completed_label: "trabajos completados",
+                edit_skills_button: "Editar Habilidades",
+                save_button: "Guardar",
+                cancel_button: "Cancelar",
+                no_jobs_text: "No hay trabajos disponibles",
+                no_active_jobs_text: "No hay trabajos activos",
+                view_details_button: "Ver Detalles →",
+                accept_job_button: "Aceptar Trabajo",
+                start_job_button: "Iniciar Trabajo",
+                complete_job_button: "Completar Trabajo",
+                address_label: "Dirección",
+                time_label: "Hora",
+                client_label: "Cliente",
+                price_label: "Precio",
+                skills_label: "Habilidades",
+                error_loading_jobs: "Error al cargar trabajos",
+                error_updating_job: "Error al actualizar trabajo",
+                error_saving_skills: "Error al guardar habilidades",
+                phoneLabel: "Número de Teléfono",
+                editSkillsText: "Editar Habilidades",
+                saveButtonText: "Guardar",
+                cancelButtonText: "Cancelar",
+                skillsModalTitle: "Editar Habilidades",
+                modalTitle: "Detalles del Trabajo",
+                loginButtonText: "Iniciar Sesión"
+            },
+            ky: {
+                welcome_title: "Кош келиңиз, жумушчу",
+                welcome_subtitle: "Жумуштарды кабыл алуу үчүн кирүү",
+                login_button: "Кирүү",
+                login_error_no_worker: "Жумушчу табылган жок. Колдоого кайрылыңыз.",
+                jobs_tab_label: "Жумуштар",
+                active_tab_label: "Активдүү",
+                profile_tab_label: "Профиль",
+                new_jobs_title: "Жаңы Жумуштар",
+                new_jobs_subtitle: "Сиздин жөндөмдөрүңүзгө ылайык жумуштар",
+                active_jobs_title: "Активдүү Жумуштар",
+                active_jobs_subtitle: "Учурда аткарып жаткан жумуштарыңыз",
+                profile_title: "Профиль",
+                profile_rating_label: "рейтинг",
+                profile_jobs_completed_label: "аткарылган жумуштар",
+                edit_skills_button: "Жөндөмдөрдү Өзгөртүү",
+                save_button: "Сактоо",
+                cancel_button: "Жокко Чыгаруу",
+                no_jobs_text: "Жумуштар жок",
+                no_active_jobs_text: "Активдүү жумуштар жок",
+                view_details_button: "Толугураак →",
+                accept_job_button: "Жумушту Кабыл Алуу",
+                start_job_button: "Жумушту Баштоо",
+                complete_job_button: "Жумушту Аяктоо",
+                address_label: "Дарек",
+                time_label: "Убакыт",
+                client_label: "Кардар",
+                price_label: "Баа",
+                skills_label: "Жөндөмдөр",
+                error_loading_jobs: "Жумуштарды жүктөөдө ката",
+                error_updating_job: "Жумушту жаңыртууда ката",
+                error_saving_skills: "Жөндөмдөрдү сактоодо ката",
+                phoneLabel: "Телефон Номери",
+                editSkillsText: "Жөндөмдөрдү Өзгөртүү",
+                saveButtonText: "Сактоо",
+                cancelButtonText: "Жокко Чыгаруу",
+                skillsModalTitle: "Жөндөмдөрдү Өзгөртүү",
+                modalTitle: "Жумуштун Толугураак",
+                loginButtonText: "Кирүү"
             }
         };
 
-        // Available skills
+        // App State
+        let currentWorker = null;
+        let currentTab = 'jobs';
+        let currentLanguage = 'en';
+        let jobs = [];
+        let activeJobs = [];
+
+        // Skills list
         const availableSkills = [
-            'cleaning', 'handyman', 'locksmith', 'moving', 
-            'appliance_repair', 'painting', 'plumbing', 'electrical'
+            'cleaning', 'handyman', 'locksmith', 'moving', 'appliance_repair', 
+            'painting', 'plumbing', 'electrical'
         ];
+
+        // Translation function
+        function t(key) {
+            return i18n[currentLanguage][key] || key;
+        }
 
         // Initialize app
         async function initApp() {
+            // Detect language
+            if (tg?.initDataUnsafe?.user?.language_code) {
+                const lang = tg.initDataUnsafe.user.language_code;
+                if (lang === 'ru') currentLanguage = 'ru';
+                else if (lang === 'es') currentLanguage = 'es';
+                else if (lang === 'ky' || lang === 'kg') currentLanguage = 'ky';
+            }
+
+            updateUI();
+            
+            // Try Telegram auto-login
+            if (tg?.initDataUnsafe?.user?.id) {
+                await telegramLogin();
+            }
+        }
+
+        // Telegram login
+        async function telegramLogin() {
+            const tid = tg.initDataUnsafe.user.id;
+            const tname = tg.initDataUnsafe.user.first_name || 'Worker';
+            const tlanguage = tg.initDataUnsafe.user.language_code || 'en';
+
             try {
-                // Check if running in Telegram
-                if (!tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-                    document.getElementById('loadingScreen').classList.add('hidden');
-                    document.getElementById('telegramCheck').classList.remove('hidden');
-                    return;
+                // Try to find existing worker
+                const { data: existingWorker, error } = await supabase
+                    .from('workers')
+                    .select('*')
+                    .eq('telegram_id', tid.toString())
+                    .single();
+
+                if (existingWorker) {
+                    currentWorker = existingWorker;
+                } else {
+                    // Create new worker
+                    const { data: newWorker, error: createError } = await supabase
+                        .from('workers')
+                        .insert({
+                            telegram_id: tid.toString(),
+                            full_name: tname,
+                            skills: '{}',
+                            language: tlanguage
+                        })
+                        .select()
+                        .single();
+
+                    if (createError) throw createError;
+                    currentWorker = newWorker;
                 }
 
-                const telegramUser = tg.initDataUnsafe.user;
-                console.log('Telegram user:', telegramUser);
-
-                // Set language
-                const userLang = telegramUser.language_code;
-                if (userLang === 'ru') currentLanguage = 'ru';
-                else if (userLang === 'es') currentLanguage = 'es';
-                else currentLanguage = 'en';
-
-                // Find or create worker
-                currentWorker = await findOrCreateWorker(telegramUser);
-                console.log('Current worker:', currentWorker);
-
-                // Setup UI
-                setupUI();
-                
-                // Load initial data
-                await loadJobs();
-                await loadActiveJobs();
-                await loadProfile();
-
-                // Show main app
-                document.getElementById('loadingScreen').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-
-                // Setup real-time subscriptions
-                setupRealtimeSubscriptions();
-
+                showMainScreen();
+                loadData();
             } catch (error) {
-                console.error('Error initializing app:', error);
-                showToast('Error initializing app');
+                console.error('Telegram login error:', error);
+                showLoginError(t('error_loading_jobs'));
             }
         }
 
-        // Find or create worker
-        async function findOrCreateWorker(telegramUser) {
-            const telegramId = telegramUser.id.toString();
-            
-            // Try to find existing worker
-            const { data: existingWorker, error: findError } = await supabase
-                .from('workers')
-                .select('*')
-                .eq('telegram_id', telegramId)
-                .single();
+        // Phone login
+        async function phoneLogin(phone) {
+            try {
+                const { data: worker, error } = await supabase
+                    .from('workers')
+                    .select('*')
+                    .eq('phone', phone)
+                    .single();
 
-            if (existingWorker) {
-                return existingWorker;
+                if (worker) {
+                    currentWorker = worker;
+                    showMainScreen();
+                    loadData();
+                } else {
+                    showLoginError(t('login_error_no_worker'));
+                }
+            } catch (error) {
+                console.error('Phone login error:', error);
+                showLoginError(t('login_error_no_worker'));
             }
-
-            // Create new worker
-            const fullName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || telegramUser.username || 'Unknown User';
-            
-            const { data: newWorker, error: createError } = await supabase
-                .from('workers')
-                .insert({
-                    telegram_id: telegramId,
-                    full_name: fullName,
-                    language: currentLanguage,
-                    state: 'IL', // Default state
-                    skills: [],
-                    is_online: false,
-                    is_active: true
-                })
-                .select()
-                .single();
-
-            if (createError) {
-                console.error('Error creating worker:', createError);
-                throw createError;
-            }
-
-            return newWorker;
         }
 
-        // Setup UI
-        function setupUI() {
-            updateLanguage();
-            
-            // Header info
-            document.getElementById('headerName').textContent = currentWorker.full_name;
-            document.getElementById('headerRating').textContent = currentWorker.rating || '5.0';
-            document.getElementById('headerJobs').textContent = currentWorker.jobs_completed || 0;
-            document.getElementById('headerLocation').textContent = currentWorker.state || 'IL';
-            
-            // Update status
-            updateHeaderStatus();
-            
-            // Setup toggles
-            document.getElementById('onlineToggle').checked = currentWorker.is_online || false;
-            document.getElementById('notificationsToggle').checked = currentWorker.notifications_enabled !== false;
-            
-            // Setup event listeners
-            document.getElementById('onlineToggle').addEventListener('change', toggleOnlineStatus);
-            document.getElementById('notificationsToggle').addEventListener('change', toggleNotifications);
+        // UI Functions
+        function updateUI() {
+            // Update all text elements with translations
+            document.querySelectorAll('[id]').forEach(element => {
+                const key = element.id;
+                if (t(key) !== key) {
+                    element.textContent = t(key);
+                }
+            });
         }
 
-        // Update header status
-        function updateHeaderStatus() {
-            const statusElement = document.getElementById('headerStatus');
-            const isOnline = currentWorker.is_online;
-            
-            statusElement.textContent = isOnline ? translations[currentLanguage].online : translations[currentLanguage].offline;
-            statusElement.className = `px-2 py-1 rounded-full text-xs font-medium ${isOnline ? 'status-online' : 'status-offline'}`;
+        function showLoginError(message) {
+            const errorElement = document.getElementById('loginError');
+            errorElement.textContent = message;
+            errorElement.classList.remove('hidden');
         }
 
-        // Load available jobs
+        function showMainScreen() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainScreen').classList.remove('hidden');
+            updateProfile();
+        }
+
+        function updateProfile() {
+            if (!currentWorker) return;
+
+            const initials = currentWorker.full_name.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('profileInitials').textContent = initials;
+            document.getElementById('profileName').textContent = currentWorker.full_name;
+            document.getElementById('profileId').textContent = `ID: ••••${currentWorker.id.slice(-4)}`;
+            document.getElementById('jobsCompleted').textContent = currentWorker.jobs_completed;
+        }
+
+        // Load data
+        async function loadData() {
+            await Promise.all([
+                loadJobs(),
+                loadActiveJobs()
+            ]);
+        }
+
         async function loadJobs() {
             try {
-                let query = supabase
+                const { data: orders, error } = await supabase
                     .from('orders')
                     .select('*')
+                    .is('worker_id', null)
                     .eq('status', 'pending')
-                    .eq('state', currentWorker.state)
-                    .is('worker_id', null);
+                    .order('created_at', { ascending: false });
 
-                // If worker has skills, filter by skills
-                if (currentWorker.skills && currentWorker.skills.length > 0) {
-                    query = query.in('service_type', currentWorker.skills);
-                }
+                if (error) throw error;
 
-                const { data: jobs, error } = await query.order('created_at', { ascending: false });
+                // Filter by worker skills
+                const workerSkills = currentWorker.skills || [];
+                jobs = orders.filter(order => 
+                    workerSkills.length === 0 || workerSkills.includes(order.service_type)
+                );
 
-                if (error) {
-                    console.error('Error loading jobs:', error);
-                    return;
-                }
-
-                displayJobs(jobs);
+                renderJobs();
             } catch (error) {
                 console.error('Error loading jobs:', error);
+                showToast(t('error_loading_jobs'));
             }
         }
 
-        // Display jobs
-        function displayJobs(jobs) {
-            const jobsList = document.getElementById('jobsList');
-            
-            if (jobs.length === 0) {
-                jobsList.innerHTML = `
-                    <div class="card p-6 text-center">
-                        <i class="fas fa-inbox text-4xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-400">${translations[currentLanguage].no_jobs_available || 'No jobs available'}</p>
-                    </div>
-                `;
-                return;
-            }
-
-            jobsList.innerHTML = jobs.map(job => `
-                <div class="card p-4 fade-in">
-                    <div class="flex justify-between items-start mb-3">
-                        <h4 class="font-bold text-lg">${job.service_name || job.service_type}</h4>
-                        <span class="text-green-400 font-bold">$${job.price}</span>
-                    </div>
-                    
-                    <div class="space-y-2 text-sm text-gray-300">
-                        <div class="flex items-center">
-                            <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
-                            <span>${job.address.split(',')[0]}</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-calendar text-gray-400 mr-2"></i>
-                            <span>${new Date(job.date).toLocaleDateString()}</span>
-                            <i class="fas fa-clock text-gray-400 ml-4 mr-2"></i>
-                            <span>${job.time}</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-user text-gray-400 mr-2"></i>
-                            <span>${job.client_name}</span>
-                        </div>
-                    </div>
-                    
-                    ${job.notes ? `
-                        <p class="text-sm text-gray-400 mt-3 line-clamp-2">${job.notes}</p>
-                    ` : ''}
-                    
-                    <button onclick="viewJobDetails('${job.id}')" class="btn-secondary w-full mt-4">
-                        ${translations[currentLanguage].view_details || 'View Details'} →
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        // Load active jobs
         async function loadActiveJobs() {
             try {
-                const { data: jobs, error } = await supabase
+                const { data: orders, error } = await supabase
                     .from('orders')
                     .select('*')
                     .eq('worker_id', currentWorker.id)
                     .in('status', ['accepted', 'in_progress'])
                     .order('created_at', { ascending: false });
 
-                if (error) {
-                    console.error('Error loading active jobs:', error);
-                    return;
-                }
+                if (error) throw error;
 
-                displayActiveJobs(jobs);
+                activeJobs = orders;
+                renderActiveJobs();
             } catch (error) {
                 console.error('Error loading active jobs:', error);
+                showToast(t('error_loading_jobs'));
             }
         }
 
-        // Display active jobs
-        function displayActiveJobs(jobs) {
-            const activeJobsList = document.getElementById('activeJobsList');
-            
+        // Render functions
+        function renderJobs() {
+            const container = document.getElementById('jobsList');
+            const noJobsText = document.getElementById('noJobsText');
+
             if (jobs.length === 0) {
-                activeJobsList.innerHTML = `
-                    <div class="card p-6 text-center">
-                        <i class="fas fa-clock text-4xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-400">${translations[currentLanguage].no_active_jobs || 'No active jobs'}</p>
-                    </div>
-                `;
+                container.innerHTML = '';
+                noJobsText.classList.remove('hidden');
                 return;
             }
 
-            activeJobsList.innerHTML = jobs.map(job => `
-                <div class="card p-4 fade-in">
+            noJobsText.classList.add('hidden');
+            container.innerHTML = jobs.map(job => `
+                <div class="job-card glass-card p-4 fade-in" onclick="showJobDetails('${job.id}')">
                     <div class="flex justify-between items-start mb-3">
-                        <h4 class="font-bold text-lg">${job.service_name || job.service_type}</h4>
-                        <span class="px-2 py-1 rounded-full text-xs font-medium ${job.status === 'accepted' ? 'bg-blue-600' : 'bg-green-600'}">
-                            ${job.status === 'accepted' ? 'Accepted' : 'In Progress'}
-                        </span>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg mb-1">${job.service_name || job.service_type}</h3>
+                            <p class="text-gray-400 text-sm line-clamp-2">${job.notes || 'No additional notes'}</p>
+                        </div>
+                        <div class="price-tag ml-3">$${job.price}</div>
                     </div>
-                    
-                    <div class="space-y-2 text-sm text-gray-300">
-                        <div class="flex items-center">
-                            <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
-                            <span>${job.address.split(',')[0]}</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-user text-gray-400 mr-2"></i>
-                            <span>${job.client_name}</span>
-                            <a href="tel:${job.client_phone}" class="ml-auto text-green-400">
-                                <i class="fas fa-phone"></i>
-                            </a>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-calendar text-gray-400 mr-2"></i>
-                            <span>${new Date(job.date).toLocaleDateString()}</span>
-                            <i class="fas fa-clock text-gray-400 ml-4 mr-2"></i>
-                            <span>${job.time}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex space-x-2 mt-4">
-                        <button onclick="openMapsForJob('${job.address}')" class="btn-secondary flex-1">
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="flex items-center text-sm text-gray-400">
                             <i class="fas fa-map-marker-alt mr-2"></i>
-                            ${translations[currentLanguage].open_maps || 'Map'}
-                        </button>
-                        <button onclick="updateJobStatus('${job.id}', '${job.status}')" class="btn-primary flex-1">
-                            ${job.status === 'accepted' ? (translations[currentLanguage].start_job || 'Start Job') : (translations[currentLanguage].complete_job || 'Complete Job')}
+                            <span class="truncate">${job.address.split(',')[0]}</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-400">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>${job.date} ${job.time}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex -space-x-2">
+                            <div class="photo-placeholder">
+                                <i class="fas fa-camera text-sm"></i>
+                            </div>
+                            <div class="photo-placeholder">
+                                <i class="fas fa-camera text-sm"></i>
+                            </div>
+                            <div class="photo-placeholder">
+                                <i class="fas fa-camera text-sm"></i>
+                            </div>
+                            <span class="text-xs text-gray-400 ml-2 self-center">3 photos</span>
+                        </div>
+                        <button class="text-green-400 font-semibold text-sm">
+                            ${t('view_details_button')}
                         </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Load profile
-        async function loadProfile() {
-            try {
-                // Get worker rank
-                const { data: workersInState, error: rankError } = await supabase
-                    .from('workers')
-                    .select('id, jobs_completed, rating')
-                    .eq('state', currentWorker.state)
-                    .eq('is_active', true)
-                    .order('jobs_completed', { ascending: false })
-                    .order('rating', { ascending: false });
+        function renderActiveJobs() {
+            const container = document.getElementById('activeJobsList');
+            const noActiveJobsText = document.getElementById('noActiveJobsText');
 
-                let rank = 1;
-                if (workersInState) {
-                    const workerIndex = workersInState.findIndex(w => w.id === currentWorker.id);
-                    rank = workerIndex + 1;
-                }
-
-                // Update profile UI
-                document.getElementById('profileName').textContent = currentWorker.full_name;
-                document.getElementById('profileId').textContent = `ID: ••••${currentWorker.id.slice(-4)}`;
-                document.getElementById('profileRating').textContent = currentWorker.rating || '5.0';
-                document.getElementById('profileJobs').textContent = currentWorker.jobs_completed || 0;
-                document.getElementById('stateRank').textContent = `#${rank} of ${workersInState?.length || 1} in ${currentWorker.state}`;
-                
-                // Bio
-                const bioText = currentWorker.bio || translations[currentLanguage].add_bio;
-                document.getElementById('profileBio').textContent = bioText;
-                
-                // Skills
-                displaySkills();
-                
-                // Avatar
-                updateAvatar('profileAvatar', 'profileInitials');
-                
-                // Load order history
-                await loadOrderHistory();
-                
-            } catch (error) {
-                console.error('Error loading profile:', error);
-            }
-        }
-
-        // Display skills
-        function displaySkills() {
-            const skillsList = document.getElementById('skillsList');
-            const skills = currentWorker.skills || [];
-            
-            if (skills.length === 0) {
-                skillsList.innerHTML = `<span class="text-gray-400 text-sm">${translations[currentLanguage].no_skills || 'No skills selected'}</span>`;
+            if (activeJobs.length === 0) {
+                container.innerHTML = '';
+                noActiveJobsText.classList.remove('hidden');
                 return;
             }
-            
-            skillsList.innerHTML = skills.map(skill => `
-                <span class="skill-tag">${skill.replace('_', ' ')}</span>
+
+            noActiveJobsText.classList.add('hidden');
+            container.innerHTML = activeJobs.map(job => `
+                <div class="glass-card p-4 fade-in">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-semibold text-lg">${job.service_name || job.service_type}</h3>
+                        <div class="price-tag">$${job.price}</div>
+                    </div>
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-map-marker-alt mr-2 text-gray-400"></i>
+                                <span>${job.address.split(',')[0]}</span>
+                            </div>
+                            <button onclick="openMaps('${job.address}')" class="text-green-400 text-sm">
+                                <i class="fas fa-external-link-alt mr-1"></i>Map
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-user mr-2 text-gray-400"></i>
+                                <span>${job.client_name}</span>
+                            </div>
+                            <button onclick="callPhone('${job.client_phone}')" class="text-green-400 text-sm">
+                                <i class="fas fa-phone mr-1"></i>Call
+                            </button>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <i class="fas fa-clock mr-2 text-gray-400"></i>
+                            <span>${job.date} ${job.time}</span>
+                        </div>
+                    </div>
+                    <button onclick="updateJobStatus('${job.id}', '${job.status}')" 
+                            class="neon-button w-full">
+                        ${job.status === 'accepted' ? t('start_job_button') : t('complete_job_button')}
+                    </button>
+                </div>
             `).join('');
         }
 
-        // Load order history
-        async function loadOrderHistory() {
-            try {
-                const { data: orders, error } = await supabase
-                    .from('orders')
-                    .select('*')
-                    .eq('worker_id', currentWorker.id)
-                    .eq('status', 'completed')
-                    .order('created_at', { ascending: false })
-                    .limit(5);
+        // Job actions
+        function showJobDetails(jobId) {
+            const job = jobs.find(j => j.id === jobId);
+            if (!job) return;
 
-                if (error) {
-                    console.error('Error loading order history:', error);
-                    return;
-                }
-
-                const historyContainer = document.getElementById('orderHistory');
-                
-                if (orders.length === 0) {
-                    historyContainer.innerHTML = `<p class="text-gray-400 text-sm">${translations[currentLanguage].no_completed_jobs || 'No completed jobs yet'}</p>`;
-                    return;
-                }
-
-                historyContainer.innerHTML = orders.map(order => `
-                    <div class="flex justify-between items-center py-2 border-b border-gray-700 last:border-b-0">
-                        <div>
-                            <p class="font-medium text-sm">${order.service_name || order.service_type}</p>
-                            <p class="text-xs text-gray-400">${new Date(order.date).toLocaleDateString()}</p>
-                        </div>
-                        <span class="text-green-400 font-medium">$${order.price}</span>
+            document.getElementById('modalTitle').textContent = job.service_name || job.service_type;
+            document.getElementById('modalContent').innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-semibold mb-2">${t('client_label')}</h4>
+                        <p class="text-gray-400">${job.client_name}</p>
+                        <p class="text-gray-400">${job.client_phone}</p>
                     </div>
-                `).join('');
-                
-            } catch (error) {
-                console.error('Error loading order history:', error);
-            }
-        }
-
-        // Update avatar
-        function updateAvatar(avatarId, initialsId) {
-            const avatarElement = document.getElementById(avatarId);
-            const initialsElement = document.getElementById(initialsId);
-            
-            if (currentWorker.avatar_url) {
-                avatarElement.innerHTML = `<img src="${currentWorker.avatar_url}" alt="Avatar">`;
-            } else {
-                const initials = currentWorker.full_name.split(' ').map(n => n[0]).join('').toUpperCase() || 'JD';
-                initialsElement.textContent = initials;
-            }
-        }
-
-        // Tab switching
-        function switchTab(tabName) {
-            // Update nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.target.closest('.nav-item').classList.add('active');
-            
-            // Update tab content
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            document.getElementById(tabName + 'Tab').classList.remove('hidden');
-            
-            // Load data for tab
-            if (tabName === 'jobs') {
-                loadJobs();
-            } else if (tabName === 'active') {
-                loadActiveJobs();
-            } else if (tabName === 'profile') {
-                loadProfile();
-            }
-        }
-
-        // View job details
-        async function viewJobDetails(jobId) {
-            try {
-                const { data: job, error } = await supabase
-                    .from('orders')
-                    .select('*')
-                    .eq('id', jobId)
-                    .single();
-
-                if (error) {
-                    console.error('Error loading job details:', error);
-                    return;
-                }
-
-                selectedJob = job;
-                
-                const modalContent = document.getElementById('jobModalContent');
-                modalContent.innerHTML = `
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="font-bold text-lg mb-2">${job.service_name || job.service_type}</h4>
-                            <div class="text-2xl font-bold text-green-400">$${job.price}</div>
-                        </div>
-                        
-                        <div class="space-y-3">
-                            <div>
-                                <label class="text-sm text-gray-400">${translations[currentLanguage].client || 'Client'}</label>
-                                <p class="font-medium">${job.client_name}</p>
-                                <p class="text-sm text-gray-300">${job.client_phone}</p>
-                            </div>
-                            
-                            <div>
-                                <label class="text-sm text-gray-400">${translations[currentLanguage].address || 'Address'}</label>
-                                <p class="font-medium">${job.address}</p>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-sm text-gray-400">${translations[currentLanguage].date || 'Date'}</label>
-                                    <p class="font-medium">${new Date(job.date).toLocaleDateString()}</p>
-                                </div>
-                                <div>
-                                    <label class="text-sm text-gray-400">${translations[currentLanguage].time || 'Time'}</label>
-                                    <p class="font-medium">${job.time}</p>
-                                </div>
-                            </div>
-                            
-                            ${job.notes ? `
-                                <div>
-                                    <label class="text-sm text-gray-400">${translations[currentLanguage].notes || 'Notes'}</label>
-                                    <p class="text-gray-300">${job.notes}</p>
-                                </div>
-                            ` : ''}
-                        </div>
+                    <div>
+                        <h4 class="font-semibold mb-2">${t('address_label')}</h4>
+                        <p class="text-gray-400">${job.address}</p>
+                        <button onclick="openMaps('${job.address}')" class="text-green-400 text-sm mt-1">
+                            <i class="fas fa-external-link-alt mr-1"></i>Open in Maps
+                        </button>
                     </div>
-                `;
-                
-                document.getElementById('jobModal').classList.remove('hidden');
-            } catch (error) {
-                console.error('Error viewing job details:', error);
-            }
+                    <div>
+                        <h4 class="font-semibold mb-2">${t('time_label')}</h4>
+                        <p class="text-gray-400">${job.date} at ${job.time}</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2">${t('price_label')}</h4>
+                        <p class="text-2xl font-bold text-green-400">$${job.price}</p>
+                    </div>
+                    ${job.notes ? `
+                    <div>
+                        <h4 class="font-semibold mb-2">Notes</h4>
+                        <p class="text-gray-400">${job.notes}</p>
+                    </div>
+                    ` : ''}
+                    <button onclick="acceptJob('${job.id}')" class="neon-button w-full mt-6">
+                        ${t('accept_job_button')}
+                    </button>
+                </div>
+            `;
+            document.getElementById('jobModal').classList.remove('hidden');
         }
 
-        // Close job modal
-        function closeJobModal() {
-            document.getElementById('jobModal').classList.add('hidden');
-            selectedJob = null;
-        }
+        async function acceptJob(jobId) {
+            const button = event.target;
+            button.disabled = true;
+            button.innerHTML = '<div class="loading-spinner mx-auto"></div>';
 
-        // Accept job
-        async function acceptJob() {
-            if (!selectedJob) return;
-            
             try {
                 const { error } = await supabase
                     .from('orders')
-                    .update({
-                        status: 'accepted',
-                        worker_id: currentWorker.id
+                    .update({ 
+                        worker_id: currentWorker.id, 
+                        status: 'accepted' 
                     })
-                    .eq('id', selectedJob.id);
+                    .eq('id', jobId);
 
-                if (error) {
-                    console.error('Error accepting job:', error);
-                    showToast(translations[currentLanguage].error_accepting_job || 'Error accepting job');
-                    return;
-                }
+                if (error) throw error;
 
-                showToast(translations[currentLanguage].job_accepted || 'Job accepted!');
-                closeJobModal();
-                
-                // Reload data
-                await loadJobs();
-                await loadActiveJobs();
+                // Refresh data
+                await loadData();
+                document.getElementById('jobModal').classList.add('hidden');
+                showToast('Job accepted successfully!');
             } catch (error) {
                 console.error('Error accepting job:', error);
+                showToast(t('error_updating_job'));
+            } finally {
+                button.disabled = false;
+                button.textContent = t('accept_job_button');
             }
         }
 
-        // Open maps
-        function openMaps() {
-            if (!selectedJob) return;
-            
-            const encodedAddress = encodeURIComponent(selectedJob.address);
-            const mapsUrl = `https://www.google.com/maps?q=${encodedAddress}`;
-            window.open(mapsUrl, '_blank');
-        }
-
-        // Open maps for job
-        function openMapsForJob(address) {
-            const encodedAddress = encodeURIComponent(address);
-            const mapsUrl = `https://www.google.com/maps?q=${encodedAddress}`;
-            window.open(mapsUrl, '_blank');
-        }
-
-        // Update job status
         async function updateJobStatus(jobId, currentStatus) {
+            const newStatus = currentStatus === 'accepted' ? 'in_progress' : 'completed';
+            
             try {
-                let newStatus = currentStatus === 'accepted' ? 'in_progress' : 'completed';
-                
                 const { error } = await supabase
                     .from('orders')
                     .update({ status: newStatus })
                     .eq('id', jobId);
 
-                if (error) {
-                    console.error('Error updating job status:', error);
-                    return;
+                if (error) throw error;
+
+                // If completing job, update worker stats
+                if (newStatus === 'completed') {
+                    await supabase
+                        .from('workers')
+                        .update({ jobs_completed: currentWorker.jobs_completed + 1 })
+                        .eq('id', currentWorker.id);
+                    
+                    currentWorker.jobs_completed += 1;
+                    updateProfile();
                 }
 
-                if (newStatus === 'completed') {
-                    showToast(translations[currentLanguage].job_completed || 'Job completed!');
-                } else {
-                    showToast(translations[currentLanguage].job_started || 'Job started!');
-                }
-                
-                // Reload active jobs
-                await loadActiveJobs();
+                // Refresh data
+                await loadData();
+                showToast(newStatus === 'completed' ? 'Job completed!' : 'Job started!');
             } catch (error) {
                 console.error('Error updating job status:', error);
+                showToast(t('error_updating_job'));
             }
         }
 
-        // Toggle online status
-        async function toggleOnlineStatus() {
-            const isOnline = document.getElementById('onlineToggle').checked;
+        // Skills management
+        function showSkillsEditor() {
+            const workerSkills = currentWorker.skills || [];
+            const skillsList = document.getElementById('skillsList');
             
-            try {
-                const { error } = await supabase
-                    .from('workers')
-                    .update({ is_online: isOnline })
-                    .eq('id', currentWorker.id);
-
-                if (error) {
-                    console.error('Error updating online status:', error);
-                    return;
-                }
-
-                currentWorker.is_online = isOnline;
-                updateHeaderStatus();
-            } catch (error) {
-                console.error('Error updating online status:', error);
-            }
-        }
-
-        // Toggle notifications
-        async function toggleNotifications() {
-            const enabled = document.getElementById('notificationsToggle').checked;
-            
-            try {
-                const { error } = await supabase
-                    .from('workers')
-                    .update({ notifications_enabled: enabled })
-                    .eq('id', currentWorker.id);
-
-                if (error) {
-                    console.error('Error updating notifications:', error);
-                    return;
-                }
-
-                currentWorker.notifications_enabled = enabled;
-            } catch (error) {
-                console.error('Error updating notifications:', error);
-            }
-        }
-
-        // Edit bio
-        function editBio() {
-            document.getElementById('bioTextarea').value = currentWorker.bio || '';
-            document.getElementById('bioModal').classList.remove('hidden');
-        }
-
-        // Close bio modal
-        function closeBioModal() {
-            document.getElementById('bioModal').classList.add('hidden');
-        }
-
-        // Save bio
-        async function saveBio() {
-            const newBio = document.getElementById('bioTextarea').value.trim();
-            
-            try {
-                const { error } = await supabase
-                    .from('workers')
-                    .update({ bio: newBio })
-                    .eq('id', currentWorker.id);
-
-                if (error) {
-                    console.error('Error saving bio:', error);
-                    return;
-                }
-
-                currentWorker.bio = newBio;
-                document.getElementById('profileBio').textContent = newBio || translations[currentLanguage].add_bio;
-                
-                closeBioModal();
-                showToast(translations[currentLanguage].bio_updated || 'Bio updated!');
-            } catch (error) {
-                console.error('Error saving bio:', error);
-            }
-        }
-
-        // Edit skills
-        function editSkills() {
-            const currentSkills = currentWorker.skills || [];
-            const checkboxesContainer = document.getElementById('skillsCheckboxes');
-            
-            checkboxesContainer.innerHTML = availableSkills.map(skill => `
-                <label class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-700 cursor-pointer">
-                    <input type="checkbox" value="${skill}" ${currentSkills.includes(skill) ? 'checked' : ''} class="w-4 h-4 text-green-600 bg-gray-800 border-gray-600 rounded focus:ring-green-500">
+            skillsList.innerHTML = availableSkills.map(skill => `
+                <label class="flex items-center p-3 glass-card cursor-pointer">
+                    <input type="checkbox" class="skill-checkbox mr-3" value="${skill}" 
+                           ${workerSkills.includes(skill) ? 'checked' : ''}>
                     <span class="capitalize">${skill.replace('_', ' ')}</span>
                 </label>
             `).join('');
-            
+
             document.getElementById('skillsModal').classList.remove('hidden');
         }
 
-        // Close skills modal
-        function closeSkillsModal() {
-            document.getElementById('skillsModal').classList.add('hidden');
-        }
-
-        // Save skills
         async function saveSkills() {
-            const checkboxes = document.querySelectorAll('#skillsCheckboxes input:checked');
+            const checkboxes = document.querySelectorAll('#skillsList input:checked');
             const selectedSkills = Array.from(checkboxes).map(cb => cb.value);
-            
+
             try {
                 const { error } = await supabase
                     .from('workers')
                     .update({ skills: selectedSkills })
                     .eq('id', currentWorker.id);
 
-                if (error) {
-                    console.error('Error saving skills:', error);
-                    return;
-                }
+                if (error) throw error;
 
                 currentWorker.skills = selectedSkills;
-                displaySkills();
-                
-                closeSkillsModal();
-                showToast(translations[currentLanguage].skills_updated || 'Skills updated!');
-                
-                // Reload jobs to reflect skill changes
-                await loadJobs();
+                document.getElementById('skillsModal').classList.add('hidden');
+                await loadData();
+                showToast('Skills updated successfully!');
             } catch (error) {
                 console.error('Error saving skills:', error);
+                showToast(t('error_saving_skills'));
             }
         }
 
-        // Change language
-        function changeLanguage() {
-            document.getElementById('languageModal').classList.remove('hidden');
+        // Utility functions
+        function openMaps(address) {
+            const url = `https://www.google.com/maps?q=${encodeURIComponent(address)}`;
+            window.open(url, '_blank');
         }
 
-        // Close language modal
-        function closeLanguageModal() {
-            document.getElementById('languageModal').classList.add('hidden');
+        function callPhone(phone) {
+            const cleanPhone = phone.replace(/[^+\d]/g, '');
+            window.open(`tel:${cleanPhone}`, '_blank');
         }
 
-        // Set language
-        async function setLanguage(lang) {
-            currentLanguage = lang;
-            
-            try {
-                const { error } = await supabase
-                    .from('workers')
-                    .update({ language: lang })
-                    .eq('id', currentWorker.id);
-
-                if (error) {
-                    console.error('Error updating language:', error);
-                    return;
-                }
-
-                currentWorker.language = lang;
-                updateLanguage();
-                
-                closeLanguageModal();
-                showToast(translations[currentLanguage].language_changed || 'Language changed!');
-            } catch (error) {
-                console.error('Error updating language:', error);
-            }
-        }
-
-        // Update language
-        function updateLanguage() {
-            const t = translations[currentLanguage];
-            
-            // Update all elements with data-i18n attribute
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (t[key]) {
-                    element.textContent = t[key];
-                }
-            });
-            
-            // Update language button
-            const langNames = { en: 'English', ru: 'Русский', es: 'Español' };
-            document.getElementById('languageBtn').textContent = langNames[currentLanguage];
-        }
-
-        // Show toast
         function showToast(message) {
-            const toast = document.getElementById('toast');
+            // Simple toast notification
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg z-50';
             toast.textContent = message;
-            toast.classList.add('show');
-            
+            document.body.appendChild(toast);
+
             setTimeout(() => {
-                toast.classList.remove('show');
+                toast.remove();
             }, 3000);
         }
 
-        // Setup real-time subscriptions
-        function setupRealtimeSubscriptions() {
-            // Subscribe to orders changes
-            const ordersChannel = supabase
-                .channel('orders-channel')
-                .on('postgres_changes', 
-                    { event: '*', schema: 'public', table: 'orders' },
-                    async (payload) => {
-                        console.log('Orders change:', payload);
-                        
-                        // Reload relevant data based on the change
-                        if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
-                            const order = payload.new;
-                            
-                            // If it's a new pending order in our state
-                            if (order.status === 'pending' && order.state === currentWorker.state) {
-                                await loadJobs();
-                            }
-                            
-                            // If it's an order assigned to us
-                            if (order.worker_id === currentWorker.id) {
-                                await loadActiveJobs();
-                            }
-                        }
-                    }
-                )
-                .subscribe();
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
 
-            // Subscribe to worker changes (for online status, etc.)
-            const workerChannel = supabase
-                .channel('worker-channel')
-                .on('postgres_changes', 
-                    { event: 'UPDATE', schema: 'public', table: 'workers', filter: `id=eq.${currentWorker.id}` },
-                    (payload) => {
-                        console.log('Worker update:', payload);
-                        currentWorker = payload.new;
-                        setupUI();
-                    }
-                )
-                .subscribe();
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(`${tabName}Tab`).classList.remove('hidden');
+
+            currentTab = tabName;
+        }
+
+        // Event listeners
+        document.getElementById('loginButton').addEventListener('click', async () => {
+            const phone = document.getElementById('phoneInput').value;
+            if (!phone) return;
+
+            const button = document.getElementById('loginButton');
+            button.disabled = true;
+            button.innerHTML = '<div class="loading-spinner mx-auto"></div>';
+
+            await phoneLogin(phone);
+
+            button.disabled = false;
+            button.textContent = t('login_button');
+        });
+
+        document.getElementById('phoneInput').addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 1) {
+                value = '+1 (' + value.substring(1, 4) + ') ' + value.substring(4, 7) + '-' + value.substring(7, 11);
+            }
+            e.target.value = value;
+        });
+
+        document.querySelectorAll('[data-tab]').forEach(button => {
+            button.addEventListener('click', () => {
+                switchTab(button.dataset.tab);
+            });
+        });
+
+        document.getElementById('editSkillsButton').addEventListener('click', showSkillsEditor);
+        document.getElementById('closeModal').addEventListener('click', () => {
+            document.getElementById('jobModal').classList.add('hidden');
+        });
+        document.getElementById('closeSkillsModal').addEventListener('click', () => {
+            document.getElementById('skillsModal').classList.add('hidden');
+        });
+        document.getElementById('saveSkills').addEventListener('click', saveSkills);
+        document.getElementById('cancelSkills').addEventListener('click', () => {
+            document.getElementById('skillsModal').classList.add('hidden');
+        });
+
+        // Back button handling for Telegram
+        if (tg) {
+            tg.BackButton.onClick(() => {
+                if (!document.getElementById('jobModal').classList.contains('hidden')) {
+                    document.getElementById('jobModal').classList.add('hidden');
+                } else if (!document.getElementById('skillsModal').classList.contains('hidden')) {
+                    document.getElementById('skillsModal').classList.add('hidden');
+                }
+            });
+
+            // Show/hide back button based on modals
+            const observer = new MutationObserver(() => {
+                const jobModalVisible = !document.getElementById('jobModal').classList.contains('hidden');
+                const skillsModalVisible = !document.getElementById('skillsModal').classList.contains('hidden');
+                
+                if (jobModalVisible || skillsModalVisible) {
+                    tg.BackButton.show();
+                } else {
+                    tg.BackButton.hide();
+                }
+            });
+
+            observer.observe(document.getElementById('jobModal'), { attributes: true });
+            observer.observe(document.getElementById('skillsModal'), { attributes: true });
         }
 
         // Initialize app when DOM is loaded
         document.addEventListener('DOMContentLoaded', initApp);
-
-        // Make functions globally available
-        window.switchTab = switchTab;
-        window.viewJobDetails = viewJobDetails;
-        window.closeJobModal = closeJobModal;
-        window.acceptJob = acceptJob;
-        window.openMaps = openMaps;
-        window.openMapsForJob = openMapsForJob;
-        window.updateJobStatus = updateJobStatus;
-        window.editBio = editBio;
-        window.closeBioModal = closeBioModal;
-        window.saveBio = saveBio;
-        window.editSkills = editSkills;
-        window.closeSkillsModal = closeSkillsModal;
-        window.saveSkills = saveSkills;
-        window.changeLanguage = changeLanguage;
-        window.closeLanguageModal = closeLanguageModal;
-        window.setLanguage = setLanguage;
-
     </script>
 </body>
 </html>
