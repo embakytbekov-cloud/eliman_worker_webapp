@@ -2,1222 +2,1099 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ELIMAN Worker</title>
+  <title>ELIMAN WORKER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Telegram WebApp -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <base target="_blank" />
+
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
+
     body {
-      background: #020613;
-      color: #f5f5f5;
-      min-height: 100vh;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-    .app {
-      width: 100%;
-      max-width: 420px;
-      min-height: 740px;
-      background: radial-gradient(circle at top, #042b1c 0, #020613 55%);
-      border-radius: 24px;
-      padding: 20px 18px 24px;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
-      border: 1px solid rgba(0, 255, 120, 0.08);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      background: radial-gradient(circle at 50% 0%, #0a0e1a 0%, #020613 100%);
+      color: #ffffff;
+      overflow-x: hidden;
     }
 
-    /* Общие элементы */
-    .top-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .logo {
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      font-size: 14px;
-      color: #7df29b;
-    }
-    .status-pill {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(0, 255, 120, 0.08);
-      border: 1px solid rgba(0, 255, 120, 0.3);
-      color: #8bf6b0;
-    }
-    .status-pill.offline {
-      background: rgba(140, 150, 170, 0.08);
-      border-color: rgba(140, 150, 170, 0.35);
-      color: #c5cede;
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
-    h1 {
-      font-size: 22px;
-      margin-bottom: 4px;
-    }
-    .subtitle {
-      font-size: 13px;
-      color: #a5b2c7;
-      margin-bottom: 18px;
-    }
-
-    .card {
-      background: rgba(2, 10, 24, 0.9);
-      border-radius: 18px;
-      padding: 14px 14px 16px;
-      border: 1px solid rgba(122, 255, 171, 0.12);
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    .input-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .input {
-      flex: 1;
-      border-radius: 999px;
-      border: 1px solid rgba(80, 110, 150, 0.8);
-      background: rgba(5, 12, 28, 0.9);
-      padding: 8px 12px;
-      font-size: 13px;
-      color: #f2f4ff;
-      outline: none;
-    }
-    .input::placeholder {
-      color: #6c7a93;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #12c97c, #57ffb1);
+    .neon-button {
+      background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
       color: #020613;
-      box-shadow: 0 0 20px rgba(69, 255, 155, 0.35);
-    }
-    .btn-primary:active {
-      transform: scale(0.97);
-      box-shadow: 0 0 10px rgba(69, 255, 155, 0.3);
-    }
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid rgba(114, 133, 163, 0.6);
-      color: #c3d0e4;
-    }
-
-    .message {
-      font-size: 12px;
-      margin-top: 2px;
-    }
-    .message.ok {
-      color: #7df29b;
-    }
-    .message.error {
-      color: #ff8090;
-    }
-
-    .empty-text {
-      font-size: 12px;
-      color: #7d8aa4;
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    .screen {
-      flex: 1;
-      display: none;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .screen.hidden {
-      display: none;
-    }
-    .screen.visible {
-      display: flex;
-    }
-
-    /* ---------- TABS HEADER ---------- */
-    .page-header {
-      margin-bottom: 16px;
-    }
-    .page-title {
-      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .page-subtitle {
-      font-size: 13px;
-      color: #a5b2c7;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(31, 227, 136, 0.3);
     }
 
-    /* NEW JOBS */
-    .jobs-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 18px;
+    .neon-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(31, 227, 136, 0.5);
+    }
+
+    .neon-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-pill {
+      background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
+      color: #020613;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-pill.offline {
+      background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+      color: #ffffff;
     }
 
     .job-card {
-      background: rgba(2, 10, 24, 0.94);
-      border-radius: 20px;
-      border: 1px solid rgba(101, 255, 157, 0.25);
-      padding: 14px 14px 14px;
-      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
-    }
-    .job-row-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
-    }
-    .job-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 3px;
-    }
-    .job-subtitle {
-      font-size: 13px;
-      color: #c3d0e4;
-    }
-    .job-price {
-      font-size: 20px;
-      font-weight: 700;
-      color: #6bff9d;
-      margin-left: 10px;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 8px 0 10px;
-    }
-    .pill {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(24, 36, 56, 0.9);
-      color: #c3d0e4;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .pill-icon {
-      font-size: 13px;
-    }
-
-    .job-photos-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .job-photo-dot {
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #f5f5f5 0, #0d1c32 45%, #020613 90%);
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .job-photos-text {
-      font-size: 11px;
-      color: #c3d0e4;
-    }
-
-    .job-footer {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 6px;
-    }
-
-    /* ACTIVE JOBS */
-    .active-card {
-      background: rgba(2, 10, 24, 0.94);
-      border-radius: 20px;
-      border: 1px solid rgba(101, 255, 157, 0.25);
-      padding: 16px 14px 16px;
-      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
-      margin-bottom: 14px;
-    }
-    .active-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-    .active-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .active-subtitle {
-      font-size: 13px;
-      color: #c3d0e4;
-    }
-
-    .info-block {
-      margin-bottom: 8px;
-    }
-    .info-label {
-      font-size: 11px;
-      color: #7d8aa4;
-      margin-bottom: 2px;
-    }
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 14px;
-      background: rgba(8, 24, 44, 0.95);
-    }
-    .info-main {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: #d7e0f2;
-    }
-    .info-main span.icon {
-      font-size: 15px;
-    }
-    .info-action {
-      font-size: 12px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: none;
+      transition: all 0.3s ease;
       cursor: pointer;
+    }
+
+    .job-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .tab-button {
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      padding: 10px;
+      color: #64748b;
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
+      color: #020613;
       font-weight: 600;
     }
-    .info-action.map {
-      background: rgba(25, 180, 105, 0.18);
-      color: #7df29b;
-      border: 1px solid rgba(125, 242, 155, 0.6);
-    }
-    .info-action.call {
-      background: linear-gradient(135deg, #12c97c, #57ffb1);
-      color: #020613;
-      box-shadow: 0 0 12px rgba(69, 255, 155, 0.5);
+
+    .modal-overlay {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
     }
 
-    .btn-status {
-      margin-top: 14px;
-      width: 100%;
-      justify-content: center;
-      padding-block: 10px;
-      font-size: 14px;
-    }
-
-    /* PROFILE */
-    .profile-card {
-      background: rgba(2, 10, 24, 0.94);
-      border-radius: 22px;
-      border: 1px solid rgba(101, 255, 157, 0.25);
-      padding: 18px 16px 18px;
-      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
-      margin-bottom: 14px;
-    }
-    .profile-top {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #f5f5f5 0, #0d1c32 50%, #020613 95%);
-      border: 2px solid #1fe388;
-      box-shadow: 0 0 18px rgba(31, 227, 136, 0.5);
-    }
-    .profile-name {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .profile-id {
-      font-size: 12px;
-      color: #7df29b;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(20, 120, 80, 0.18);
-      display: inline-block;
-    }
-    .rating-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 6px;
-      font-size: 13px;
-      color: #d7e0f2;
-    }
-    .stars {
-      color: #35f28c;
-      font-size: 15px;
-    }
-    .jobs-count {
-      font-size: 12px;
-      color: #9aa8c3;
-    }
-
-    .profile-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .profile-btn {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: rgba(8, 24, 44, 0.95);
-      border: 1px solid rgba(72, 101, 138, 0.7);
-      font-size: 14px;
-      color: #d7e0f2;
-      cursor: pointer;
-    }
-    .profile-btn span.icon {
-      font-size: 16px;
-    }
-
-    /* BOTTOM NAV */
-    .bottom-nav {
-      margin-top: 8px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding-top: 10px;
-      border-top: 1px solid rgba(40, 60, 90, 0.8);
-    }
-    .nav-btn {
-      flex: 1;
-      text-align: center;
-      font-size: 11px;
-      color: #7d8aa4;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-    .nav-icon {
+    .skill-checkbox {
+      appearance: none;
       width: 20px;
       height: 20px;
+      border: 2px solid #1FE388;
       border-radius: 6px;
-      border: 1px solid rgba(120, 140, 170, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-    }
-    .nav-btn.active {
-      color: #7df29b;
-    }
-    .nav-btn.active .nav-icon {
-      border-color: #1fe388;
-      box-shadow: 0 0 10px rgba(31, 227, 136, 0.7);
+      background: transparent;
+      cursor: pointer;
+      position: relative;
     }
 
-    .mt-4 { margin-top: 4px; }
-    .mt-8 { margin-top: 8px; }
+    .skill-checkbox:checked {
+      background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
+    }
 
-    /* JOB DETAILS OVERLAY */
-    .details-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(1, 5, 15, 0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 50;
+    .skill-checkbox:checked::after {
+      content: '✓';
+      position: absolute;
+      top: -2px;
+      left: 3px;
+      color: #020613;
+      font-size: 14px;
+      font-weight: bold;
     }
-    .details-overlay.visible {
-      display: flex;
+
+    .loading-spinner {
+      border: 2px solid rgba(31, 227, 136, 0.3);
+      border-top: 2px solid #1FE388;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
     }
-    .details-card {
-      width: 100%;
-      max-width: 420px;
-      background: rgba(3, 10, 24, 0.98);
-      border-radius: 22px;
-      border: 1px solid rgba(101, 255, 157, 0.4);
-      padding: 18px 16px 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    .details-title {
-      font-size: 18px;
+
+    .fade-in {
+      animation: fadeIn 0.4s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .price-tag {
+      background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
+      color: #020613;
+      padding: 8px 14px;
+      border-radius: 12px;
       font-weight: 700;
-      margin-bottom: 6px;
+      font-size: 18px;
     }
-    .details-subtitle {
-      font-size: 13px;
-      color: #c3d0e4;
-      margin-bottom: 10px;
-    }
-    .details-row {
-      font-size: 13px;
-      color: #d7e0f2;
-      margin-bottom: 6px;
-    }
-    .details-label {
-      font-size: 11px;
-      color: #7d8aa4;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 2px;
-    }
-    .details-footer {
+
+    .photo-placeholder {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(31, 227, 136, 0.4);
       display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 12px;
+      align-items: center;
+      justify-content: center;
+      color: #1FE388;
+    }
+
+    .bottom-nav {
+      background: rgba(2, 6, 19, 0.96);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
   </style>
 </head>
-<body>
-<div class="app">
+<body class="min-h-screen pb-20">
 
-  <!-- LOGIN SCREEN -->
-  <div id="screen-login" class="screen visible">
-    <div>
-      <div class="top-header">
-        <div class="logo">ELIMAN WORKER</div>
-        <div id="loginStatusPill" class="status-pill offline">Offline</div>
-      </div>
+  <!-- LOGIN SCREEN (Telegram only) -->
+  <div id="loginScreen" class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-black mb-2">ELIMAN WORKER</h1>
+      <div id="loginStatus" class="status-pill offline inline-block mb-6">Offline</div>
+      <h2 id="welcomeTitle" class="text-2xl font-semibold mb-2">Welcome, worker</h2>
+      <p id="welcomeSubtitle" class="text-gray-400 text-sm">
+        Open this app from Telegram to start accepting jobs
+      </p>
+    </div>
 
-      <h1>Welcome, worker</h1>
-      <div class="subtitle">
-        Login with your phone to see available jobs.
-      </div>
-
-      <div class="card">
-        <div class="section-title">Worker login</div>
-        <div class="input-row">
-          <input id="phoneInput" class="input" placeholder="+1 (312) 555-0147" />
-          <button id="loginBtn" class="btn btn-primary">Login</button>
-        </div>
-        <div id="loginMessage" class="message"></div>
+    <div class="w-full max-w-sm">
+      <div class="glass-card p-6 mb-6 text-center">
+        <p id="loginHint" class="text-gray-400 text-sm mb-4">
+          This mini app works only inside Telegram. Open via bot.
+        </p>
+        <button id="loginButton" class="neon-button w-full">
+          <span id="loginButtonText">Try Telegram Login</span>
+        </button>
+        <div id="loginError" class="text-red-400 text-sm mt-3 text-center hidden"></div>
       </div>
     </div>
   </div>
 
-  <!-- TABS SCREEN -->
-  <div id="screen-tabs" class="screen hidden">
-    <div>
-      <div class="top-header">
-        <div class="logo">ELIMAN WORKER</div>
-        <div id="tabsStatusPill" class="status-pill">Online</div>
-      </div>
+  <!-- MAIN APP -->
+  <div id="mainScreen" class="hidden min-h-screen">
 
-      <div class="page-header">
-        <div id="tabsTitle" class="page-title">New Jobs</div>
-        <div id="tabsSubtitle" class="page-subtitle">
-          Smart-matched opportunities for your expertise.
+    <!-- HEADER -->
+    <div class="sticky top-0 z-40 bg-black/60 backdrop-blur-lg border-b border-white/10">
+      <div class="flex items-center justify-between p-4">
+        <div>
+          <div class="text-xs tracking-[0.25em] text-green-400 uppercase mb-1">Eliman</div>
+          <h1 class="text-xl font-bold">Worker Console</h1>
+        </div>
+        <div id="onlineStatus" class="status-pill">Online</div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="tabContent" class="p-4 pb-24">
+
+      <!-- JOBS TAB -->
+      <div id="jobsTab" class="tab-content">
+        <div class="mb-6">
+          <h2 id="newJobsTitle" class="text-2xl font-bold mb-1">New Jobs</h2>
+          <p id="newJobsSubtitle" class="text-gray-400 text-sm">
+            Available jobs matching your skills
+          </p>
+        </div>
+        <div id="jobsList" class="space-y-4"></div>
+        <div id="noJobsText" class="text-center text-gray-400 py-8 hidden">
+          <i class="fas fa-inbox text-4xl mb-4"></i>
+          <p>No jobs available right now</p>
         </div>
       </div>
 
-      <!-- Jobs Tab -->
-      <div id="tab-jobs">
-        <div id="jobsList" class="jobs-list"></div>
-        <div id="jobsEmpty" class="empty-text">No new jobs yet.</div>
+      <!-- ACTIVE TAB -->
+      <div id="activeTab" class="tab-content hidden">
+        <div class="mb-6">
+          <h2 id="activeJobsTitle" class="text-2xl font-bold mb-1">Active Jobs</h2>
+          <p id="activeJobsSubtitle" class="text-gray-400 text-sm">
+            Jobs you're currently working on
+          </p>
+        </div>
+        <div id="activeJobsList" class="space-y-4"></div>
+        <div id="noActiveJobsText" class="text-center text-gray-400 py-8 hidden">
+          <i class="fas fa-clock text-4xl mb-4"></i>
+          <p>No active jobs</p>
+        </div>
       </div>
 
-      <!-- Active Tab -->
-      <div id="tab-active" style="display:none;">
-        <div id="activeList"></div>
-        <div id="activeEmpty" class="empty-text">You have no active jobs.</div>
-      </div>
+      <!-- PROFILE TAB -->
+      <div id="profileTab" class="tab-content hidden">
+        <div class="mb-6">
+          <h2 id="profileTitle" class="text-2xl font-bold mb-1">Profile</h2>
+        </div>
 
-      <!-- Profile Tab -->
-      <div id="tab-profile" style="display:none;">
-        <div class="profile-card">
-          <div class="profile-top">
-            <div class="avatar"></div>
+        <div class="glass-card p-6 mb-6">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-2xl font-bold mr-4 shadow-lg">
+              <span id="profileInitials">WW</span>
+            </div>
             <div>
-              <div id="profileName" class="profile-name">Worker</div>
-              <div id="profileId" class="profile-id">ELM-0000</div>
-              <div class="rating-row">
-                <span id="profileStars" class="stars">★★★★★</span>
-                <span id="profileRating">5.0</span>
-                <span id="profileJobs" class="jobs-count">0 jobs completed</span>
-              </div>
+              <h3 id="profileName" class="text-xl font-semibold">Worker</h3>
+              <p id="profileId" class="text-gray-400 text-sm">ID: •••••••</p>
             </div>
+          </div>
+          <div class="flex items-center mb-4">
+            <div class="text-yellow-400 text-lg mr-2">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <span id="profileRatingLabel" class="text-sm text-gray-400">5.0 rating</span>
+          </div>
+          <div class="text-center">
+            <div id="jobsCompleted" class="text-2xl font-bold text-green-400">0</div>
+            <div id="profileJobsLabel" class="text-sm text-gray-400">jobs completed</div>
           </div>
         </div>
 
-        <div class="profile-actions">
-          <button id="editSkillsBtn" class="profile-btn">
-            <span><span class="icon">✂</span> Edit Skills</span>
-            <span>›</span>
-          </button>
-          <button class="profile-btn">
-            <span><span class="icon">⏱</span> Job History</span>
-            <span>›</span>
-          </button>
-        </div>
+        <button id="editSkillsButton" class="neon-button w-full mb-3">
+          <span id="editSkillsText">Edit Skills</span>
+        </button>
       </div>
+
     </div>
 
-    <!-- Bottom Nav -->
-    <div class="bottom-nav">
-      <div class="nav-btn active" data-tab="jobs">
-        <div class="nav-icon">🧳</div>
-        <div>Jobs</div>
-      </div>
-      <div class="nav-btn" data-tab="active">
-        <div class="nav-icon">✔</div>
-        <div>Active</div>
-      </div>
-      <div class="nav-btn" data-tab="profile">
-        <div class="nav-icon">👤</div>
-        <div>Profile</div>
+    <!-- BOTTOM NAV -->
+    <div class="fixed bottom-0 left-0 right-0 bottom-nav z-50">
+      <div class="flex justify-around p-2">
+        <button class="tab-button active flex flex-col items-center flex-1" data-tab="jobs">
+          <i class="fas fa-briefcase text-xl mb-1"></i>
+          <span id="jobsTabLabel" class="text-xs">Jobs</span>
+        </button>
+        <button class="tab-button flex flex-col items-center flex-1" data-tab="active">
+          <i class="fas fa-clock text-xl mb-1"></i>
+          <span id="activeTabLabel" class="text-xs">Active</span>
+        </button>
+        <button class="tab-button flex flex-col items-center flex-1" data-tab="profile">
+          <i class="fas fa-user text-xl mb-1"></i>
+          <span id="profileTabLabel" class="text-xs">Profile</span>
+        </button>
       </div>
     </div>
   </div>
 
-</div>
-
-<!-- JOB DETAILS OVERLAY -->
-<div id="jobDetailsOverlay" class="details-overlay">
-  <div class="details-card">
-    <div class="details-title" id="detailsTitle">Service name</div>
-    <div class="details-subtitle" id="detailsSubtitle">Notes from client</div>
-
-    <div class="details-row">
-      <div class="details-label">ADDRESS</div>
-      <div id="detailsAddress">No address</div>
-    </div>
-
-    <div class="details-row">
-      <div class="details-label">TIME</div>
-      <div id="detailsTime">Today, 00:00</div>
-    </div>
-
-    <div class="details-row">
-      <div class="details-label">PRICE</div>
-      <div id="detailsPrice">$—</div>
-    </div>
-
-    <div class="details-row">
-      <div class="details-label">SERVICE TYPE</div>
-      <div id="detailsServiceType">cleaning</div>
-    </div>
-
-    <div class="details-footer">
-      <button id="detailsCloseBtn" class="btn btn-secondary">Close</button>
-      <button id="detailsAcceptBtn" class="btn btn-primary">Accept Job</button>
+  <!-- JOB DETAILS MODAL -->
+  <div id="jobModal" class="fixed inset-0 z-50 hidden modal-overlay">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="glass-card max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-4">
+            <h3 id="modalTitle" class="text-xl font-bold">Job Details</h3>
+            <button id="closeModal" class="text-gray-400 hover:text-white">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div id="modalContent"></div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<script type="module">
-  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+  <!-- SKILLS EDITOR MODAL -->
+  <div id="skillsModal" class="fixed inset-0 z-50 hidden modal-overlay">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="glass-card max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-4">
+            <h3 id="skillsModalTitle" class="text-xl font-bold">Edit Skills</h3>
+            <button id="closeSkillsModal" class="text-gray-400 hover:text-white">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div id="skillsList" class="space-y-3 mb-6"></div>
+          <div class="flex gap-3">
+            <button id="saveSkills" class="neon-button flex-1">
+              <span id="saveButtonText">Save</span>
+            </button>
+            <button id="cancelSkills"
+              class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-2xl font-semibold text-sm">
+              <span id="cancelButtonText">Cancel</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
-  const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
+  <!-- APP LOGIC -->
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // 🔐 ТВОЙ Supabase
+    const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
 
-  const WORKERS_TABLE = "workers";
-  const ORDERS_TABLE  = "orders";
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const screenLogin  = document.getElementById("screen-login");
-  const screenTabs   = document.getElementById("screen-tabs");
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.expand();
+      tg.disableVerticalSwipes();
+    }
 
-  const loginStatus  = document.getElementById("loginStatusPill");
-  const tabsStatus   = document.getElementById("tabsStatusPill");
-  const phoneInput   = document.getElementById("phoneInput");
-  const loginBtn     = document.getElementById("loginBtn");
-  const loginMessage = document.getElementById("loginMessage");
+    // 🌍 i18n
+    const i18n = {
+      en: {
+        welcomeTitle: "Welcome, worker",
+        welcomeSubtitle: "Sign in to start accepting jobs in your area",
+        loginButton: "Try Telegram Login",
+        loginHint: "This mini app works only inside Telegram. Open via bot.",
+        loginErrorNoWorker: "Worker not found. Please contact support.",
+        jobsTabLabel: "Jobs",
+        activeTabLabel: "Active",
+        profileTabLabel: "Profile",
+        newJobsTitle: "New Jobs",
+        newJobsSubtitle: "Available jobs matching your skills",
+        activeJobsTitle: "Active Jobs",
+        activeJobsSubtitle: "Jobs you're currently working on",
+        profileTitle: "Profile",
+        profileRatingLabel: "rating",
+        profileJobsLabel: "jobs completed",
+        editSkillsButton: "Edit Skills",
+        saveButton: "Save",
+        cancelButton: "Cancel",
+        noJobsText: "No jobs available right now",
+        noActiveJobsText: "No active jobs",
+        viewDetailsButton: "View Details →",
+        acceptJobButton: "Accept Job",
+        startJobButton: "Start Job",
+        completeJobButton: "Complete Job",
+        addressLabel: "Address",
+        timeLabel: "Time",
+        clientLabel: "Client",
+        priceLabel: "Price",
+        skillsLabel: "Skills",
+        notesLabel: "Notes",
+        errorLoadingJobs: "Error loading jobs",
+        errorUpdatingJob: "Error updating job",
+        errorSavingSkills: "Error saving skills",
+        jobAcceptedToast: "Job accepted!",
+        jobStartedToast: "Job started!",
+        jobCompletedToast: "Job completed!",
+        skillsUpdatedToast: "Skills updated!",
+      },
+      ru: {
+        welcomeTitle: "Добро пожаловать, работник",
+        welcomeSubtitle: "Войдите, чтобы начать принимать заказы рядом с вами",
+        loginButton: "Войти через Telegram",
+        loginHint: "Это мини-приложение работает только внутри Telegram. Откройте через бота.",
+        loginErrorNoWorker: "Работник не найден. Обратитесь в поддержку.",
+        jobsTabLabel: "Заказы",
+        activeTabLabel: "Активные",
+        profileTabLabel: "Профиль",
+        newJobsTitle: "Новые заказы",
+        newJobsSubtitle: "Доступные заказы по вашим навыкам",
+        activeJobsTitle: "Активные заказы",
+        activeJobsSubtitle: "Заказы, над которыми вы сейчас работаете",
+        profileTitle: "Профиль",
+        profileRatingLabel: "рейтинг",
+        profileJobsLabel: "завершённых заказов",
+        editSkillsButton: "Изменить навыки",
+        saveButton: "Сохранить",
+        cancelButton: "Отмена",
+        noJobsText: "Нет доступных заказов",
+        noActiveJobsText: "Нет активных заказов",
+        viewDetailsButton: "Подробнее →",
+        acceptJobButton: "Принять заказ",
+        startJobButton: "Начать работу",
+        completeJobButton: "Завершить работу",
+        addressLabel: "Адрес",
+        timeLabel: "Время",
+        clientLabel: "Клиент",
+        priceLabel: "Цена",
+        skillsLabel: "Навыки",
+        notesLabel: "Заметки",
+        errorLoadingJobs: "Ошибка загрузки заказов",
+        errorUpdatingJob: "Ошибка обновления заказа",
+        errorSavingSkills: "Ошибка сохранения навыков",
+        jobAcceptedToast: "Заказ принят!",
+        jobStartedToast: "Работа начата!",
+        jobCompletedToast: "Работа завершена!",
+        skillsUpdatedToast: "Навыки обновлены!",
+      },
+      es: {
+        welcomeTitle: "Bienvenido, trabajador",
+        welcomeSubtitle: "Inicia sesión para aceptar trabajos en tu área",
+        loginButton: "Iniciar con Telegram",
+        loginHint: "Esta mini app solo funciona dentro de Telegram. Ábrela desde el bot.",
+        loginErrorNoWorker: "Trabajador no encontrado. Contacta soporte.",
+        jobsTabLabel: "Trabajos",
+        activeTabLabel: "Activos",
+        profileTabLabel: "Perfil",
+        newJobsTitle: "Nuevos trabajos",
+        newJobsSubtitle: "Trabajos disponibles según tus habilidades",
+        activeJobsTitle: "Trabajos activos",
+        activeJobsSubtitle: "Trabajos que estás realizando",
+        profileTitle: "Perfil",
+        profileRatingLabel: "calificación",
+        profileJobsLabel: "trabajos completados",
+        editSkillsButton: "Editar habilidades",
+        saveButton: "Guardar",
+        cancelButton: "Cancelar",
+        noJobsText: "No hay trabajos disponibles",
+        noActiveJobsText: "No hay trabajos activos",
+        viewDetailsButton: "Ver detalles →",
+        acceptJobButton: "Aceptar trabajo",
+        startJobButton: "Empezar trabajo",
+        completeJobButton: "Completar trabajo",
+        addressLabel: "Dirección",
+        timeLabel: "Hora",
+        clientLabel: "Cliente",
+        priceLabel: "Precio",
+        skillsLabel: "Habilidades",
+        notesLabel: "Notas",
+        errorLoadingJobs: "Error al cargar trabajos",
+        errorUpdatingJob: "Error al actualizar trabajo",
+        errorSavingSkills: "Error al guardar habilidades",
+        jobAcceptedToast: "¡Trabajo aceptado!",
+        jobStartedToast: "¡Trabajo iniciado!",
+        jobCompletedToast: "¡Trabajo completado!",
+        skillsUpdatedToast: "¡Habilidades actualizadas!",
+      },
+      ky: {
+        welcomeTitle: "Кош келиңиз, жумушчу",
+        welcomeSubtitle: "Айланаңыздагы жумуштарды кабыл алуу үчүн кириңиз",
+        loginButton: "Telegram аркылуу кирүү",
+        loginHint: "Бул мини-тиркеме Telegram ичинде гана иштейт. Бот аркылуу ачыңыз.",
+        loginErrorNoWorker: "Жумушчу табылган жок. Колдоо кызматына кайрылыңыз.",
+        jobsTabLabel: "Жумуштар",
+        activeTabLabel: "Активдүү",
+        profileTabLabel: "Профиль",
+        newJobsTitle: "Жаңы жумуштар",
+        newJobsSubtitle: "Сиздин жөндөмдөрүңүзгө жараша жумуштар",
+        activeJobsTitle: "Активдүү жумуштар",
+        activeJobsSubtitle: "Азыр аткарып жаткан жумуштарыңыз",
+        profileTitle: "Профиль",
+        profileRatingLabel: "рейтинг",
+        profileJobsLabel: "аяктаган жумуштар",
+        editSkillsButton: "Жөндөмдөрдү өзгөртүү",
+        saveButton: "Сактоо",
+        cancelButton: "Жокко чыгаруу",
+        noJobsText: "Жумуштар азыр жок",
+        noActiveJobsText: "Активдүү жумуштар жок",
+        viewDetailsButton: "Кененирээк →",
+        acceptJobButton: "Жумушту кабыл алуу",
+        startJobButton: "Жумушту баштоо",
+        completeJobButton: "Жумушту бүтүрүү",
+        addressLabel: "Дарек",
+        timeLabel: "Убакыт",
+        clientLabel: "Кардар",
+        priceLabel: "Баа",
+        skillsLabel: "Жөндөмдөр",
+        notesLabel: "Эскертмелер",
+        errorLoadingJobs: "Жумуштарды жүктөөдө ката",
+        errorUpdatingJob: "Жумушту жаңыртууда ката",
+        errorSavingSkills: "Жөндөмдөрдү сактоодо ката",
+        jobAcceptedToast: "Жумуш кабыл алынды!",
+        jobStartedToast: "Жумуш башталды!",
+        jobCompletedToast: "Жумуш аяктады!",
+        skillsUpdatedToast: "Жөндөмдөр жаңыртылды!",
+      },
+    };
 
-  const tabsTitle    = document.getElementById("tabsTitle");
-  const tabsSubtitle = document.getElementById("tabsSubtitle");
+    let currentLanguage = "en";
+    let currentWorker = null;
+    let jobs = [];
+    let activeJobs = [];
 
-  const jobsList   = document.getElementById("jobsList");
-  const jobsEmpty  = document.getElementById("jobsEmpty");
-  const activeList = document.getElementById("activeList");
-  const activeEmpty= document.getElementById("activeEmpty");
+    const availableSkills = [
+      "cleaning",
+      "handyman",
+      "locksmith",
+      "moving",
+      "appliance_repair",
+      "painting",
+      "plumbing",
+      "electrical",
+    ];
 
-  const profileName   = document.getElementById("profileName");
-  const profileId     = document.getElementById("profileId");
-  const profileStars  = document.getElementById("profileStars");
-  const profileRating = document.getElementById("profileRating");
-  const profileJobs   = document.getElementById("profileJobs");
+    const $ = (id) => document.getElementById(id);
 
-  const navButtons    = document.querySelectorAll(".nav-btn");
-  const editSkillsBtn = document.getElementById("editSkillsBtn");
+    const t = (key) => i18n[currentLanguage][key] || key;
 
-  // Job details overlay elements
-  const jobDetailsOverlay = document.getElementById("jobDetailsOverlay");
-  const detailsTitle      = document.getElementById("detailsTitle");
-  const detailsSubtitle   = document.getElementById("detailsSubtitle");
-  const detailsAddress    = document.getElementById("detailsAddress");
-  const detailsTime       = document.getElementById("detailsTime");
-  const detailsPrice      = document.getElementById("detailsPrice");
-  const detailsServiceType= document.getElementById("detailsServiceType");
-  const detailsCloseBtn   = document.getElementById("detailsCloseBtn");
-  const detailsAcceptBtn  = document.getElementById("detailsAcceptBtn");
+    function updateTexts() {
+      $("welcomeTitle").textContent = t("welcomeTitle");
+      $("welcomeSubtitle").textContent = t("welcomeSubtitle");
+      $("loginButtonText").textContent = t("loginButton");
+      $("loginHint").textContent = t("loginHint");
 
-  let currentWorker = null;
-  let currentTab = "jobs";
+      $("newJobsTitle").textContent = t("newJobsTitle");
+      $("newJobsSubtitle").textContent = t("newJobsSubtitle");
+      $("activeJobsTitle").textContent = t("activeJobsTitle");
+      $("activeJobsSubtitle").textContent = t("activeJobsSubtitle");
+      $("profileTitle").textContent = t("profileTitle");
+      $("profileRatingLabel").textContent = "5.0 " + t("profileRatingLabel");
+      $("profileJobsLabel").textContent = t("profileJobsLabel");
+      $("editSkillsText").textContent = t("editSkillsButton");
+      $("saveButtonText").textContent = t("saveButton");
+      $("cancelButtonText").textContent = t("cancelButton");
+      $("skillsModalTitle").textContent = t("skillsModalTitle") || t("editSkillsButton");
+      $("modalTitle").textContent = t("modalTitle") || "Job Details";
+      $("jobsTabLabel").textContent = t("jobsTabLabel");
+      $("activeTabLabel").textContent = t("activeTabLabel");
+      $("profileTabLabel").textContent = t("profileTabLabel");
 
-  // Для Job Details
-  let selectedOrder = null;
-  let selectedOrderCard = null;
+      $("noJobsText").querySelector("p").textContent = t("noJobsText");
+      $("noActiveJobsText").querySelector("p").textContent = t("noActiveJobsText");
+    }
 
-  // ------------ LOGIN -------------
-  loginBtn.addEventListener("click", async () => {
-    const phone = phoneInput.value.trim();
+    function showToast(message) {
+      const toast = document.createElement("div");
+      toast.className =
+        "fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg z-[9999] shadow-lg text-sm";
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    }
 
-    loginMessage.textContent = "";
-    loginMessage.className = "message";
+    function showLoginError(msg) {
+      const el = $("loginError");
+      el.textContent = msg;
+      el.classList.remove("hidden");
+    }
 
-    loginBtn.disabled = true;
-    loginBtn.textContent = "Checking...";
+    function showMainScreen() {
+      $("loginScreen").classList.add("hidden");
+      $("mainScreen").classList.remove("hidden");
+      $("loginStatus").classList.remove("offline");
+      $("loginStatus").textContent = "Telegram";
+      $("onlineStatus").textContent = "Online";
+      updateProfileUI();
+    }
 
-    try {
-      // ВРЕМЕННО: просто берём первого рабочего из БД
-      const { data: workers, error } = await supabase
-        .from(WORKERS_TABLE)
-        .select("*")
-        .limit(1);
+    function updateProfileUI() {
+      if (!currentWorker) return;
+      const name = currentWorker.full_name || "Worker";
+      const initials = name
+        .split(" ")
+        .filter(Boolean)
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
 
-      if (error) {
-        console.error(error);
-        loginMessage.textContent = "Supabase error: " + error.message;
-        loginMessage.className = "message error";
+      $("profileInitials").textContent = initials || "W";
+      $("profileName").textContent = name;
+      const idStr = String(currentWorker.id || "");
+      $("profileId").textContent = "ID: ••••" + idStr.slice(-4);
+      $("jobsCompleted").textContent = currentWorker.jobs_completed || 0;
+    }
+
+    async function telegramLogin() {
+      if (!tg || !tg.initDataUnsafe?.user) {
+        showLoginError("Open this app from Telegram bot.");
         return;
       }
 
-      if (!workers || workers.length === 0) {
-        loginMessage.textContent = "No workers in DB.";
-        loginMessage.className = "message error";
-        return;
-      }
+      const u = tg.initDataUnsafe.user;
+      const telegram_id = String(u.id);
+      const full_name = [u.first_name, u.last_name].filter(Boolean).join(" ") || "Worker";
+      const lang_code = u.language_code || "en";
 
-      currentWorker = workers[0];
+      if (lang_code === "ru") currentLanguage = "ru";
+      else if (lang_code === "es") currentLanguage = "es";
+      else if (lang_code === "ky" || lang_code === "kg") currentLanguage = "ky";
+      else currentLanguage = "en";
+      updateTexts();
 
-      loginStatus.classList.remove("offline");
-      loginStatus.textContent = "Online";
+      try {
+        // Ищем worker по telegram_id
+        let { data: worker, error } = await supabase
+          .from("workers")
+          .select("*")
+          .eq("telegram_id", telegram_id)
+          .single();
 
-      loginMessage.textContent = "Logged in!";
-      loginMessage.className = "message ok";
+        if (error && error.code !== "PGRST116") throw error;
 
-      updateProfileUI();
-      await refreshJobs();
-      await refreshActiveJobs();
+        if (!worker) {
+          const { data: newWorker, error: insertErr } = await supabase
+            .from("workers")
+            .insert({
+              telegram_id,
+              full_name,
+              language: currentLanguage,
+              skills: [],
+            })
+            .select()
+            .single();
 
-      // Переход на табы
-      screenLogin.classList.add("hidden");
-      screenLogin.classList.remove("visible");
-      screenTabs.classList.remove("hidden");
-      screenTabs.classList.add("visible");
-      tabsStatus.textContent = "Online";
-      setTab("jobs");
-
-    } catch (e) {
-      console.error(e);
-      loginMessage.textContent = "Unexpected error";
-      loginMessage.className = "message error";
-    } finally {
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Login";
-    }
-  });
-
-  // ------------ TABS -------------
-  navButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const tab = btn.getAttribute("data-tab");
-      setTab(tab);
-    });
-  });
-
-  function setTab(tab) {
-    currentTab = tab;
-
-    navButtons.forEach(btn => {
-      btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
-    });
-
-    document.getElementById("tab-jobs").style.display    = tab === "jobs"    ? "block" : "none";
-    document.getElementById("tab-active").style.display  = tab === "active"  ? "block" : "none";
-    document.getElementById("tab-profile").style.display = tab === "profile" ? "block" : "none";
-
-    if (tab === "jobs") {
-      tabsTitle.textContent = "New Jobs";
-      tabsSubtitle.textContent = "Smart-matched opportunities for your expertise.";
-      refreshJobs();
-    } else if (tab === "active") {
-      tabsTitle.textContent = "Active Jobs";
-      tabsSubtitle.textContent = "Mission control for your accepted work.";
-      refreshActiveJobs();
-    } else {
-      tabsTitle.textContent = "Profile";
-      tabsSubtitle.textContent = "Your rating, skills and job history.";
-      updateProfileUI();
-    }
-  }
-
-  // ------------ DATA LOADERS -------------
-
-  // NEW JOBS с фильтром по skills
-  async function refreshJobs() {
-    if (!currentWorker) return;
-
-    jobsList.innerHTML = "";
-    jobsEmpty.style.display = "none";
-
-    let workerSkills = currentWorker.skills || [];
-    if (!Array.isArray(workerSkills)) {
-      // если вдруг строка через запятую
-      if (typeof workerSkills === "string" && workerSkills.trim() !== "") {
-        workerSkills = workerSkills.split(",").map(s => s.trim());
-      } else {
-        workerSkills = [];
-      }
-    }
-
-    if (workerSkills.length === 0) {
-      jobsEmpty.textContent = "Your skill list is empty. No jobs available.";
-      jobsEmpty.style.display = "block";
-      return;
-    }
-
-    const { data: orders, error } = await supabase
-      .from(ORDERS_TABLE)
-      .select("*")
-      .is("worker_id", null)
-      .eq("status", "pending")
-      .in("service_type", workerSkills)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error(error);
-      jobsEmpty.textContent = "Error loading jobs.";
-      jobsEmpty.style.display = "block";
-      return;
-    }
-
-    if (!orders || orders.length === 0) {
-      jobsEmpty.textContent = "No new jobs yet.";
-      jobsEmpty.style.display = "block";
-      return;
-    }
-
-    orders.forEach(order => {
-      const card = document.createElement("div");
-      card.className = "job-card";
-
-      const title    = order.service_name || "Service";
-      const subtitle = order.notes || "No description from client.";
-      const address  = order.address || "No address";
-      const dateStr  = order.date || "Today";
-      const timeStr  = order.time || "";
-      const priceStr = order.price ? `$${order.price}` : "$—";
-
-      card.innerHTML = `
-        <div class="job-row-top">
-          <div>
-            <div class="job-title">${title}</div>
-            <div class="job-subtitle">${subtitle}</div>
-          </div>
-          <div class="job-price">${priceStr}</div>
-        </div>
-
-        <div class="pill-row">
-          <span class="pill">
-            <span class="pill-icon">📍</span>${address}
-          </span>
-          <span class="pill">
-            <span class="pill-icon">🕒</span>${dateStr}, ${timeStr}
-          </span>
-        </div>
-
-        <div class="job-photos-row">
-          <div class="job-photo-dot"></div>
-          <div class="job-photo-dot"></div>
-          <div class="job-photo-dot"></div>
-          <div class="job-photos-text">3 photos</div>
-        </div>
-
-        <div class="job-footer">
-          <button class="btn btn-primary btn-details">View Details →</button>
-        </div>
-      `;
-
-      const btnDetails = card.querySelector(".btn-details");
-      btnDetails.addEventListener("click", () => openJobDetails(order, card));
-
-      jobsList.appendChild(card);
-    });
-  }
-
-  // ACTIVE JOBS
-  async function refreshActiveJobs() {
-    if (!currentWorker) return;
-
-    activeList.innerHTML = "";
-    activeEmpty.style.display = "none";
-
-    const { data: orders, error } = await supabase
-      .from(ORDERS_TABLE)
-      .select("*")
-      .eq("worker_id", currentWorker.id)
-      .in("status", ["accepted", "in_progress"]) // показываем только активные
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error(error);
-      activeEmpty.textContent = "Error loading active jobs.";
-      activeEmpty.style.display = "block";
-      return;
-    }
-
-    if (!orders || orders.length === 0) {
-      activeEmpty.textContent = "You have no active jobs.";
-      activeEmpty.style.display = "block";
-      return;
-    }
-
-    orders.forEach(order => {
-      const card = document.createElement("div");
-      card.className = "active-card";
-
-      const title    = order.service_name || "Service";
-      const subtitle = order.notes || "No description from client.";
-      const address  = order.address || "No address";
-      const dateStr  = order.date || "Today";
-      const timeStr  = order.time || "";
-      const clientPhone = order.client_phone || "+1 (312) 555-0147";
-      const priceStr = order.price ? `$${order.price}` : "$—";
-
-      const statusLabel = order.status === "in_progress" ? "In progress" : "Accepted";
-
-      card.innerHTML = `
-        <div class="active-title-row">
-          <div>
-            <div class="active-title">${title}</div>
-            <div class="active-subtitle">${subtitle}</div>
-          </div>
-          <div class="job-price">${priceStr}</div>
-        </div>
-
-        <div class="info-block">
-          <div class="info-label">STATUS</div>
-          <div class="info-row">
-            <div class="info-main">
-              <span class="icon">⚡</span>
-              <span>${statusLabel}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="info-block">
-          <div class="info-label">ADDRESS</div>
-          <div class="info-row">
-            <div class="info-main">
-              <span class="icon">📍</span>
-              <span>${address}</span>
-            </div>
-            <button class="info-action map">Maps</button>
-          </div>
-        </div>
-
-        <div class="info-block">
-          <div class="info-label">TIME</div>
-          <div class="info-row">
-            <div class="info-main">
-              <span class="icon">🕒</span>
-              <span>${dateStr}, ${timeStr}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="info-block">
-          <div class="info-label">CLIENT</div>
-          <div class="info-row">
-            <div class="info-main">
-              <span class="icon">📞</span>
-              <span>${clientPhone}</span>
-            </div>
-            <button class="info-action call">CALL</button>
-          </div>
-        </div>
-
-        <button class="btn btn-primary btn-status"></button>
-      `;
-
-      const mapBtn = card.querySelector(".info-action.map");
-      mapBtn.addEventListener("click", () => {
-        const url = "https://maps.google.com/?q=" + encodeURIComponent(address);
-        window.open(url, "_blank");
-      });
-
-      const callBtn = card.querySelector(".info-action.call");
-      callBtn.addEventListener("click", () => {
-        window.open("tel:" + clientPhone.replace(/[^+\d]/g, ""), "_blank");
-      });
-
-      const statusBtn = card.querySelector(".btn-status");
-      if (order.status === "accepted") {
-        statusBtn.textContent = "Start Job";
-      } else if (order.status === "in_progress") {
-        statusBtn.textContent = "Mark as Completed";
-      } else {
-        statusBtn.textContent = "Completed";
-        statusBtn.disabled = true;
-      }
-
-      statusBtn.addEventListener("click", () => handleStatusAction(order, card, statusBtn));
-
-      activeList.appendChild(card);
-    });
-  }
-
-  // ------------ JOB DETAILS OVERLAY -------------
-
-  function openJobDetails(order, card) {
-    selectedOrder = order;
-    selectedOrderCard = card;
-
-    detailsTitle.textContent = order.service_name || "Service";
-    detailsSubtitle.textContent = order.notes || "No description from client.";
-    detailsAddress.textContent = order.address || "No address";
-
-    const dateStr = order.date || "Today";
-    const timeStr = order.time || "";
-    detailsTime.textContent = `${dateStr}${timeStr ? ", " + timeStr : ""}`;
-
-    detailsPrice.textContent = order.price ? `$${order.price}` : "$—";
-    detailsServiceType.textContent = order.service_type || "-";
-
-    jobDetailsOverlay.classList.add("visible");
-  }
-
-  function closeJobDetails() {
-    jobDetailsOverlay.classList.remove("visible");
-    selectedOrder = null;
-    selectedOrderCard = null;
-  }
-
-  detailsCloseBtn.addEventListener("click", () => {
-    closeJobDetails();
-  });
-
-  detailsAcceptBtn.addEventListener("click", async () => {
-    if (!selectedOrder) return;
-    detailsAcceptBtn.disabled = true;
-    detailsAcceptBtn.textContent = "Accepting...";
-
-    await acceptJob(selectedOrder, selectedOrderCard, detailsAcceptBtn, true);
-
-    detailsAcceptBtn.disabled = false;
-    detailsAcceptBtn.textContent = "Accept Job";
-    closeJobDetails();
-  });
-
-  // ------------ ACTIONS -------------
-
-  async function acceptJob(order, card, button, fromDetails = false) {
-    if (!currentWorker) return;
-    if (button) {
-      button.disabled = true;
-    }
-
-    const { error } = await supabase
-      .from(ORDERS_TABLE)
-      .update({
-        worker_id: currentWorker.id,
-        status: "accepted"
-      })
-      .eq("id", order.id);
-
-    if (error) {
-      console.error(error);
-      alert("Error accepting job");
-      if (button) {
-        button.disabled = false;
-        button.textContent = fromDetails ? "Accept Job" : "View Details →";
-      }
-      return;
-    }
-
-    // Автоматически скрываем заказ из New Jobs
-    if (card) {
-      card.style.opacity = 0.0;
-      setTimeout(() => {
-        if (card.parentNode) {
-          card.parentNode.removeChild(card);
+          if (insertErr) throw insertErr;
+          worker = newWorker;
         }
-      }, 200);
+
+        currentWorker = worker;
+        showMainScreen();
+        await loadAllData();
+      } catch (e) {
+        console.error("Telegram login error:", e);
+        showLoginError(t("loginErrorNoWorker"));
+      }
     }
 
-    await refreshActiveJobs();
-    await refreshJobs();
-  }
+    async function loadAllData() {
+      await Promise.all([loadJobs(), loadActiveJobs()]);
+    }
 
-  async function handleStatusAction(order, card, button) {
-    if (!currentWorker) return;
+    async function loadJobs() {
+      if (!currentWorker) return;
+      try {
+        const { data: orders, error } = await supabase
+          .from("orders")
+          .select("*")
+          .is("worker_id", null)
+          .eq("status", "pending")
+          .order("created_at", { ascending: false });
 
-    if (order.status === "accepted") {
-      // START JOB → in_progress
-      button.disabled = true;
-      button.textContent = "Starting...";
-      const { error } = await supabase
-        .from(ORDERS_TABLE)
-        .update({ status: "in_progress" })
-        .eq("id", order.id);
+        if (error) throw error;
 
-      if (error) {
-        console.error(error);
-        alert("Error starting job");
-        button.disabled = false;
-        button.textContent = "Start Job";
+        const workerSkills = currentWorker.skills || [];
+        jobs = orders.filter(
+          (o) => workerSkills.length === 0 || workerSkills.includes(o.service_type)
+        );
+
+        renderJobs();
+      } catch (e) {
+        console.error("loadJobs error:", e);
+        showToast(t("errorLoadingJobs"));
+      }
+    }
+
+    async function loadActiveJobs() {
+      if (!currentWorker) return;
+      try {
+        const { data: orders, error } = await supabase
+          .from("orders")
+          .select("*")
+          .eq("worker_id", currentWorker.id)
+          .in("status", ["accepted", "in_progress"])
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        activeJobs = orders;
+        renderActiveJobs();
+      } catch (e) {
+        console.error("loadActiveJobs error:", e);
+        showToast(t("errorLoadingJobs"));
+      }
+    }
+
+    function renderJobs() {
+      const list = $("jobsList");
+      const empty = $("noJobsText");
+
+      if (!jobs.length) {
+        list.innerHTML = "";
+        empty.classList.remove("hidden");
         return;
       }
 
-      await refreshActiveJobs();
-    } else if (order.status === "in_progress") {
-      // COMPLETE JOB
-      await completeJob(order, card, button);
+      empty.classList.add("hidden");
+
+      list.innerHTML = "";
+      jobs.forEach((job) => {
+        const card = document.createElement("div");
+        card.className = "job-card glass-card p-4 fade-in";
+        const serviceName = job.service_name || job.service_type;
+        const notes = job.notes || "No additional notes";
+        const shortAddress = (job.address || "").split(",")[0] || job.address || "";
+        const when = [job.date, job.time].filter(Boolean).join(" ");
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-3">
+            <div class="flex-1">
+              <h3 class="font-semibold text-lg mb-1">${serviceName}</h3>
+              <p class="text-gray-400 text-sm line-clamp-2">${notes}</p>
+            </div>
+            <div class="price-tag ml-3">${job.price ? `$${job.price}` : "$—"}</div>
+          </div>
+          <div class="flex items-center gap-4 mb-3">
+            <div class="flex items-center text-sm text-gray-300">
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              <span class="truncate">${shortAddress}</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-300">
+              <i class="fas fa-clock mr-2"></i>
+              <span>${when}</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex -space-x-2">
+              <div class="photo-placeholder">
+                <i class="fas fa-camera text-xs"></i>
+              </div>
+              <div class="photo-placeholder">
+                <i class="fas fa-camera text-xs"></i>
+              </div>
+              <div class="photo-placeholder">
+                <i class="fas fa-camera text-xs"></i>
+              </div>
+              <span class="text-xs text-gray-400 ml-2 self-center">3 photos</span>
+            </div>
+            <button class="text-green-400 font-semibold text-sm view-details-btn">
+              ${t("viewDetailsButton")}
+            </button>
+          </div>
+        `;
+
+        card.querySelector(".view-details-btn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          showJobDetails(job);
+        });
+
+        list.appendChild(card);
+      });
     }
-  }
 
-  async function completeJob(order, card, button) {
-    if (!currentWorker) return;
-    button.disabled = true;
-    button.textContent = "Completing...";
+    function renderActiveJobs() {
+      const list = $("activeJobsList");
+      const empty = $("noActiveJobsText");
 
-    const { error } = await supabase
-      .from(ORDERS_TABLE)
-      .update({ status: "completed" })
-      .eq("id", order.id);
+      if (!activeJobs.length) {
+        list.innerHTML = "";
+        empty.classList.remove("hidden");
+        return;
+      }
 
-    if (error) {
-      console.error(error);
-      alert("Error completing job");
-      button.disabled = false;
-      button.textContent = "Mark as Completed";
-      return;
+      empty.classList.add("hidden");
+      list.innerHTML = "";
+
+      activeJobs.forEach((job) => {
+        const card = document.createElement("div");
+        card.className = "glass-card p-4 fade-in";
+        const serviceName = job.service_name || job.service_type;
+        const shortAddress = (job.address || "").split(",")[0] || job.address || "";
+        const when = [job.date, job.time].filter(Boolean).join(" ");
+
+        const buttonLabel =
+          job.status === "accepted" ? t("startJobButton") : t("completeJobButton");
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="font-semibold text-lg">${serviceName}</h3>
+            <div class="price-tag">${job.price ? `$${job.price}` : "$—"}</div>
+          </div>
+          <div class="space-y-3 mb-4">
+            <div class="flex items-center justify-between text-sm">
+              <div class="flex items-center text-gray-200">
+                <i class="fas fa-map-marker-alt mr-2 text-gray-400"></i>
+                <span>${shortAddress}</span>
+              </div>
+              <button class="text-green-400 text-xs underline open-map-btn">
+                <i class="fas fa-external-link-alt mr-1"></i>Map
+              </button>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+              <div class="flex items-center text-gray-200">
+                <i class="fas fa-user mr-2 text-gray-400"></i>
+                <span>${job.client_name || ""}</span>
+              </div>
+              <button class="text-green-400 text-xs underline call-btn">
+                <i class="fas fa-phone mr-1"></i>Call
+              </button>
+            </div>
+            <div class="flex items-center text-sm text-gray-200">
+              <i class="fas fa-clock mr-2 text-gray-400"></i>
+              <span>${when}</span>
+            </div>
+          </div>
+          <button class="neon-button w-full status-btn">
+            ${buttonLabel}
+          </button>
+        `;
+
+        card.querySelector(".open-map-btn").addEventListener("click", () => {
+          openMaps(job.address);
+        });
+        card.querySelector(".call-btn").addEventListener("click", () => {
+          callPhone(job.client_phone);
+        });
+        card.querySelector(".status-btn").addEventListener("click", () => {
+          updateJobStatus(job);
+        });
+
+        list.appendChild(card);
+      });
     }
 
-    // увеличиваем счётчик
-    const newCount = (currentWorker.jobs_completed || 0) + 1;
+    function showJobDetails(job) {
+      $("modalTitle").textContent = job.service_name || job.service_type;
+      const when = [job.date, job.time].filter(Boolean).join(" ");
+      const notes = job.notes || "";
 
-    await supabase
-      .from(WORKERS_TABLE)
-      .update({ jobs_completed: newCount })
-      .eq("id", currentWorker.id);
+      $("modalContent").innerHTML = `
+        <div class="space-y-4 text-sm">
+          <div>
+            <h4 class="font-semibold mb-1">${t("clientLabel")}</h4>
+            <p class="text-gray-300">${job.client_name || ""}</p>
+            <p class="text-gray-400">${job.client_phone || ""}</p>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-1">${t("addressLabel")}</h4>
+            <p class="text-gray-300">${job.address || ""}</p>
+            <button class="text-green-400 text-xs underline mt-1" id="modalOpenMap">
+              <i class="fas fa-external-link-alt mr-1"></i>Open in Maps
+            </button>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-1">${t("timeLabel")}</h4>
+            <p class="text-gray-300">${when}</p>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-1">${t("priceLabel")}</h4>
+            <p class="text-2xl font-bold text-green-400">${job.price ? `$${job.price}` : "$—"}</p>
+          </div>
+          ${
+            notes
+              ? `
+          <div>
+            <h4 class="font-semibold mb-1">${t("notesLabel")}</h4>
+            <p class="text-gray-300">${notes}</p>
+          </div>
+          `
+              : ""
+          }
+          <button class="neon-button w-full mt-4" id="modalAcceptBtn">
+            ${t("acceptJobButton")}
+          </button>
+        </div>
+      `;
 
-    currentWorker.jobs_completed = newCount;
-    updateProfileUI();
+      $("jobModal").classList.remove("hidden");
 
-    if (card) {
-      card.style.opacity = 0.4;
+      $("modalOpenMap")?.addEventListener("click", () => openMaps(job.address));
+      $("modalAcceptBtn")?.addEventListener("click", () => acceptJob(job));
     }
-    button.textContent = "Completed";
 
-    await refreshActiveJobs();
-  }
+    async function acceptJob(job) {
+      if (!currentWorker) return;
+      const btn = $("modalAcceptBtn");
+      btn.disabled = true;
+      btn.innerHTML = '<div class="loading-spinner mx-auto"></div>';
 
-  // ------------ PROFILE UI / SKILLS EDITOR -------------
+      try {
+        const { error } = await supabase
+          .from("orders")
+          .update({ worker_id: currentWorker.id, status: "accepted" })
+          .eq("id", job.id);
 
-  function updateProfileUI() {
-    if (!currentWorker) return;
+        if (error) throw error;
 
-    profileName.textContent = currentWorker.full_name || "Worker";
-
-    const shortId = String(currentWorker.id || "").slice(0, 5).toUpperCase();
-    profileId.textContent = "ELM-" + shortId;
-
-    const rating = Number(currentWorker.rating || 5).toFixed(1);
-    profileRating.textContent = rating;
-
-    const starsCount = Math.round(Number(currentWorker.rating || 5));
-    const starsStr = "★★★★★".slice(0, starsCount) + "☆☆☆☆☆".slice(0, 5 - starsCount);
-    profileStars.textContent = starsStr;
-
-    const jobs = currentWorker.jobs_completed || 0;
-    profileJobs.textContent = `${jobs} jobs completed`;
-  }
-
-  editSkillsBtn.addEventListener("click", async () => {
-    if (!currentWorker) return;
-
-    let currentSkills = currentWorker.skills || [];
-    if (!Array.isArray(currentSkills)) {
-      if (typeof currentSkills === "string" && currentSkills.trim() !== "") {
-        currentSkills = currentSkills.split(",").map(s => s.trim());
-      } else {
-        currentSkills = [];
+        $("jobModal").classList.add("hidden");
+        await loadAllData();
+        showToast(t("jobAcceptedToast"));
+      } catch (e) {
+        console.error("acceptJob error:", e);
+        showToast(t("errorUpdatingJob"));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = t("acceptJobButton");
       }
     }
 
-    const currentStr = currentSkills.join(", ");
-    const input = window.prompt(
-      "Edit your skills (comma separated).\nExample: cleaning, handyman, moving",
-      currentStr
-    );
+    async function updateJobStatus(job) {
+      const nextStatus = job.status === "accepted" ? "in_progress" : "completed";
 
-    if (input === null) return; // cancel
+      try {
+        const { error } = await supabase
+          .from("orders")
+          .update({ status: nextStatus })
+          .eq("id", job.id);
 
-    const newSkills = input
-      .split(",")
-      .map(s => s.trim())
-      .filter(Boolean);
+        if (error) throw error;
 
-    const { error } = await supabase
-      .from(WORKERS_TABLE)
-      .update({ skills: newSkills })
-      .eq("id", currentWorker.id);
+        if (nextStatus === "completed") {
+          const newCount = (currentWorker.jobs_completed || 0) + 1;
+          await supabase
+            .from("workers")
+            .update({ jobs_completed: newCount })
+            .eq("id", currentWorker.id);
 
-    if (error) {
-      console.error(error);
-      alert("Error updating skills");
-      return;
+          currentWorker.jobs_completed = newCount;
+          updateProfileUI();
+        }
+
+        await loadAllData();
+        showToast(
+          nextStatus === "completed" ? t("jobCompletedToast") : t("jobStartedToast")
+        );
+      } catch (e) {
+        console.error("updateJobStatus error:", e);
+        showToast(t("errorUpdatingJob"));
+      }
     }
 
-    currentWorker.skills = newSkills;
-    alert("Skills updated!");
-    await refreshJobs();
-  });
-</script>
+    function openMaps(address) {
+      if (!address) return;
+      const url = "https://www.google.com/maps?q=" + encodeURIComponent(address);
+      window.open(url, "_blank");
+    }
+
+    function callPhone(phone) {
+      if (!phone) return;
+      const clean = phone.replace(/[^+\d]/g, "");
+      window.open("tel:" + clean, "_blank");
+    }
+
+    function showSkillsEditor() {
+      if (!currentWorker) return;
+      const workerSkills = currentWorker.skills || [];
+      const container = $("skillsList");
+      container.innerHTML = "";
+
+      availableSkills.forEach((skill) => {
+        const label = document.createElement("label");
+        label.className = "flex items-center p-3 glass-card cursor-pointer";
+
+        label.innerHTML = `
+          <input type="checkbox" class="skill-checkbox mr-3" value="${skill}"
+            ${workerSkills.includes(skill) ? "checked" : ""} />
+          <span class="capitalize">${skill.replace("_", " ")}</span>
+        `;
+
+        container.appendChild(label);
+      });
+
+      $("skillsModal").classList.remove("hidden");
+    }
+
+    async function saveSkills() {
+      if (!currentWorker) return;
+      const checkboxes = $("skillsList").querySelectorAll("input.skill-checkbox:checked");
+      const selected = Array.from(checkboxes).map((cb) => cb.value);
+
+      try {
+        const { error } = await supabase
+          .from("workers")
+          .update({ skills: selected })
+          .eq("id", currentWorker.id);
+
+        if (error) throw error;
+
+        currentWorker.skills = selected;
+        $("skillsModal").classList.add("hidden");
+        await loadAllData();
+        showToast(t("skillsUpdatedToast"));
+      } catch (e) {
+        console.error("saveSkills error:", e);
+        showToast(t("errorSavingSkills"));
+      }
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll(".tab-button").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.tab === tabName);
+      });
+
+      ["jobs", "active", "profile"].forEach((tname) => {
+        const el = $(tname + "Tab");
+        if (!el) return;
+        el.classList.toggle("hidden", tname !== tabName);
+      });
+    }
+
+    // EVENTS
+    $("loginButton").addEventListener("click", () => {
+      telegramLogin();
+    });
+
+    $("closeModal").addEventListener("click", () => {
+      $("jobModal").classList.add("hidden");
+    });
+
+    $("closeSkillsModal").addEventListener("click", () => {
+      $("skillsModal").classList.add("hidden");
+    });
+
+    $("cancelSkills").addEventListener("click", () => {
+      $("skillsModal").classList.add("hidden");
+    });
+
+    $("saveSkills").addEventListener("click", saveSkills);
+    $("editSkillsButton").addEventListener("click", showSkillsEditor);
+
+    document.querySelectorAll("[data-tab]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        switchTab(btn.dataset.tab);
+      });
+    });
+
+    // Telegram BackButton справляемся с модалками
+    if (tg) {
+      tg.BackButton.onClick(() => {
+        if (!$("jobModal").classList.contains("hidden")) {
+          $("jobModal").classList.add("hidden");
+        } else if (!$("skillsModal").classList.contains("hidden")) {
+          $("skillsModal").classList.add("hidden");
+        }
+      });
+
+      const observer = new MutationObserver(() => {
+        const modalOpen = !$("jobModal").classList.contains("hidden");
+        const skillsOpen = !$("skillsModal").classList.contains("hidden");
+        if (modalOpen || skillsOpen) tg.BackButton.show();
+        else tg.BackButton.hide();
+      });
+
+      observer.observe($("jobModal"), { attributes: true });
+      observer.observe($("skillsModal"), { attributes: true });
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // auto detect language from Telegram if есть
+      if (tg?.initDataUnsafe?.user?.language_code) {
+        const lc = tg.initDataUnsafe.user.language_code;
+        if (lc === "ru") currentLanguage = "ru";
+        else if (lc === "es") currentLanguage = "es";
+        else if (lc === "ky" || lc === "kg") currentLanguage = "ky";
+      }
+      updateTexts();
+
+      if (tg?.initDataUnsafe?.user?.id) {
+        // Авто-логин сразу
+        await telegramLogin();
+      }
+    });
+  </script>
 </body>
 </html>
 
