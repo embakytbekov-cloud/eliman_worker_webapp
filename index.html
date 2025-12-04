@@ -5,6 +5,15 @@
   <title>ELIMAN Worker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Telegram WebApp fix — FULLSCREEN MODE -->
+  <script>
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.expand();
+      Telegram.WebApp.setHeaderColor("#000000");
+      Telegram.WebApp.setBackgroundColor("#000000");
+    }
+  </script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -1024,3 +1033,4 @@
   </script>
 </body>
 </html>
+
