@@ -1,28 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>ELIMAN Worker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Telegram WebApp fix — FULLSCREEN MODE -->
-  <script>
-    if (window.Telegram && Telegram.WebApp) {
-      Telegram.WebApp.expand();
-      Telegram.WebApp.setHeaderColor("#000000");
-      Telegram.WebApp.setBackgroundColor("#000000");
-    }
-  </script>
-
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     }
-
     body {
       background: #020613;
       color: #f5f5f5;
@@ -32,33 +21,33 @@
       align-items: center;
       padding: 16px;
     }
-
     .app {
       width: 100%;
-      max-width: 450px;
+      max-width: 420px;
+      min-height: 740px;
       background: radial-gradient(circle at top, #042b1c 0, #020613 55%);
       border-radius: 24px;
       padding: 20px 18px 24px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
       border: 1px solid rgba(0, 255, 120, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     /* Общие элементы */
-
     .top-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
     }
-
     .logo {
       font-weight: 700;
       letter-spacing: 0.08em;
       font-size: 14px;
       color: #7df29b;
     }
-
     .status-pill {
       font-size: 11px;
       padding: 4px 10px;
@@ -67,7 +56,6 @@
       border: 1px solid rgba(0, 255, 120, 0.3);
       color: #8bf6b0;
     }
-
     .status-pill.offline {
       background: rgba(140, 150, 170, 0.08);
       border-color: rgba(140, 150, 170, 0.35);
@@ -78,7 +66,6 @@
       font-size: 22px;
       margin-bottom: 4px;
     }
-
     .subtitle {
       font-size: 13px;
       color: #a5b2c7;
@@ -104,7 +91,6 @@
       gap: 8px;
       margin-bottom: 10px;
     }
-
     .input {
       flex: 1;
       border-radius: 999px;
@@ -115,7 +101,6 @@
       color: #f2f4ff;
       outline: none;
     }
-
     .input::placeholder {
       color: #6c7a93;
     }
@@ -134,38 +119,23 @@
       gap: 6px;
       white-space: nowrap;
     }
-
     .btn-primary {
       background: linear-gradient(135deg, #12c97c, #57ffb1);
       color: #020613;
       box-shadow: 0 0 20px rgba(69, 255, 155, 0.35);
     }
-
     .btn-primary:active {
       transform: scale(0.97);
       box-shadow: 0 0 10px rgba(69, 255, 155, 0.3);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid rgba(114, 133, 163, 0.6);
-      color: #c3d0e4;
-    }
-
-    .btn-outline:active {
-      transform: scale(0.97);
-      background: rgba(9, 20, 40, 0.9);
     }
 
     .message {
       font-size: 12px;
       margin-top: 2px;
     }
-
     .message.ok {
       color: #7df29b;
     }
-
     .message.error {
       color: #ff8090;
     }
@@ -177,35 +147,35 @@
       padding: 10px 0;
     }
 
-    /* Экраны */
-
     .screen {
       display: none;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .screen.hidden {
+      display: none;
+    }
+    .screen.visible {
+      display: flex;
     }
 
-    .screen.active {
-      display: block;
-    }
-
-    /* --------- HEADER / TITLE ---------- */
-
+    /* ---------- TABS HEADER ---------- */
     .page-header {
       margin-bottom: 16px;
     }
-
     .page-title {
       font-size: 22px;
       font-weight: 700;
       margin-bottom: 4px;
     }
-
     .page-subtitle {
       font-size: 13px;
       color: #a5b2c7;
     }
 
-    /* --------- JOBS LIST ---------- */
-
+    /* NEW JOBS */
     .jobs-list {
       display: flex;
       flex-direction: column;
@@ -218,27 +188,23 @@
       border-radius: 20px;
       border: 1px solid rgba(101, 255, 157, 0.25);
       padding: 14px 14px 14px;
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
     }
-
     .job-row-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 6px;
     }
-
     .job-title {
       font-size: 18px;
       font-weight: 700;
       margin-bottom: 3px;
     }
-
     .job-subtitle {
       font-size: 13px;
       color: #c3d0e4;
     }
-
     .job-price {
       font-size: 20px;
       font-weight: 700;
@@ -252,7 +218,6 @@
       gap: 6px;
       margin: 8px 0 10px;
     }
-
     .pill {
       font-size: 11px;
       padding: 4px 8px;
@@ -263,7 +228,6 @@
       align-items: center;
       gap: 4px;
     }
-
     .pill-icon {
       font-size: 13px;
     }
@@ -274,15 +238,13 @@
       gap: 8px;
       margin-bottom: 10px;
     }
-
     .job-photo-dot {
       width: 22px;
       height: 22px;
       border-radius: 999px;
       background: radial-gradient(circle at 30% 20%, #f5f5f5 0, #0d1c32 45%, #020613 90%);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255,255,255,0.15);
     }
-
     .job-photos-text {
       font-size: 11px;
       color: #c3d0e4;
@@ -294,34 +256,26 @@
       margin-top: 6px;
     }
 
-    .btn-details {
-      font-size: 13px;
-      padding-inline: 18px;
-    }
-
-    /* --------- ACTIVE JOBS ---------- */
-
+    /* ACTIVE JOBS */
     .active-card {
       background: rgba(2, 10, 24, 0.94);
       border-radius: 20px;
       border: 1px solid rgba(101, 255, 157, 0.25);
       padding: 16px 14px 16px;
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
+      margin-bottom: 14px;
     }
-
     .active-title-row {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 10px;
     }
-
     .active-title {
       font-size: 18px;
       font-weight: 700;
       margin-bottom: 4px;
     }
-
     .active-subtitle {
       font-size: 13px;
       color: #c3d0e4;
@@ -330,13 +284,11 @@
     .info-block {
       margin-bottom: 8px;
     }
-
     .info-label {
       font-size: 11px;
       color: #7d8aa4;
       margin-bottom: 2px;
     }
-
     .info-row {
       display: flex;
       justify-content: space-between;
@@ -346,7 +298,6 @@
       border-radius: 14px;
       background: rgba(8, 24, 44, 0.95);
     }
-
     .info-main {
       display: flex;
       align-items: center;
@@ -354,11 +305,9 @@
       font-size: 13px;
       color: #d7e0f2;
     }
-
     .info-main span.icon {
       font-size: 15px;
     }
-
     .info-action {
       font-size: 12px;
       padding: 6px 12px;
@@ -367,13 +316,11 @@
       cursor: pointer;
       font-weight: 600;
     }
-
     .info-action.map {
       background: rgba(25, 180, 105, 0.18);
       color: #7df29b;
       border: 1px solid rgba(125, 242, 155, 0.6);
     }
-
     .info-action.call {
       background: linear-gradient(135deg, #12c97c, #57ffb1);
       color: #020613;
@@ -388,24 +335,21 @@
       font-size: 14px;
     }
 
-    /* --------- PROFILE ---------- */
-
+    /* PROFILE */
     .profile-card {
       background: rgba(2, 10, 24, 0.94);
       border-radius: 22px;
       border: 1px solid rgba(101, 255, 157, 0.25);
       padding: 18px 16px 18px;
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.6);
       margin-bottom: 14px;
     }
-
     .profile-top {
       display: flex;
       gap: 12px;
       align-items: center;
       margin-bottom: 10px;
     }
-
     .avatar {
       width: 52px;
       height: 52px;
@@ -414,13 +358,11 @@
       border: 2px solid #1fe388;
       box-shadow: 0 0 18px rgba(31, 227, 136, 0.5);
     }
-
     .profile-name {
       font-size: 18px;
       font-weight: 700;
       margin-bottom: 2px;
     }
-
     .profile-id {
       font-size: 12px;
       color: #7df29b;
@@ -429,7 +371,6 @@
       background: rgba(20, 120, 80, 0.18);
       display: inline-block;
     }
-
     .rating-row {
       display: flex;
       align-items: center;
@@ -438,12 +379,10 @@
       font-size: 13px;
       color: #d7e0f2;
     }
-
     .stars {
       color: #35f28c;
       font-size: 15px;
     }
-
     .jobs-count {
       font-size: 12px;
       color: #9aa8c3;
@@ -454,7 +393,6 @@
       flex-direction: column;
       gap: 8px;
     }
-
     .profile-btn {
       display: flex;
       justify-content: space-between;
@@ -467,22 +405,19 @@
       color: #d7e0f2;
       cursor: pointer;
     }
-
     .profile-btn span.icon {
       font-size: 16px;
     }
 
-    /* --------- BOTTOM NAV ---------- */
-
+    /* BOTTOM NAV */
     .bottom-nav {
-      margin-top: 16px;
+      margin-top: 8px;
       display: flex;
       justify-content: space-around;
       align-items: center;
       padding-top: 10px;
       border-top: 1px solid rgba(40, 60, 90, 0.8);
     }
-
     .nav-btn {
       flex: 1;
       text-align: center;
@@ -494,7 +429,6 @@
       align-items: center;
       gap: 2px;
     }
-
     .nav-icon {
       width: 20px;
       height: 20px;
@@ -505,30 +439,24 @@
       justify-content: center;
       font-size: 12px;
     }
-
     .nav-btn.active {
       color: #7df29b;
     }
-
     .nav-btn.active .nav-icon {
       border-color: #1fe388;
       box-shadow: 0 0 10px rgba(31, 227, 136, 0.7);
     }
 
-    .mt-4 {
-      margin-top: 4px;
-    }
-
-    .mt-8 {
-      margin-top: 8px;
-    }
+    .mt-4 { margin-top: 4px; }
+    .mt-8 { margin-top: 8px; }
   </style>
 </head>
-
 <body>
-  <div class="app">
-    <!-- ========== LOGIN SCREEN ========== -->
-    <div id="screen-login" class="screen active">
+<div class="app">
+
+  <!-- LOGIN SCREEN -->
+  <div id="screen-login" class="screen visible">
+    <div>
       <div class="top-header">
         <div class="logo">ELIMAN WORKER</div>
         <div id="loginStatusPill" class="status-pill offline">Offline</div>
@@ -548,9 +476,11 @@
         <div id="loginMessage" class="message"></div>
       </div>
     </div>
+  </div>
 
-    <!-- ========== MAIN TABS SCREEN ========== -->
-    <div id="screen-tabs" class="screen">
+  <!-- TABS SCREEN -->
+  <div id="screen-tabs" class="screen hidden">
+    <div>
       <div class="top-header">
         <div class="logo">ELIMAN WORKER</div>
         <div id="tabsStatusPill" class="status-pill">Online</div>
@@ -564,19 +494,19 @@
       </div>
 
       <!-- Jobs Tab -->
-      <div id="tab-jobs" class="tab-content">
+      <div id="tab-jobs">
         <div id="jobsList" class="jobs-list"></div>
         <div id="jobsEmpty" class="empty-text">No new jobs yet.</div>
       </div>
 
       <!-- Active Tab -->
-      <div id="tab-active" class="tab-content" style="display: none;">
+      <div id="tab-active" style="display:none;">
         <div id="activeList"></div>
         <div id="activeEmpty" class="empty-text">You have no active jobs.</div>
       </div>
 
       <!-- Profile Tab -->
-      <div id="tab-profile" class="tab-content" style="display: none;">
+      <div id="tab-profile" style="display:none;">
         <div class="profile-card">
           <div class="profile-top">
             <div class="avatar"></div>
@@ -603,79 +533,78 @@
           </button>
         </div>
       </div>
+    </div>
 
-      <!-- Bottom nav -->
-      <div class="bottom-nav">
-        <div class="nav-btn active" data-tab="jobs">
-          <div class="nav-icon">🧳</div>
-          <div>Jobs</div>
-        </div>
-        <div class="nav-btn" data-tab="active">
-          <div class="nav-icon">✔</div>
-          <div>Active</div>
-        </div>
-        <div class="nav-btn" data-tab="profile">
-          <div class="nav-icon">👤</div>
-          <div>Profile</div>
-        </div>
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+      <div class="nav-btn active" data-tab="jobs">
+        <div class="nav-icon">🧳</div>
+        <div>Jobs</div>
+      </div>
+      <div class="nav-btn" data-tab="active">
+        <div class="nav-icon">✔</div>
+        <div>Active</div>
+      </div>
+      <div class="nav-btn" data-tab="profile">
+        <div class="nav-icon">👤</div>
+        <div>Profile</div>
       </div>
     </div>
   </div>
 
-  <!-- ====================== SCRIPT ====================== -->
-  <script type="module">
-    // --------- SUPABASE INIT ---------
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+</div>
 
-    const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
+<script type="module">
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
 
-    const WORKERS_TABLE = "workers";
-    const ORDERS_TABLE = "orders";
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // --------- DOM ELEMENTS ---------
-    const screenLogin = document.getElementById("screen-login");
-    const screenTabs = document.getElementById("screen-tabs");
-    const loginStatus = document.getElementById("loginStatusPill");
-    const tabsStatus = document.getElementById("tabsStatusPill");
+  const WORKERS_TABLE = "workers";
+  const ORDERS_TABLE  = "orders";
 
-    const phoneInput = document.getElementById("phoneInput");
-    const loginBtn = document.getElementById("loginBtn");
-    const loginMessage = document.getElementById("loginMessage");
+  const screenLogin  = document.getElementById("screen-login");
+  const screenTabs   = document.getElementById("screen-tabs");
 
-    const tabsTitle = document.getElementById("tabsTitle");
-    const tabsSubtitle = document.getElementById("tabsSubtitle");
+  const loginStatus  = document.getElementById("loginStatusPill");
+  const tabsStatus   = document.getElementById("tabsStatusPill");
+  const phoneInput   = document.getElementById("phoneInput");
+  const loginBtn     = document.getElementById("loginBtn");
+  const loginMessage = document.getElementById("loginMessage");
 
-    const jobsList = document.getElementById("jobsList");
-    const jobsEmpty = document.getElementById("jobsEmpty");
-    const activeList = document.getElementById("activeList");
-    const activeEmpty = document.getElementById("activeEmpty");
+  const tabsTitle    = document.getElementById("tabsTitle");
+  const tabsSubtitle = document.getElementById("tabsSubtitle");
 
-    const profileName = document.getElementById("profileName");
-    const profileId = document.getElementById("profileId");
-    const profileStars = document.getElementById("profileStars");
-    const profileRating = document.getElementById("profileRating");
-    const profileJobs = document.getElementById("profileJobs");
+  const jobsList   = document.getElementById("jobsList");
+  const jobsEmpty  = document.getElementById("jobsEmpty");
+  const activeList = document.getElementById("activeList");
+  const activeEmpty= document.getElementById("activeEmpty");
 
-    const navButtons = document.querySelectorAll(".nav-btn");
+  const profileName   = document.getElementById("profileName");
+  const profileId     = document.getElementById("profileId");
+  const profileStars  = document.getElementById("profileStars");
+  const profileRating = document.getElementById("profileRating");
+  const profileJobs   = document.getElementById("profileJobs");
 
-    let currentWorker = null;
-    let currentTab = "jobs";
+  const navButtons = document.querySelectorAll(".nav-btn");
 
-    // --------- LOGIN ---------
-    loginBtn.addEventListener("click", async () => {
-      const phone = phoneInput.value.trim();
+  let currentWorker = null;
+  let currentTab = "jobs";
 
-      loginMessage.textContent = "";
-      loginMessage.className = "message";
+  // ------------ LOGIN -------------
+  loginBtn.addEventListener("click", async () => {
+    const phone = phoneInput.value.trim();
 
-      loginBtn.disabled = true;
-      loginBtn.textContent = "Checking…";
+    loginMessage.textContent = "";
+    loginMessage.className = "message";
 
-      // ВРЕМЯНКА: берём первого воркера из БД (как и раньше)
+    loginBtn.disabled = true;
+    loginBtn.textContent = "Checking...";
+
+    try {
       const { data: workers, error } = await supabase
         .from(WORKERS_TABLE)
         .select("*")
@@ -685,352 +614,332 @@
         console.error(error);
         loginMessage.textContent = "Supabase error: " + error.message;
         loginMessage.className = "message error";
-        loginBtn.disabled = false;
-        loginBtn.textContent = "Login";
         return;
       }
 
       if (!workers || workers.length === 0) {
         loginMessage.textContent = "No workers in DB.";
         loginMessage.className = "message error";
-        loginBtn.disabled = false;
-        loginBtn.textContent = "Login";
         return;
       }
 
       currentWorker = workers[0];
 
-      // UI статус
       loginStatus.classList.remove("offline");
       loginStatus.textContent = "Online";
 
       loginMessage.textContent = "Logged in!";
       loginMessage.className = "message ok";
 
-      // Профиль + списки работ
       updateProfileUI();
       await refreshJobs();
       await refreshActiveJobs();
 
-      // Переход на основной экран
-      setTimeout(() => {
-        screenLogin.classList.remove("active");
-        screenTabs.classList.add("active");
-        tabsStatus.textContent = "Online";
-        setTab("jobs");
-      }, 400);
+      // Переход на табы
+      screenLogin.classList.add("hidden");
+      screenLogin.classList.remove("visible");
+      screenTabs.classList.remove("hidden");
+      screenTabs.classList.add("visible");
+      tabsStatus.textContent = "Online";
+      setTab("jobs");
 
+    } catch (e) {
+      console.error(e);
+      loginMessage.textContent = "Unexpected error";
+      loginMessage.className = "message error";
+    } finally {
       loginBtn.disabled = false;
       loginBtn.textContent = "Login";
+    }
+  });
+
+  // ------------ TABS -------------
+  navButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tab = btn.getAttribute("data-tab");
+      setTab(tab);
+    });
+  });
+
+  function setTab(tab) {
+    currentTab = tab;
+
+    navButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
     });
 
-    // --------- TABS ---------
-    navButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const tab = btn.getAttribute("data-tab");
-        setTab(tab);
-      });
-    });
+    document.getElementById("tab-jobs").style.display    = tab === "jobs"    ? "block" : "none";
+    document.getElementById("tab-active").style.display  = tab === "active"  ? "block" : "none";
+    document.getElementById("tab-profile").style.display = tab === "profile" ? "block" : "none";
 
-    function setTab(tab) {
-      currentTab = tab;
-
-      navButtons.forEach((btn) => {
-        btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
-      });
-
-      document.getElementById("tab-jobs").style.display =
-        tab === "jobs" ? "block" : "none";
-      document.getElementById("tab-active").style.display =
-        tab === "active" ? "block" : "none";
-      document.getElementById("tab-profile").style.display =
-        tab === "profile" ? "block" : "none";
-
-      if (tab === "jobs") {
-        tabsTitle.textContent = "New Jobs";
-        tabsSubtitle.textContent =
-          "Smart-matched opportunities for your expertise.";
-        refreshJobs();
-      } else if (tab === "active") {
-        tabsTitle.textContent = "Active Jobs";
-        tabsSubtitle.textContent =
-          "Mission control for your accepted work.";
-        refreshActiveJobs();
-      } else if (tab === "profile") {
-        tabsTitle.textContent = "Profile";
-        tabsSubtitle.textContent =
-          "Your rating, skills and job history.";
-        updateProfileUI();
-      }
-    }
-
-    // --------- LOADERS ---------
-    async function refreshJobs() {
-      if (!currentWorker) return;
-
-      jobsList.innerHTML = "";
-      jobsEmpty.style.display = "none";
-
-      const { data: orders, error } = await supabase
-        .from(ORDERS_TABLE)
-        .select("*")
-        .is("worker_id", null)
-        .eq("status", "pending")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error(error);
-        jobsEmpty.textContent = "Error loading jobs.";
-        jobsEmpty.style.display = "block";
-        return;
-      }
-
-      if (!orders || orders.length === 0) {
-        jobsEmpty.textContent = "No new jobs yet.";
-        jobsEmpty.style.display = "block";
-        return;
-      }
-
-      orders.forEach((order) => {
-        const card = document.createElement("div");
-        card.className = "job-card";
-
-        const title = order.service_name || "Service";
-        const subtitle = order.notes || "No description from client.";
-        const address = order.address || "No address";
-        const dateStr = order.date || "Today";
-        const timeStr = order.time || "";
-        const priceStr = order.price ? `$${order.price}` : "$—";
-
-        card.innerHTML = `
-          <div class="job-row-top">
-            <div>
-              <div class="job-title">${title}</div>
-              <div class="job-subtitle">${subtitle}</div>
-            </div>
-            <div class="job-price">${priceStr}</div>
-          </div>
-
-          <div class="pill-row">
-            <span class="pill">
-              <span class="pill-icon">📍</span>${address}
-            </span>
-            <span class="pill">
-              <span class="pill-icon">🕒</span>${dateStr}, ${timeStr}
-            </span>
-          </div>
-
-          <div class="job-photos-row">
-            <div class="job-photo-dot"></div>
-            <div class="job-photo-dot"></div>
-            <div class="job-photo-dot"></div>
-            <div class="job-photos-text">3 photos</div>
-          </div>
-
-          <div class="job-footer">
-            <button class="btn btn-primary btn-details">View Details →</button>
-          </div>
-        `;
-
-        const btnDetails = card.querySelector(".btn-details");
-        btnDetails.addEventListener("click", () =>
-          acceptJob(order, card, btnDetails)
-        );
-
-        jobsList.appendChild(card);
-      });
-    }
-
-    async function refreshActiveJobs() {
-      if (!currentWorker) return;
-
-      activeList.innerHTML = "";
-      activeEmpty.style.display = "none";
-
-      const { data: orders, error } = await supabase
-        .from(ORDERS_TABLE)
-        .select("*")
-        .eq("worker_id", currentWorker.id)
-        .eq("status", "accepted")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error(error);
-        activeEmpty.textContent = "Error loading active jobs.";
-        activeEmpty.style.display = "block";
-        return;
-      }
-
-      if (!orders || orders.length === 0) {
-        activeEmpty.textContent = "You have no active jobs.";
-        activeEmpty.style.display = "block";
-        return;
-      }
-
-      orders.forEach((order) => {
-        const card = document.createElement("div");
-        card.className = "active-card";
-
-        const title = order.service_name || "Service";
-        const subtitle = order.notes || "No description from client.";
-        const address = order.address || "No address";
-        const dateStr = order.date || "Today";
-        const timeStr = order.time || "";
-        const clientPhone =
-          order.client_phone ||
-          phoneInput.value.trim() ||
-          "+1 (312) 555-0147";
-        const priceStr = order.price ? `$${order.price}` : "$—";
-
-        card.innerHTML = `
-          <div class="active-title-row">
-            <div>
-              <div class="active-title">${title}</div>
-              <div class="active-subtitle">${subtitle}</div>
-            </div>
-            <div class="job-price">${priceStr}</div>
-          </div>
-
-          <div class="info-block">
-            <div class="info-label">ADDRESS</div>
-            <div class="info-row">
-              <div class="info-main">
-                <span class="icon">📍</span>
-                <span>${address}</span>
-              </div>
-              <button class="info-action map">Maps</button>
-            </div>
-          </div>
-
-          <div class="info-block">
-            <div class="info-label">TIME</div>
-            <div class="info-row">
-              <div class="info-main">
-                <span class="icon">🕒</span>
-                <span>${dateStr}, ${timeStr}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="info-block">
-            <div class="info-label">CLIENT</div>
-            <div class="info-row">
-              <div class="info-main">
-                <span class="icon">📞</span>
-                <span>${clientPhone}</span>
-              </div>
-              <button class="info-action call">CALL</button>
-            </div>
-          </div>
-
-          <button class="btn btn-primary btn-complete">Mark as Completed</button>
-        `;
-
-        const mapBtn = card.querySelector(".info-action.map");
-        mapBtn.addEventListener("click", () => {
-          const url = "https://maps.google.com/?q=" + encodeURIComponent(address);
-          window.open(url, "_blank");
-        });
-
-        const callBtn = card.querySelector(".info-action.call");
-        callBtn.addEventListener("click", () => {
-          window.open(
-            "tel:" + clientPhone.replace(/[^+\d]/g, ""),
-            "_blank"
-          );
-        });
-
-        const completeBtn = card.querySelector(".btn-complete");
-        completeBtn.addEventListener("click", () =>
-          completeJob(order, card, completeBtn)
-        );
-
-        activeList.appendChild(card);
-      });
-    }
-
-    // --------- ACTIONS ---------
-    async function acceptJob(order, card, button) {
-      if (!currentWorker) return;
-      button.disabled = true;
-      button.textContent = "Accepting...";
-
-      const { error } = await supabase
-        .from(ORDERS_TABLE)
-        .update({
-          worker_id: currentWorker.id,
-          status: "accepted",
-        })
-        .eq("id", order.id);
-
-      if (error) {
-        console.error(error);
-        alert("Error accepting job");
-        button.disabled = false;
-        button.textContent = "View Details →";
-        return;
-      }
-
-      card.style.opacity = 0.5;
-      button.textContent = "Accepted";
-      await refreshActiveJobs();
-      await refreshJobs();
-    }
-
-    async function completeJob(order, card, button) {
-      if (!currentWorker) return;
-      button.disabled = true;
-      button.textContent = "Completing...";
-
-      const { error } = await supabase
-        .from(ORDERS_TABLE)
-        .update({ status: "completed" })
-        .eq("id", order.id);
-
-      if (error) {
-        console.error(error);
-        alert("Error completing job");
-        button.disabled = false;
-        button.textContent = "Mark as Completed";
-        return;
-      }
-
-      await supabase
-        .from(WORKERS_TABLE)
-        .update({ jobs_completed: (currentWorker.jobs_completed || 0) + 1 })
-        .eq("id", currentWorker.id);
-
-      currentWorker.jobs_completed = (currentWorker.jobs_completed || 0) + 1;
+    if (tab === "jobs") {
+      tabsTitle.textContent = "New Jobs";
+      tabsSubtitle.textContent = "Smart-matched opportunities for your expertise.";
+      refreshJobs();
+    } else if (tab === "active") {
+      tabsTitle.textContent = "Active Jobs";
+      tabsSubtitle.textContent = "Mission control for your accepted work.";
+      refreshActiveJobs();
+    } else {
+      tabsTitle.textContent = "Profile";
+      tabsSubtitle.textContent = "Your rating, skills and job history.";
       updateProfileUI();
+    }
+  }
 
-      card.style.opacity = 0.4;
-      button.textContent = "Completed";
-      await refreshActiveJobs();
+  // ------------ DATA LOADERS -------------
+  async function refreshJobs() {
+    if (!currentWorker) return;
+
+    jobsList.innerHTML = "";
+    jobsEmpty.style.display = "none";
+
+    const { data: orders, error } = await supabase
+      .from(ORDERS_TABLE)
+      .select("*")
+      .is("worker_id", null)
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      jobsEmpty.textContent = "Error loading jobs.";
+      jobsEmpty.style.display = "block";
+      return;
     }
 
-    // --------- PROFILE UI ---------
-    function updateProfileUI() {
-      if (!currentWorker) return;
-
-      profileName.textContent = currentWorker.full_name || "Worker";
-
-      const shortId = String(currentWorker.id || "")
-        .slice(0, 5)
-        .toUpperCase();
-      profileId.textContent = "ELM-" + shortId;
-
-      const rating = Number(currentWorker.rating || 5).toFixed(1);
-      profileRating.textContent = rating;
-
-      const starsCount = Math.round(Number(currentWorker.rating || 5));
-      const stars =
-        "★★★★★".slice(0, starsCount) + "☆☆☆☆☆".slice(0, 5 - starsCount);
-      profileStars.textContent = stars;
-
-      const jobs = currentWorker.jobs_completed || 0;
-      profileJobs.textContent = `${jobs} jobs completed`;
+    if (!orders || orders.length === 0) {
+      jobsEmpty.textContent = "No new jobs yet.";
+      jobsEmpty.style.display = "block";
+      return;
     }
-  </script>
+
+    orders.forEach(order => {
+      const card = document.createElement("div");
+      card.className = "job-card";
+
+      const title    = order.service_name || "Service";
+      const subtitle = order.notes || "No description from client.";
+      const address  = order.address || "No address";
+      const dateStr  = order.date || "Today";
+      const timeStr  = order.time || "";
+      const priceStr = order.price ? `$${order.price}` : "$—";
+
+      card.innerHTML = `
+        <div class="job-row-top">
+          <div>
+            <div class="job-title">${title}</div>
+            <div class="job-subtitle">${subtitle}</div>
+          </div>
+          <div class="job-price">${priceStr}</div>
+        </div>
+
+        <div class="pill-row">
+          <span class="pill">
+            <span class="pill-icon">📍</span>${address}
+          </span>
+          <span class="pill">
+            <span class="pill-icon">🕒</span>${dateStr}, ${timeStr}
+          </span>
+        </div>
+
+        <div class="job-photos-row">
+          <div class="job-photo-dot"></div>
+          <div class="job-photo-dot"></div>
+          <div class="job-photo-dot"></div>
+          <div class="job-photos-text">3 photos</div>
+        </div>
+
+        <div class="job-footer">
+          <button class="btn btn-primary btn-details">View Details →</button>
+        </div>
+      `;
+
+      const btnDetails = card.querySelector(".btn-details");
+      btnDetails.addEventListener("click", () => acceptJob(order, card, btnDetails));
+
+      jobsList.appendChild(card);
+    });
+  }
+
+  async function refreshActiveJobs() {
+    if (!currentWorker) return;
+
+    activeList.innerHTML = "";
+    activeEmpty.style.display = "none";
+
+    const { data: orders, error } = await supabase
+      .from(ORDERS_TABLE)
+      .select("*")
+      .eq("worker_id", currentWorker.id)
+      .eq("status", "accepted")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      activeEmpty.textContent = "Error loading active jobs.";
+      activeEmpty.style.display = "block";
+      return;
+    }
+
+    if (!orders || orders.length === 0) {
+      activeEmpty.textContent = "You have no active jobs.";
+      activeEmpty.style.display = "block";
+      return;
+    }
+
+    orders.forEach(order => {
+      const card = document.createElement("div");
+      card.className = "active-card";
+
+      const title    = order.service_name || "Service";
+      const subtitle = order.notes || "No description from client.";
+      const address  = order.address || "No address";
+      const dateStr  = order.date || "Today";
+      const timeStr  = order.time || "";
+      const clientPhone = order.client_phone || "+1 (312) 555-0147";
+      const priceStr = order.price ? `$${order.price}` : "$—";
+
+      card.innerHTML = `
+        <div class="active-title-row">
+          <div>
+            <div class="active-title">${title}</div>
+            <div class="active-subtitle">${subtitle}</div>
+          </div>
+          <div class="job-price">${priceStr}</div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-label">ADDRESS</div>
+          <div class="info-row">
+            <div class="info-main">
+              <span class="icon">📍</span>
+              <span>${address}</span>
+            </div>
+            <button class="info-action map">Maps</button>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-label">TIME</div>
+          <div class="info-row">
+            <div class="info-main">
+              <span class="icon">🕒</span>
+              <span>${dateStr}, ${timeStr}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-label">CLIENT</div>
+          <div class="info-row">
+            <div class="info-main">
+              <span class="icon">📞</span>
+              <span>${clientPhone}</span>
+            </div>
+            <button class="info-action call">CALL</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-complete">Mark as Completed</button>
+      `;
+
+      const mapBtn = card.querySelector(".info-action.map");
+      mapBtn.addEventListener("click", () => {
+        const url = "https://maps.google.com/?q=" + encodeURIComponent(address);
+        window.open(url, "_blank");
+      });
+
+      const callBtn = card.querySelector(".info-action.call");
+      callBtn.addEventListener("click", () => {
+        window.open("tel:" + clientPhone.replace(/[^+\d]/g, ""), "_blank");
+      });
+
+      const completeBtn = card.querySelector(".btn-complete");
+      completeBtn.addEventListener("click", () => completeJob(order, card, completeBtn));
+
+      activeList.appendChild(card);
+    });
+  }
+
+  // ------------ ACTIONS -------------
+  async function acceptJob(order, card, button) {
+    if (!currentWorker) return;
+    button.disabled = true;
+    button.textContent = "Accepting...";
+
+    const { error } = await supabase
+      .from(ORDERS_TABLE)
+      .update({
+        worker_id: currentWorker.id,
+        status: "accepted"
+      })
+      .eq("id", order.id);
+
+    if (error) {
+      console.error(error);
+      alert("Error accepting job");
+      button.disabled = false;
+      button.textContent = "View Details →";
+      return;
+    }
+
+    card.style.opacity = 0.5;
+    button.textContent = "Accepted";
+    await refreshActiveJobs();
+    await refreshJobs();
+  }
+
+  async function completeJob(order, card, button) {
+    if (!currentWorker) return;
+    button.disabled = true;
+    button.textContent = "Completing...";
+
+    const { error } = await supabase
+      .from(ORDERS_TABLE)
+      .update({ status: "completed" })
+      .eq("id", order.id);
+
+    if (error) {
+      console.error(error);
+      alert("Error completing job");
+      button.disabled = false;
+      button.textContent = "Mark as Completed";
+      return;
+    }
+
+    await supabase
+      .from(WORKERS_TABLE)
+      .update({ jobs_completed: (currentWorker.jobs_completed || 0) + 1 })
+      .eq("id", currentWorker.id);
+
+    currentWorker.jobs_completed = (currentWorker.jobs_completed || 0) + 1;
+    updateProfileUI();
+
+    card.style.opacity = 0.4;
+    button.textContent = "Completed";
+    await refreshActiveJobs();
+  }
+
+  // ------------ PROFILE UI -------------
+  function updateProfileUI() {
+    if (!currentWorker) return;
+
+    profileName.textContent = currentWorker.full_name || "Worker";
+
+    const shortId = String(currentWorker.id || "").slice(0, 5).toUpperCase();
+    profileId.textContent = "ELM-" + shortId;
+
+    const rating = Number(currentWorker.rating || 5).toFixed(1);
+    profileRating.textContent = rating;
+
+    const starsCount = Math.round(Number(currentWorker.rating || 5));
+    const starsStr = "★★★★★".slice(0, starsCount) + "☆☆☆☆☆".slice(0, 5 - starsCount);
+    profileStars.textContent = starsStr;
+
+    const jobs = currentWorker.jobs_completed || 0;
+    profileJobs.textContent = `${jobs} jobs completed`;
+  }
+</script>
 </body>
 </html>
-
