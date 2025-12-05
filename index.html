@@ -356,16 +356,18 @@
 
           <!-- SKILLS -->
           <div class="mb-3 w-full">
-  <div class="flex justify-between items-center mb-1">
-    <span class="text-sm font-semibold" id="skillsLabel">Skills</span>
-    <button id="editSkillsButton" class="text-xs text-green-400 underline">
-      <span id="editSkillsText">Edit skills</span>
-    </button>
-  </div>
-  <div id="profileSkills" class="flex flex-wrap">
-    <!-- chips -->
-  </div>
-</div>
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-sm font-semibold" id="skillsLabel">Skills</span>
+              <button id="editSkillsButton" class="text-xs text-green-400 underline">
+                <span id="editSkillsText">Edit skills</span>
+              </button>
+            </div>
+            <div id="profileSkills" class="flex flex-wrap">
+              <!-- chips -->
+            </div>
+          </div>
+        </div>
+
         <!-- BIG ACTION BUTTONS -->
         <div class="space-y-3">
           <button id="changePhotoButton" class="neon-button w-full flex items-center justify-center gap-2">
@@ -373,9 +375,14 @@
             <span>Change profile photo</span>
           </button>
 
-          $("editProfileButton").addEventListener("click", () => {
-  editProfile();
-});
+          <button id="editProfileButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-user-edit text-green-400"></i>
+              <span>Edit profile (address & bio)</span>
+            </div>
+            <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+          </button>
+
           <button id="openSkillsFromButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-tools text-green-400"></i>
@@ -1441,23 +1448,17 @@
     }
 
     function changeLanguage() {
-  const next =
-    currentLanguage === "en" ? "ru" : currentLanguage === "ru" ? "es" : "en";
-  currentLanguage = next;
-  updateTexts();
-  if (currentWorker) {
-    supabase
-      .from("workers")
-      .update({ language: currentLanguage })
-      .eq("id", currentWorker.id);
-  }
-
-  // Показываем тост с текущим языком
-  const langText = $("currentLangLabel")?.textContent || "";
-  if (langText) {
-    showToast("Language: " + langText);
-  }
-}
+      const next =
+        currentLanguage === "en" ? "ru" : currentLanguage === "ru" ? "es" : "en";
+      currentLanguage = next;
+      updateTexts();
+      if (currentWorker) {
+        supabase
+          .from("workers")
+          .update({ language: currentLanguage })
+          .eq("id", currentWorker.id);
+      }
+    }
 
     function editBio() {
       if (!currentWorker) return;
@@ -1557,4 +1558,3 @@
   </script>
 </body>
 </html>
-
