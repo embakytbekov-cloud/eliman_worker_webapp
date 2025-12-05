@@ -7,28 +7,27 @@
   <!-- Telegram WebApp -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="cdn.tailwindcss.com"></script>
   <!-- Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <base target="_blank" />
- 
+
   <style>
-    /* Стили остаются без изменений */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
- 
+
     * {
       font-family: 'Inter', sans-serif;
       -webkit-tap-highlight-color: transparent;
       box-sizing: border-box;
     }
- 
+
     body {
       background: radial-gradient(circle at 50% 0%, #0a0e1a 0%, #020613 100%);
       color: #ffffff;
       overflow-x: hidden;
       margin: 0;
     }
- 
+
     .glass-card {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(20px);
@@ -36,7 +35,7 @@
       border-radius: 20px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
- 
+
     .neon-button {
       background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
       color: #020613;
@@ -49,18 +48,18 @@
       transition: all 0.3s ease;
       box-shadow: 0 4px 20px rgba(31, 227, 136, 0.3);
     }
- 
+
     .neon-button:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 30px rgba(31, 227, 136, 0.5);
     }
- 
+
     .neon-button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
       transform: none;
     }
- 
+
     .status-pill {
       background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
       color: #020613;
@@ -71,35 +70,35 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
- 
+
     .job-card {
       transition: all 0.3s ease;
       cursor: pointer;
     }
- 
+
     .job-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
     }
- 
+
     .tab-button {
       transition: all 0.3s ease;
       border-radius: 12px;
       padding: 10px;
       color: #64748b;
     }
- 
+
     .tab-button.active {
       background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
       color: #020613;
       font-weight: 600;
     }
- 
+
     .modal-overlay {
       background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(10px);
     }
- 
+
     .loading-spinner {
       border: 2px solid rgba(31, 227, 136, 0.3);
       border-top: 2px solid #1FE388;
@@ -108,21 +107,21 @@
       height: 20px;
       animation: spin 1s linear infinite;
     }
- 
+
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
- 
+
     .fade-in {
       animation: fadeIn 0.4s ease-in;
     }
- 
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
- 
+
     .price-tag {
       background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
       color: #020613;
@@ -131,7 +130,7 @@
       font-weight: 700;
       font-size: 18px;
     }
- 
+
     .photo-placeholder {
       width: 36px;
       height: 36px;
@@ -143,13 +142,13 @@
       justify-content: center;
       color: #1FE388;
     }
- 
+
     .bottom-nav {
       background: rgba(2, 6, 19, 0.96);
       backdrop-filter: blur(20px);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
- 
+
     .refresh-btn {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(31, 227, 136, 0.3);
@@ -159,11 +158,11 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
- 
+
     .refresh-btn:hover {
       background: rgba(31, 227, 136, 0.1);
     }
- 
+
     .load-more-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -175,21 +174,34 @@
       margin-top: 16px;
       transition: all 0.3s ease;
     }
- 
+
     .load-more-btn:hover {
       background: rgba(31, 227, 136, 0.1);
     }
- 
+
     .refresh-icon.spinning {
       animation: spin 1s linear infinite;
     }
 
-    /* Новые стили для редактирования bio */
-    .bio-modal-content {
-      max-width: 500px;
-      width: 100%;
+    /* Новые стили для профиля Uber-style */
+    .stat-card {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 16px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
-    
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 12px;
+      margin: 2px;
+    }
+
+    /* Стили для био редактора */
     .bio-textarea {
       width: 100%;
       min-height: 120px;
@@ -202,20 +214,22 @@
       resize: vertical;
       margin-bottom: 16px;
     }
-    
+
     .bio-textarea:focus {
       outline: none;
       border-color: #1FE388;
       box-shadow: 0 0 0 2px rgba(31, 227, 136, 0.3);
     }
 
-    /* Новые стили для управления навыками */
+    /* Стили для навыков */
     .skills-list {
       display: grid;
       gap: 12px;
       margin-bottom: 20px;
+      max-height: 400px;
+      overflow-y: auto;
     }
-    
+
     .skill-item {
       display: flex;
       align-items: center;
@@ -226,22 +240,61 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-    
+
     .skill-item:hover {
       background: rgba(31, 227, 136, 0.1);
       border-color: rgba(31, 227, 136, 0.3);
     }
-    
+
     .skill-item input {
       margin-right: 12px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .skill-item label {
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .modal-content {
+      max-width: 500px;
+      width: 100%;
     }
   </style>
 </head>
 <body class="min-h-screen pb-20">
- 
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 rounded-2xl mx-auto mb-4 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-3xl font-extrabold">
+        E
+      </div>
+      <h1 class="text-3xl font-black mb-2">ELIMAN</h1>
+      <h2 id="welcomeTitle" class="text-xl font-semibold mb-2">Welcome, Worker</h2>
+      <p id="welcomeSubtitle" class="text-gray-400 text-sm">
+        Sign in via Telegram to start accepting jobs in your area
+      </p>
+    </div>
+
+    <div class="w-full max-w-sm">
+      <div class="glass-card p-6 mb-4 text-center">
+        <p id="loginHint" class="text-gray-400 text-sm mb-4">
+          This mini app works only inside Telegram. Open from bot and press "Login".
+        </p>
+        <button id="loginButton" class="neon-button w-full">
+          <span id="loginButtonText">Login with Telegram</span>
+        </button>
+        <div id="loginError" class="text-red-400 text-sm mt-3 text-center hidden"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- MAIN APP -->
-  <div id="mainScreen" class="min-h-screen">
- 
+  <div id="mainScreen" class="hidden min-h-screen">
+
     <!-- HEADER -->
     <div class="sticky top-0 z-40 bg-black/60 backdrop-blur-lg border-b border-white/10">
       <div class="flex items-center justify-between p-4">
@@ -259,10 +312,10 @@
         </div>
       </div>
     </div>
- 
+
     <!-- CONTENT -->
     <div id="tabContent" class="p-4 pb-24">
- 
+
       <!-- JOBS TAB -->
       <div id="jobsTab" class="tab-content">
         <div class="mb-6">
@@ -280,7 +333,7 @@
           <p>No jobs available right now</p>
         </div>
       </div>
- 
+
       <!-- ACTIVE TAB -->
       <div id="activeTab" class="tab-content hidden">
         <div class="mb-6">
@@ -298,13 +351,13 @@
           <p>No active jobs</p>
         </div>
       </div>
- 
-      <!-- PROFILE TAB -->
+
+      <!-- PROFILE TAB - UBER STYLE -->
       <div id="profileTab" class="tab-content hidden">
         <div class="mb-6">
           <h2 id="profileTitle" class="text-2xl font-bold mb-1">Profile</h2>
         </div>
- 
+
         <div class="glass-card p-6 mb-4">
           <!-- AVATAR + NAME + STATUS -->
           <div class="flex flex-col items-center mb-5">
@@ -327,7 +380,7 @@
               Online
             </span>
           </div>
- 
+
           <!-- STATS -->
           <div class="grid grid-cols-2 gap-3 mb-5">
             <div class="stat-card">
@@ -351,7 +404,7 @@
               </div>
             </div>
           </div>
- 
+
           <!-- BIO -->
           <div class="mb-4 w-full">
             <div class="flex justify-between items-center mb-1">
@@ -362,7 +415,7 @@
               Handyman with 5+ years experience. Professional and fast.
             </p>
           </div>
- 
+
           <!-- SKILLS -->
           <div class="mb-3 w-full">
             <div class="flex justify-between items-center mb-1">
@@ -373,7 +426,7 @@
             </div>
           </div>
         </div>
- 
+
         <!-- ACTION BUTTONS -->
         <div class="space-y-3">
           <button id="changePhotoButton" class="neon-button w-full flex items-center justify-center gap-2">
@@ -381,16 +434,16 @@
             <span>Change profile photo</span>
           </button>
 
-          <!-- ДОБАВЛЕНО: Кнопка редактирования Bio -->
+          <!-- NEW: Edit Profile Button -->
           <button id="editProfileButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-user-edit text-green-400"></i>
-              <span>Edit Profile (Bio)</span>
+              <span>Edit Profile (Bio + Address)</span>
             </div>
             <i class="fas fa-chevron-right text-xs text-gray-400"></i>
           </button>
 
-          <!-- ДОБАВЛЕНО: Кнопка управления навыками -->
+          <!-- NEW: Manage Skills Button -->
           <button id="manageSkillsButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-tools text-green-400"></i>
@@ -398,7 +451,8 @@
             </div>
             <i class="fas fa-chevron-right text-xs text-gray-400"></i>
           </button>
- 
+
+          <!-- NEW: Language Switcher -->
           <button id="changeLangButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-language text-green-400"></i>
@@ -406,7 +460,8 @@
             </div>
             <i class="fas fa-sync text-xs text-gray-400"></i>
           </button>
- 
+
+          <!-- Notifications Toggle -->
           <button id="notifToggle" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-bell text-green-400"></i>
@@ -416,7 +471,7 @@
           </button>
         </div>
       </div>
- 
+
       <!-- HISTORY TAB -->
       <div id="historyTab" class="tab-content hidden">
         <div class="mb-6">
@@ -425,7 +480,7 @@
             Completed jobs and your rank
           </p>
         </div>
- 
+
         <div class="glass-card p-4 mb-4">
           <div class="flex items-center justify-between mb-2">
             <div>
@@ -438,7 +493,7 @@
             </div>
           </div>
         </div>
- 
+
         <div id="historyList" class="space-y-3"></div>
         <div id="loadMoreHistory" class="load-more-btn hidden">
           <i class="fas fa-chevron-down mr-2"></i>Load More
@@ -448,9 +503,9 @@
           <p>No completed jobs yet</p>
         </div>
       </div>
- 
+
     </div>
- 
+
     <!-- BOTTOM NAV -->
     <div class="fixed bottom-0 left-0 right-0 bottom-nav z-50">
       <div class="flex justify-around p-2">
@@ -473,7 +528,7 @@
       </div>
     </div>
   </div>
- 
+
   <!-- JOB DETAILS MODAL -->
   <div id="jobModal" class="fixed inset-0 z-50 hidden modal-overlay">
     <div class="flex items-center justify-center min-h-screen p-4">
@@ -491,27 +546,34 @@
     </div>
   </div>
 
-  <!-- MODAL FOR EDITING BIO -->
-  <div id="bioModal" class="fixed inset-0 z-50 hidden modal-overlay">
+  <!-- PROFILE EDITOR MODAL -->
+  <div id="profileEditorModal" class="fixed inset-0 z-50 hidden modal-overlay">
     <div class="flex items-center justify-center min-h-screen p-4">
-      <div class="glass-card bio-modal-content max-w-md w-full">
+      <div class="glass-card modal-content">
         <div class="p-6">
           <div class="flex justify-between items-start mb-4">
-            <h3 class="text-xl font-bold">Edit Profile (Bio)</h3>
-            <button id="closeBioModal" class="text-gray-400 hover:text-white">
+            <h3 class="text-xl font-bold">Edit Profile</h3>
+            <button id="closeProfileEditor" class="text-gray-400 hover:text-white">
               <i class="fas fa-times text-xl"></i>
             </button>
           </div>
           <div class="space-y-4">
-            <textarea id="bioTextarea" class="bio-textarea" placeholder="Write something about yourself..."></textarea>
-            <button id="saveBioButton" class="neon-button w-full">Save</button>
+            <div>
+              <label class="block text-sm font-semibold mb-2">Address</label>
+              <input id="addressInput" type="text" class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white" placeholder="Enter your working area">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-2">Bio</label>
+              <textarea id="bioInput" class="bio-textarea" placeholder="Write about your experience..."></textarea>
+            </div>
+            <button id="saveProfileButton" class="neon-button w-full">Save Profile</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL FOR MANAGING SKILLS -->
+  <!-- SKILLS EDITOR MODAL -->
   <div id="skillsModal" class="fixed inset-0 z-50 hidden modal-overlay">
     <div class="flex items-center justify-center min-h-screen p-4">
       <div class="glass-card max-w-md w-full max-h-[90vh] overflow-y-auto">
@@ -528,26 +590,31 @@
       </div>
     </div>
   </div>
- 
+
   <!-- APP LOGIC -->
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
- 
-    // 🔐 Supabase
+
+    // 🔐 Supabase (замените на ваши данные)
     const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
- 
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
+
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
- 
+
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.expand();
       tg.disableVerticalSwipes();
     }
- 
+
     // 🌍 i18n (EN / RU / ES)
     const i18n = {
       en: {
+        welcomeTitle: "Welcome, Worker",
+        welcomeSubtitle: "Sign in via Telegram to start accepting jobs in your area",
+        loginButton: "Login with Telegram",
+        loginHint: "This mini app works only inside Telegram. Open from bot.",
+        loginErrorNoWorker: "Worker not found. Please contact support.",
         jobsTabLabel: "Jobs",
         activeTabLabel: "Active",
         profileTabLabel: "Profile",
@@ -579,6 +646,8 @@
         jobAcceptedToast: "Job accepted!",
         jobStartedToast: "Job started!",
         jobCompletedToast: "Job completed!",
+        skillsUpdatedToast: "Skills updated!",
+        profileUpdatedToast: "Profile updated!",
         newJobToast: "New job available",
         newJobPopup: "New job is available. Open Jobs tab to see details.",
         onlineText: "Online",
@@ -592,6 +661,11 @@
         initError: "Please open this app from Telegram bot",
       },
       ru: {
+        welcomeTitle: "Добро пожаловать, Работник",
+        welcomeSubtitle: "Войдите через Telegram, чтобы начать принимать заказы рядом с вами",
+        loginButton: "Войти через Telegram",
+        loginHint: "Это мини-приложение работает только внутри Telegram. Откройте через бота.",
+        loginErrorNoWorker: "Работник не найден. Обратитесь в поддержку.",
         jobsTabLabel: "Заказы",
         activeTabLabel: "Активные",
         profileTabLabel: "Профиль",
@@ -623,6 +697,8 @@
         jobAcceptedToast: "Заказ принят!",
         jobStartedToast: "Работа начата!",
         jobCompletedToast: "Работа завершена!",
+        skillsUpdatedToast: "Навыки обновлены!",
+        profileUpdatedToast: "Профиль обновлён!",
         newJobToast: "Новый заказ доступен",
         newJobPopup: "Появился новый заказ. Откройте вкладку «Заказы».",
         onlineText: "Онлайн",
@@ -636,6 +712,11 @@
         initError: "Откройте это приложение через Telegram бот",
       },
       es: {
+        welcomeTitle: "Bienvenido, Trabajador",
+        welcomeSubtitle: "Inicia sesión con Telegram para aceptar trabajos en tu área",
+        loginButton: "Entrar con Telegram",
+        loginHint: "Esta mini app solo funciona dentro de Telegram. Ábrela desde el bot.",
+        loginErrorNoWorker: "Trabajador no encontrado. Contacta soporte.",
         jobsTabLabel: "Trabajos",
         activeTabLabel: "Activos",
         profileTabLabel: "Perfil",
@@ -667,6 +748,8 @@
         jobAcceptedToast: "¡Trabajo aceptado!",
         jobStartedToast: "¡Trabajo iniciado!",
         jobCompletedToast: "¡Trabajo completado!",
+        skillsUpdatedToast: "¡Habilidades actualizadas!",
+        profileUpdatedToast: "¡Perfil actualizado!",
         newJobToast: "Nuevo trabajo disponible",
         newJobPopup: "Hay un nuevo trabajo disponible. Abre la pestaña Trabajos.",
         onlineText: "En línea",
@@ -680,7 +763,7 @@
         initError: "Abra esta aplicación desde el bot de Telegram",
       },
     };
- 
+
     let currentLanguage = "en";
     let currentWorker = null;
     let jobs = [];
@@ -695,101 +778,92 @@
     let activePage = 0;
     let historyPage = 0;
     let currentTab = 'jobs';
- 
-    const $ = (id) => document.getElementById(id);
-    const t = (key) => i18n[currentLanguage][key] || key;
- 
+
     // Доступные навыки
     const availableSkills = [
-      "appliance",
       "cleaning",
       "handyman",
-      "locksmith",
       "moving",
-      "smarthome",
-      "tire service"
+      "locksmith",
+      "appliance_repair",
+      "furniture_assembly",
+      "lawn_care",
+      "gutter_cleaning"
     ];
- 
+
+    const $ = (id) => document.getElementById(id);
+    const t = (key) => i18n[currentLanguage][key] || key;
+
     function updateTexts() {
-      $("newJobsTitle").textContent = t("newJobsTitle");
-      $("newJobsSubtitle").textContent = t("newJobsSubtitle");
-      $("activeJobsTitle").textContent = t("activeJobsTitle");
-      $("activeJobsSubtitle").textContent = t("activeJobsSubtitle");
-      $("profileTitle").textContent = t("profileTitle");
-      $("profileRatingLabel").textContent = "5.0 " + t("profileRatingLabel");
-      $("profileJobsLabel").textContent = t("profileJobsLabel");
-      $("historyTitle").textContent = t("historyTitle");
-      $("historySubtitle").textContent = t("historySubtitle");
-      $("jobsTabLabel").textContent = t("jobsTabLabel");
-      $("activeTabLabel").textContent = t("activeTabLabel");
-      $("profileTabLabel").textContent = t("profileTabLabel");
-      $("historyTabLabel").textContent = t("historyTabLabel");
- 
-      $("noJobsText").querySelector("p").textContent = t("noJobsText");
-      $("noActiveJobsText").querySelector("p").textContent = t("noActiveJobsText");
-      $("noHistoryText").querySelector("p").textContent = t("noHistoryText");
- 
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (i18n[currentLanguage][key]) {
+          el.textContent = i18n[currentLanguage][key];
+        }
+      });
+
       $("onlineToggleText").textContent = isOnline ? t("onlineText") : t("offlineText");
       $("notifToggleText").textContent = isOnline ? t("notifOn") : t("notifOff");
- 
-      if (currentLanguage === "en") $("currentLangLabel").textContent = t("langEnglish");
-      if (currentLanguage === "ru") $("currentLangLabel").textContent = t("langRussian");
-      if (currentLanguage === "es") $("currentLangLabel").textContent = t("langSpanish");
- 
+      $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
+
+      const langLabel = currentLanguage === "en" ? t("langEnglish") :
+                        currentLanguage === "ru" ? t("langRussian") : t("langSpanish");
+      $("currentLangLabel").textContent = langLabel;
+
       // Обновить тексты кнопок пагинации
       document.querySelectorAll('.load-more-btn').forEach(btn => {
-        const text = btn.querySelector('i') ? btn.innerHTML : btn.textContent;
-        if (btn.innerHTML.includes('Load More') || btn.innerHTML.includes('Загрузить ещё') || btn.innerHTML.includes('Cargar más')) {
-          btn.innerHTML = `<i class="fas fa-chevron-down mr-2"></i>${t("loadMoreButton")}`;
-        }
+        btn.innerHTML = `<i class="fas fa-chevron-down mr-2"></i>${t("loadMoreButton")}`;
       });
     }
 
     function showToast(message) {
       const toast = document.createElement("div");
-      toast.className =
-        "fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg z-[9999] shadow-lg text-sm";
+      toast.className = "fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg z-[9999] shadow-lg text-sm";
       toast.textContent = message;
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 2500);
     }
 
+    function showLoginError(msg) {
+      const el = $("loginError");
+      el.textContent = msg;
+      el.classList.remove("hidden");
+    }
+
+    function showMainScreen() {
+      $("loginScreen").classList.add("hidden");
+      $("mainScreen").classList.remove("hidden");
+      updateProfileUI();
+      updateTexts();
+    }
+
     function updateProfileUI() {
       if (!currentWorker) return;
       const name = currentWorker.full_name || "Worker";
-      const initials = name
-        .split(" ")
-        .filter(Boolean)
-        .map((n) => n[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase();
- 
+      const initials = name.split(" ").filter(Boolean).map(n => n[0]).join("").slice(0, 2).toUpperCase();
+
       const avatar = $("profileAvatar");
-      if (avatar) {
-        avatar.innerHTML = "";
-        if (currentWorker.photo_url) {
-          const img = document.createElement("img");
-          img.src = currentWorker.photo_url;
-          img.alt = name;
-          img.className = "w-full h-full object-cover";
-          avatar.appendChild(img);
-        } else {
-          const span = document.createElement("span");
-          span.id = "profileInitials";
-          span.textContent = initials || "W";
-          avatar.appendChild(span);
-        }
+      avatar.innerHTML = "";
+      if (currentWorker.avatar_url) {
+        const img = document.createElement("img");
+        img.src = currentWorker.avatar_url;
+        img.alt = name;
+        img.className = "w-full h-full object-cover rounded-full";
+        avatar.appendChild(img);
+      } else {
+        const span = document.createElement("span");
+        span.id = "profileInitials";
+        span.textContent = initials || "W";
+        avatar.appendChild(span);
       }
- 
+
       $("profileName").textContent = name;
       const idStr = String(currentWorker.id || "");
       $("profileId").textContent = "ID: ••••" + idStr.slice(-4);
       $("jobsCompleted").textContent = currentWorker.jobs_completed || 0;
- 
-      const address = currentWorker.address || "";
-      $("profileAddress").textContent = address || "Address not set";
- 
+      $("profileAddress").textContent = currentWorker.address || "Address not set";
+      $("profileBio").textContent = currentWorker.bio || "Professional worker with great experience.";
+
       const skills = currentWorker.skills || [];
       const skillsContainer = $("profileSkills");
       skillsContainer.innerHTML = "";
@@ -799,107 +873,96 @@
         span.textContent = "No skills selected";
         skillsContainer.appendChild(span);
       } else {
-        skills.forEach((s) => {
+        skills.forEach(s => {
           const chip = document.createElement("span");
-          chip.className = "chip";
+          chip.className = "chip capitalize";
           chip.textContent = s.replace("_", " ");
           skillsContainer.appendChild(chip);
         });
       }
- 
-      $("profileBio").textContent =
-        currentWorker.bio ||
-        "Handyman with 5+ years experience. Professional and fast.";
- 
-      if ($("profileStatus")) {
-        $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
-      }
     }
 
-    async function initializeApp() {
+    async function telegramLogin() {
       if (!tg || !tg.initDataUnsafe?.user) {
-        showToast(t("initError"));
+        showLoginError(t("initError"));
         return;
       }
- 
+
       const u = tg.initDataUnsafe.user;
       const telegram_id = String(u.id);
       const lang_code = u.language_code || "en";
- 
+
       if (lang_code === "ru") currentLanguage = "ru";
       else if (lang_code === "es") currentLanguage = "es";
       else currentLanguage = "en";
-      updateTexts();
- 
+
+      const btn = $("loginButton");
+      btn.disabled = true;
+      btn.innerHTML = '<div class="loading-spinner mx-auto"></div>';
+
       try {
         let { data: worker, error } = await supabase
           .from("workers")
           .select("*")
           .eq("telegram_id", telegram_id)
           .single();
- 
+
         if (error) {
-          showToast(t("initError"));
+          showLoginError(t("loginErrorNoWorker"));
+          btn.disabled = false;
+          $("loginButtonText").textContent = t("loginButton");
           return;
         }
- 
+
         currentWorker = worker;
         if (!currentWorker.language || currentWorker.language !== currentLanguage) {
-          await supabase
-            .from("workers")
-            .update({ language: currentLanguage })
-            .eq("id", currentWorker.id);
+          await supabase.from("workers").update({ language: currentLanguage }).eq("id", currentWorker.id);
         }
- 
-        updateProfileUI();
+
+        showMainScreen();
         await loadAllData();
         setupRealtime();
       } catch (e) {
-        console.error("App initialization error:", e);
-        showToast("Initialization error. Try again.");
+        console.error("Login error:", e);
+        showLoginError("Login failed. Try again.");
+      } finally {
+        btn.disabled = false;
+        $("loginButtonText").textContent = t("loginButton");
       }
     }
- 
+
     async function loadAllData() {
-      await Promise.all([loadJobs(true), loadActiveJobs(true), loadHistory(true)]);
+      await Promise.all([loadJobs(true), loadActiveJobs(true), loadHistory(true), loadRank()]);
     }
 
     function showLoadingSpinner() {
       const icon = $('refreshButton').querySelector('i');
-      icon.classList.add('fa-spin');
+      icon?.classList.add('fa-spin');
     }
 
     function hideLoadingSpinner() {
       const icon = $('refreshButton').querySelector('i');
-      icon.classList.remove('fa-spin');
+      icon?.classList.remove('fa-spin');
     }
 
     async function refreshCurrentTab() {
       showLoadingSpinner();
       try {
-        if (currentTab === 'jobs') {
-          await loadJobs(true);
-        } else if (currentTab === 'active') {
-          await loadActiveJobs(true);
-        } else if (currentTab === 'history') {
-          await loadHistory(true);
-        }
+        if (currentTab === 'jobs') await loadJobs(true);
+        else if (currentTab === 'active') await loadActiveJobs(true);
+        else if (currentTab === 'history') await loadHistory(true);
       } finally {
         hideLoadingSpinner();
       }
     }
- 
+
     async function loadJobs(reset = false) {
       if (!currentWorker) return;
-      
-      if (reset) {
-        jobsPage = 0;
-        jobs = [];
-      }
+      if (reset) { jobsPage = 0; jobs = []; }
       
       const from = jobsPage * JOBS_PER_PAGE;
       const to = from + JOBS_PER_PAGE - 1;
- 
+
       try {
         const { data: orders, error } = await supabase
           .from("orders")
@@ -908,40 +971,28 @@
           .eq("status", "pending")
           .order("created_at", { ascending: false })
           .range(from, to);
- 
+
         if (error) throw error;
- 
+
         const workerSkills = currentWorker.skills || [];
-        const filteredJobs = orders.filter(
-          (o) => workerSkills.length === 0 || workerSkills.includes(o.service_type)
-        );
- 
+        const filteredJobs = orders.filter(o => workerSkills.length === 0 || workerSkills.includes(o.service_type));
         jobs = reset ? filteredJobs : [...jobs, ...filteredJobs];
         renderJobs();
-        
-        const loadMoreBtn = $("loadMoreJobs");
-        if (orders.length === JOBS_PER_PAGE) {
-          loadMoreBtn.classList.remove("hidden");
-        } else {
-          loadMoreBtn.classList.add("hidden");
-        }
+
+        $("loadMoreJobs").classList.toggle("hidden", orders.length < JOBS_PER_PAGE);
       } catch (e) {
         console.error("loadJobs error:", e);
         showToast(t("errorLoadingJobs"));
       }
     }
- 
+
     async function loadActiveJobs(reset = false) {
       if (!currentWorker) return;
-      
-      if (reset) {
-        activePage = 0;
-        activeJobs = [];
-      }
+      if (reset) { activePage = 0; activeJobs = []; }
       
       const from = activePage * JOBS_PER_PAGE;
       const to = from + JOBS_PER_PAGE - 1;
- 
+
       try {
         const { data: orders, error } = await supabase
           .from("orders")
@@ -950,35 +1001,26 @@
           .in("status", ["accepted", "in_progress"])
           .order("created_at", { ascending: false })
           .range(from, to);
- 
+
         if (error) throw error;
- 
+
         activeJobs = reset ? orders : [...activeJobs, ...orders];
         renderActiveJobs();
-        
-        const loadMoreBtn = $("loadMoreActive");
-        if (orders.length === JOBS_PER_PAGE) {
-          loadMoreBtn.classList.remove("hidden");
-        } else {
-          loadMoreBtn.classList.add("hidden");
-        }
+
+        $("loadMoreActive").classList.toggle("hidden", orders.length < JOBS_PER_PAGE);
       } catch (e) {
         console.error("loadActiveJobs error:", e);
         showToast(t("errorLoadingJobs"));
       }
     }
- 
+
     async function loadHistory(reset = false) {
       if (!currentWorker) return;
-      
-      if (reset) {
-        historyPage = 0;
-        historyJobs = [];
-      }
+      if (reset) { historyPage = 0; historyJobs = []; }
       
       const from = historyPage * JOBS_PER_PAGE;
       const to = from + JOBS_PER_PAGE - 1;
- 
+
       try {
         const { data: orders, error } = await supabase
           .from("orders")
@@ -987,23 +1029,19 @@
           .eq("status", "completed")
           .order("created_at", { ascending: false })
           .range(from, to);
- 
+
         if (error) throw error;
- 
+
         historyJobs = reset ? orders : [...historyJobs, ...orders];
         renderHistory();
-        
-        const loadMoreBtn = $("loadMoreHistory");
-        if (orders.length === JOBS_PER_PAGE) {
-          loadMoreBtn.classList.remove("hidden");
-        } else {
-          loadMoreBtn.classList.add("hidden");
-        }
+
+        $("loadMoreHistory").classList.toggle("hidden", orders.length < JOBS_PER_PAGE);
+        $("historyTotal").textContent = historyJobs.length;
       } catch (e) {
         console.error("loadHistory error:", e);
       }
     }
- 
+
     async function loadRank() {
       if (!currentWorker) return;
       try {
@@ -1011,49 +1049,40 @@
           .from("workers")
           .select("id, jobs_completed")
           .order("jobs_completed", { ascending: false });
- 
+
         if (error) throw error;
         if (!workers) return;
- 
-        const index = workers.findIndex((w) => w.id === currentWorker.id);
-        if (index === -1) {
-          $("historyRank").textContent = "—";
-        } else {
-          $("historyRank").textContent = `#${index + 1} / ${workers.length}`;
-        }
-        $("historyTotal").textContent = currentWorker.jobs_completed || 0;
+
+        const index = workers.findIndex(w => w.id === currentWorker.id);
+        $("historyRank").textContent = index === -1 ? "—" : `#${index + 1} / ${workers.length}`;
       } catch (e) {
         console.error("loadRank error:", e);
       }
     }
- 
+
     function renderJobs() {
       const list = $("jobsList");
       const empty = $("noJobsText");
- 
+      const loadMore = $("loadMoreJobs");
+
       if (!jobs.length) {
         list.innerHTML = "";
         empty.classList.remove("hidden");
-        $("loadMoreJobs").classList.add("hidden");
+        loadMore.classList.add("hidden");
         return;
       }
- 
+
       empty.classList.add("hidden");
-      
-      if (jobsPage === 0) {
-        list.innerHTML = "";
-      }
- 
-      jobs.forEach((job, index) => {
-        if (jobsPage > 0 && index < jobsPage * JOBS_PER_PAGE) return;
-        
+      if (jobsPage === 0) list.innerHTML = "";
+
+      jobs.forEach(job => {
         const card = document.createElement("div");
         card.className = "job-card glass-card p-4 fade-in";
         const serviceName = job.service_name || job.service_type;
         const notes = job.notes || "No additional notes";
         const shortAddress = (job.address || "").split(",")[0] || job.address || "";
         const when = [job.date, job.time].filter(Boolean).join(" ");
- 
+
         card.innerHTML = `
           <div class="flex justify-between items-start mb-3">
             <div class="flex-1">
@@ -1074,61 +1103,43 @@
           </div>
           <div class="flex items-center justify-between">
             <div class="flex -space-x-2">
-              <div class="photo-placeholder">
-                <i class="fas fa-camera text-xs"></i>
-              </div>
-              <div class="photo-placeholder">
-                <i class="fas fa-camera text-xs"></i>
-              </div>
-              <div class="photo-placeholder">
-                <i class="fas fa-camera text-xs"></i>
-              </div>
+              <div class="photo-placeholder"><i class="fas fa-camera text-xs"></i></div>
+              <div class="photo-placeholder"><i class="fas fa-camera text-xs"></i></div>
+              <div class="photo-placeholder"><i class="fas fa-camera text-xs"></i></div>
               <span class="text-xs text-gray-400 ml-2 self-center">3 photos</span>
             </div>
-            <button class="text-green-400 font-semibold text-sm view-details-btn">
-              ${t("viewDetailsButton")}
-            </button>
+            <button class="text-green-400 font-semibold text-sm view-details-btn">${t("viewDetailsButton")}</button>
           </div>
         `;
- 
-        card.querySelector(".view-details-btn").addEventListener("click", (e) => {
-          e.stopPropagation();
-          showJobDetails(job);
-        });
- 
+
+        card.querySelector(".view-details-btn").addEventListener("click", () => showJobDetails(job));
         list.appendChild(card);
       });
     }
- 
+
     function renderActiveJobs() {
       const list = $("activeJobsList");
       const empty = $("noActiveJobsText");
- 
+      const loadMore = $("loadMoreActive");
+
       if (!activeJobs.length) {
         list.innerHTML = "";
         empty.classList.remove("hidden");
-        $("loadMoreActive").classList.add("hidden");
+        loadMore.classList.add("hidden");
         return;
       }
- 
+
       empty.classList.add("hidden");
-      
-      if (activePage === 0) {
-        list.innerHTML = "";
-      }
- 
-      activeJobs.forEach((job, index) => {
-        if (activePage > 0 && index < activePage * JOBS_PER_PAGE) return;
-        
+      if (activePage === 0) list.innerHTML = "";
+
+      activeJobs.forEach(job => {
         const card = document.createElement("div");
         card.className = "glass-card p-4 fade-in";
         const serviceName = job.service_name || job.service_type;
         const shortAddress = (job.address || "").split(",")[0] || job.address || "";
         const when = [job.date, job.time].filter(Boolean).join(" ");
- 
-        const buttonLabel =
-          job.status === "accepted" ? t("startJobButton") : t("completeJobButton");
- 
+        const buttonLabel = job.status === "accepted" ? t("startJobButton") : t("completeJobButton");
+
         card.innerHTML = `
           <div class="flex justify-between items-start mb-3">
             <h3 class="font-semibold text-lg">${serviceName}</h3>
@@ -1136,162 +1147,93 @@
           </div>
           <div class="space-y-3 mb-4">
             <div class="flex items-center justify-between text-sm">
-              <div class="flex items-center text-gray-200">
-                <i class="fas fa-map-marker-alt mr-2 text-gray-400"></i>
-                <span>${shortAddress}</span>
-              </div>
-              <button class="text-green-400 text-xs underline open-map-btn">
-                <i class="fas fa-external-link-alt mr-1"></i>Map
-              </button>
+              <div class="flex items-center text-gray-200"><i class="fas fa-map-marker-alt mr-2 text-gray-400"></i><span>${shortAddress}</span></div>
+              <button class="text-green-400 text-xs underline open-map-btn"><i class="fas fa-external-link-alt mr-1"></i>Map</button>
             </div>
             <div class="flex items-center justify-between text-sm">
-              <div class="flex items-center text-gray-200">
-                <i class="fas fa-user mr-2 text-gray-400"></i>
-                <span>${job.client_name || ""}</span>
-              </div>
-              <button class="text-green-400 text-xs underline call-btn">
-                <i class="fas fa-phone mr-1"></i>Call
-              </button>
+              <div class="flex items-center text-gray-200"><i class="fas fa-user mr-2 text-gray-400"></i><span>${job.client_name || ""}</span></div>
+              <button class="text-green-400 text-xs underline call-btn"><i class="fas fa-phone mr-1"></i>Call</button>
             </div>
-            <div class="flex items-center text-sm text-gray-200">
-              <i class="fas fa-clock mr-2 text-gray-400"></i>
-              <span>${when}</span>
-            </div>
+            <div class="flex items-center text-sm text-gray-200"><i class="fas fa-clock mr-2 text-gray-400"></i><span>${when}</span></div>
           </div>
-          <button class="neon-button w-full status-btn">
-            ${buttonLabel}
-          </button>
+          <button class="neon-button w-full status-btn">${buttonLabel}</button>
         `;
- 
-        card.querySelector(".open-map-btn").addEventListener("click", () => {
-          openMaps(job.address);
-        });
-        card.querySelector(".call-btn").addEventListener("click", () => {
-          callPhone(job.client_phone);
-        });
-        card.querySelector(".status-btn").addEventListener("click", () => {
-          updateJobStatus(job);
-        });
- 
+
+        card.querySelector(".open-map-btn").addEventListener("click", () => openMaps(job.address));
+        card.querySelector(".call-btn").addEventListener("click", () => callPhone(job.client_phone));
+        card.querySelector(".status-btn").addEventListener("click", () => updateJobStatus(job));
         list.appendChild(card);
       });
     }
- 
+
     function renderHistory() {
       const list = $("historyList");
       const empty = $("noHistoryText");
- 
+      const loadMore = $("loadMoreHistory");
+
       if (!historyJobs.length) {
         list.innerHTML = "";
         empty.classList.remove("hidden");
-        $("loadMoreHistory").classList.add("hidden");
+        loadMore.classList.add("hidden");
         $("historyTotal").textContent = "0";
         return;
       }
- 
+
       empty.classList.add("hidden");
-      
-      if (historyPage === 0) {
-        list.innerHTML = "";
-      }
- 
+      if (historyPage === 0) list.innerHTML = "";
+
       const startIndex = historyPage * JOBS_PER_PAGE;
       const newJobs = historyJobs.slice(startIndex, startIndex + JOBS_PER_PAGE);
- 
-      newJobs.forEach((job) => {
+
+      newJobs.forEach(job => {
         const item = document.createElement("div");
         item.className = "glass-card p-3 text-sm";
- 
         const serviceName = job.service_name || job.service_type;
         const when = [job.date, job.time].filter(Boolean).join(" ");
         const shortAddress = (job.address || "").split(",")[0] || job.address || "";
- 
+
         item.innerHTML = `
-          <div class="flex justify-between items-center mb-1">
-            <span class="font-semibold">${serviceName}</span>
-            <span class="text-green-400 font-bold">${job.price ? `$${job.price}` : "$—"}</span>
-          </div>
-          <div class="flex justify-between text-xs text-gray-400">
-            <span><i class="fas fa-map-marker-alt mr-1"></i>${shortAddress}</span>
-            <span><i class="fas fa-clock mr-1"></i>${when}</span>
-          </div>
+          <div class="flex justify-between items-center mb-1"><span class="font-semibold">${serviceName}</span><span class="text-green-400 font-bold">${job.price ? `$${job.price}` : "$—"}</span></div>
+          <div class="flex justify-between text-xs text-gray-400"><span><i class="fas fa-map-marker-alt mr-1"></i>${shortAddress}</span><span><i class="fas fa-clock mr-1"></i>${when}</span></div>
         `;
         list.appendChild(item);
       });
-      
-      const loadMoreBtn = $("loadMoreHistory");
-      if (historyJobs.length > (historyPage + 1) * JOBS_PER_PAGE) {
-        loadMoreBtn.classList.remove("hidden");
-      } else {
-        loadMoreBtn.classList.add("hidden");
-      }
-      
+
+      loadMore.classList.toggle("hidden", historyJobs.length <= (historyPage + 1) * JOBS_PER_PAGE);
       $("historyTotal").textContent = historyJobs.length;
     }
- 
+
     function showJobDetails(job) {
       $("modalTitle").textContent = job.service_name || job.service_type;
       const when = [job.date, job.time].filter(Boolean).join(" ");
       const notes = job.notes || "";
- 
+
       $("modalContent").innerHTML = `
         <div class="space-y-4 text-sm">
-          <div>
-            <h4 class="font-semibold mb-1">${t("clientLabel")}</h4>
-            <p class="text-gray-300">${job.client_name || ""}</p>
-            <p class="text-gray-400">${job.client_phone || ""}</p>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-1">${t("addressLabel")}</h4>
-            <p class="text-gray-300">${job.address || ""}</p>
-            <button class="text-green-400 text-xs underline mt-1" id="modalOpenMap">
-              <i class="fas fa-external-link-alt mr-1"></i>Open in Maps
-            </button>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-1">${t("timeLabel")}</h4>
-            <p class="text-gray-300">${when}</p>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-1">${t("priceLabel")}</h4>
-            <p class="text-2xl font-bold text-green-400">${job.price ? `$${job.price}` : "$—"}</p>
-          </div>
-          ${
-            notes
-              ? `
-          <div>
-            <h4 class="font-semibold mb-1">${t("notesLabel")}</h4>
-            <p class="text-gray-300">${notes}</p>
-          </div>
-          `
-              : ""
-          }
-          <button class="neon-button w-full mt-4" id="modalAcceptBtn">
-            ${t("acceptJobButton")}
-          </button>
+          <div><h4 class="font-semibold mb-1">${t("clientLabel")}</h4><p class="text-gray-300">${job.client_name || ""}</p><p class="text-gray-400">${job.client_phone || ""}</p></div>
+          <div><h4 class="font-semibold mb-1">${t("addressLabel")}</h4><p class="text-gray-300">${job.address || ""}</p><button class="text-green-400 text-xs underline mt-1" id="modalOpenMap"><i class="fas fa-external-link-alt mr-1"></i>Open in Maps</button></div>
+          <div><h4 class="font-semibold mb-1">${t("timeLabel")}</h4><p class="text-gray-300">${when}</p></div>
+          <div><h4 class="font-semibold mb-1">${t("priceLabel")}</h4><p class="text-2xl font-bold text-green-400">${job.price ? `$${job.price}` : "$—"}</p></div>
+          ${notes ? `<div><h4 class="font-semibold mb-1">${t("notesLabel")}</h4><p class="text-gray-300">${notes}</p></div>` : ""}
+          <button class="neon-button w-full mt-4" id="modalAcceptBtn">${t("acceptJobButton")}</button>
         </div>
       `;
- 
+
       $("jobModal").classList.remove("hidden");
- 
       $("modalOpenMap")?.addEventListener("click", () => openMaps(job.address));
       $("modalAcceptBtn")?.addEventListener("click", () => acceptJob(job));
     }
- 
+
     async function acceptJob(job) {
       if (!currentWorker) return;
       const btn = $("modalAcceptBtn");
       btn.disabled = true;
       btn.innerHTML = '<div class="loading-spinner mx-auto"></div>';
- 
+
       try {
-        const { error } = await supabase
-          .from("orders")
-          .update({ worker_id: currentWorker.id, status: "accepted" })
-          .eq("id", job.id);
- 
+        const { error } = await supabase.from("orders").update({ worker_id: currentWorker.id, status: "accepted" }).eq("id", job.id);
         if (error) throw error;
- 
+
         $("jobModal").classList.add("hidden");
         await loadAllData();
         showToast(t("jobAcceptedToast"));
@@ -1303,86 +1245,54 @@
         btn.textContent = t("acceptJobButton");
       }
     }
- 
+
     async function updateJobStatus(job) {
       const nextStatus = job.status === "accepted" ? "in_progress" : "completed";
- 
+
       try {
-        const { error } = await supabase
-          .from("orders")
-          .update({ status: nextStatus })
-          .eq("id", job.id);
- 
+        const { error } = await supabase.from("orders").update({ status: nextStatus }).eq("id", job.id);
         if (error) throw error;
- 
+
         if (nextStatus === "completed") {
           const newCount = (currentWorker.jobs_completed || 0) + 1;
-          await supabase
-            .from("workers")
-            .update({ jobs_completed: newCount })
-            .eq("id", currentWorker.id);
- 
+          await supabase.from("workers").update({ jobs_completed: newCount }).eq("id", currentWorker.id);
           currentWorker.jobs_completed = newCount;
           updateProfileUI();
         }
- 
+
         await loadAllData();
-        showToast(
-          nextStatus === "completed" ? t("jobCompletedToast") : t("jobStartedToast")
-        );
+        showToast(nextStatus === "completed" ? t("jobCompletedToast") : t("jobStartedToast"));
       } catch (e) {
         console.error("updateJobStatus error:", e);
         showToast(t("errorUpdatingJob"));
       }
     }
- 
+
     function openMaps(address) {
       if (!address) return;
-      const url = "https://www.google.com/maps?q=" + encodeURIComponent(address);
-      window.open(url, "_blank");
-    }
- 
-    function callPhone(phone) {
-      if (!phone) return;
-      const clean = phone.replace(/[^+\d]/g, "");
-      window.open("tel:" + clean, "_blank");
+      window.open("https://www.google.com/maps?q=" + encodeURIComponent(address), "_blank");
     }
 
+    function callPhone(phone) {
+      if (!phone) return;
+      window.open("tel:" + phone.replace(/[^+\d]/g, ""), "_blank");
+    }
+
+    // Photo upload (опционально, закомментировано)
     async function uploadProfilePhoto(file) {
       if (!currentWorker || !file) return;
- 
       try {
-        const fileExt = file.name.split(".").pop();
-        const filePath = `${currentWorker.id}/${Date.now()}.${fileExt || "jpg"}`;
- 
-        const { error: uploadError } = await supabase
-          .storage
-          .from("worker-photos")
-          .upload(filePath, file, {
-            cacheControl: "3600",
-            upsert: true,
-          });
- 
+        const filePath = `${currentWorker.id}/${Date.now()}.jpg`;
+        const { error: uploadError } = await supabase.storage.from("avatars").upload(filePath, file, { cacheControl: "3600", upsert: true });
         if (uploadError) throw uploadError;
- 
-        const { data: publicData } = supabase
-          .storage
-          .from("worker-photos")
-          .getPublicUrl(filePath);
- 
-        const publicUrl = publicData?.publicUrl;
-        if (!publicUrl) throw new Error("No public URL");
- 
-        const { error: updateError } = await supabase
-          .from("workers")
-          .update({ photo_url: publicUrl })
-          .eq("id", currentWorker.id);
- 
+
+        const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(filePath);
+        const { error: updateError } = await supabase.from("workers").update({ avatar_url: publicUrl }).eq("id", currentWorker.id);
         if (updateError) throw updateError;
- 
-        currentWorker.photo_url = publicUrl;
+
+        currentWorker.avatar_url = publicUrl;
         updateProfileUI();
-        showToast("Profile photo updated");
+        showToast("Photo updated");
       } catch (e) {
         console.error("uploadProfilePhoto error:", e);
         showToast("Error uploading photo");
@@ -1390,100 +1300,76 @@
     }
 
     function changePhoto() {
-      if (!currentWorker) return;
       const input = document.createElement('input');
       input.type = 'file';
       input.accept = 'image/*';
       input.onchange = async (e) => {
         const file = e.target.files?.[0];
-        if (file) {
-          await uploadProfilePhoto(file);
-        }
+        if (file) await uploadProfilePhoto(file);
       };
       input.click();
     }
 
-    async function editBio() {
-      if (!currentWorker) return;
-      const current = currentWorker.bio || $("profileBio").textContent;
-      
-      // Показать модальное окно для редактирования bio
-      $("bioTextarea").value = current;
-      $("bioModal").classList.remove("hidden");
+    // Profile Editor
+    function openProfileEditor() {
+      $("addressInput").value = currentWorker.address || "";
+      $("bioInput").value = currentWorker.bio || "";
+      $("profileEditorModal").classList.remove("hidden");
     }
 
-    async function saveBio() {
+    async function saveProfile() {
       if (!currentWorker) return;
-      
-      const newBio = $("bioTextarea").value.trim();
-      if (!newBio) {
-        $("bioModal").classList.add("hidden");
-        return;
-      }
-      
+      const address = $("addressInput").value.trim();
+      const bio = $("bioInput").value.trim();
+
       try {
-        const { error } = await supabase
-          .from("workers")
-          .update({ bio: newBio })
-          .eq("id", currentWorker.id);
- 
+        const { error } = await supabase.from("workers").update({ address, bio }).eq("id", currentWorker.id);
         if (error) throw error;
- 
-        currentWorker.bio = newBio;
-        $("profileBio").textContent = newBio;
-        $("bioModal").classList.add("hidden");
-        showToast("Profile updated");
+
+        currentWorker.address = address;
+        currentWorker.bio = bio;
+        updateProfileUI();
+        $("profileEditorModal").classList.add("hidden");
+        showToast(t("profileUpdatedToast"));
       } catch (e) {
-        console.error("saveBio error:", e);
-        showToast("Error updating bio");
+        console.error("saveProfile error:", e);
+        showToast("Error updating profile");
       }
     }
 
+    // Skills Editor
     function showSkillsEditor() {
-      if (!currentWorker) return;
-      
-      // Очистить список навыков
       const skillsList = $("skillsList");
       skillsList.innerHTML = "";
-      
-      // Получить текущие навыки работника
       const workerSkills = currentWorker.skills || [];
-      
-      // Создать список с чекбоксами для каждого навыка
+
       availableSkills.forEach(skill => {
-        const skillItem = document.createElement("div");
-        skillItem.className = "skill-item";
-        skillItem.innerHTML = `
+        const item = document.createElement("div");
+        item.className = "skill-item";
+        item.innerHTML = `
           <input type="checkbox" id="skill-${skill}" value="${skill}" ${workerSkills.includes(skill) ? 'checked' : ''}>
-          <label for="skill-${skill}" class="capitalize cursor-pointer flex-1">${skill.replace('_', ' ')}</label>
+          <label for="skill-${skill}" class="capitalize cursor-pointer flex-1">${skill.replace("_", " ")}</label>
         `;
-        skillsList.appendChild(skillItem);
+        skillsList.appendChild(item);
       });
-      
-      // Показать модальное окно
+
       $("skillsModal").classList.remove("hidden");
     }
 
     async function saveSkills() {
       if (!currentWorker) return;
-      
-      // Получить выбранные навыки
       const checkboxes = document.querySelectorAll('#skillsList input[type="checkbox"]:checked');
       const selectedSkills = Array.from(checkboxes).map(cb => cb.value);
-      
+
       try {
-        const { error } = await supabase
-          .from("workers")
-          .update({ skills: selectedSkills })
-          .eq("id", currentWorker.id);
- 
+        const { error } = await supabase.from("workers").update({ skills: selectedSkills }).eq("id", currentWorker.id);
         if (error) throw error;
- 
+
         currentWorker.skills = selectedSkills;
         updateProfileUI();
         $("skillsModal").classList.add("hidden");
-        await loadAllData();
-        showToast("Skills updated!");
+        showToast(t("skillsUpdatedToast"));
+        await loadJobs(true);
       } catch (e) {
         console.error("saveSkills error:", e);
         showToast("Error saving skills");
@@ -1492,144 +1378,86 @@
 
     function switchTab(tabName) {
       currentTab = tabName;
-      document.querySelectorAll(".tab-button").forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.tab === tabName);
-      });
- 
-      ["jobs", "active", "profile", "history"].forEach((tname) => {
-        const el = $(tname + "Tab");
-        if (!el) return;
-        el.classList.toggle("hidden", tname !== tabName);
-      });
+      document.querySelectorAll(".tab-button").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tabName));
+      ["jobs", "active", "profile", "history"].forEach(name => $(name + "Tab")?.classList.toggle("hidden", name !== tabName));
     }
- 
+
     function setupRealtime() {
       if (!supabase || !currentWorker) return;
- 
+
       if (ordersChannel) {
         ordersChannel.unsubscribe();
         ordersChannel = null;
       }
- 
+
       if (!isOnline) return;
- 
+
       ordersChannel = supabase
         .channel("orders_listener")
-        .on(
-          "postgres_changes",
-          { event: "INSERT", schema: "public", table: "orders" },
-          (payload) => {
-            const job = payload.new;
-            const workerSkills = currentWorker.skills || [];
-            if (
-              workerSkills.length &&
-              !workerSkills.includes(job.service_type)
-            ) {
-              return;
-            }
-            showToast(t("newJobToast"));
-            if (tg?.showPopup) {
-              tg.showPopup({ message: t("newJobPopup") });
-            }
-            loadJobs(true);
-          }
-        )
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "orders" }, async payload => {
+          const job = payload.new;
+          const workerSkills = currentWorker.skills || [];
+          if (workerSkills.length && !workerSkills.includes(job.service_type)) return;
+
+          showToast(t("newJobToast"));
+          if (tg?.showPopup) tg.showPopup({ message: t("newJobPopup") });
+          await loadJobs(true);
+        })
         .subscribe();
     }
- 
+
     function toggleOnline() {
       isOnline = !isOnline;
-      $("onlineToggleText").textContent = isOnline ? t("onlineText") : t("offlineText");
-      $("notifToggleText").textContent = isOnline ? t("notifOn") : t("notifOff");
-      if ($("profileStatus")) {
-        $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
-      }
+      updateTexts();
       setupRealtime();
     }
- 
+
     function changeLanguage() {
-      const next =
-        currentLanguage === "en" ? "ru" : currentLanguage === "ru" ? "es" : "en";
-      currentLanguage = next;
+      currentLanguage = currentLanguage === "en" ? "ru" : currentLanguage === "ru" ? "es" : "en";
       updateTexts();
-      if (currentWorker) {
-        supabase
-          .from("workers")
-          .update({ language: currentLanguage })
-          .eq("id", currentWorker.id);
-      }
+      if (currentWorker) supabase.from("workers").update({ language: currentLanguage }).eq("id", currentWorker.id);
     }
- 
-    // EVENTS
-    $("closeModal").addEventListener("click", () => {
-      $("jobModal").classList.add("hidden");
-    });
 
-    // События для Bio Modal
-    $("editProfileButton").addEventListener("click", editBio);
-    $("closeBioModal").addEventListener("click", () => {
-      $("bioModal").classList.add("hidden");
-    });
-    $("saveBioButton").addEventListener("click", saveBio);
-
-    // События для Skills Modal
+    // EVENT LISTENERS
+    $("loginButton").addEventListener("click", telegramLogin);
+    $("closeModal").addEventListener("click", () => $("jobModal").classList.add("hidden"));
+    $("closeProfileEditor").addEventListener("click", () => $("profileEditorModal").classList.add("hidden"));
+    $("closeSkillsModal").addEventListener("click", () => $("skillsModal").classList.add("hidden"));
+    $("editProfileButton").addEventListener("click", openProfileEditor);
+    $("saveProfileButton").addEventListener("click", saveProfile);
     $("manageSkillsButton").addEventListener("click", showSkillsEditor);
-    $("closeSkillsModal").addEventListener("click", () => {
-      $("skillsModal").classList.add("hidden");
-    });
     $("saveSkillsButton").addEventListener("click", saveSkills);
- 
-    $("editBioButton").addEventListener("click", editBio);
     $("changePhotoButton").addEventListener("click", changePhoto);
     $("changeLangButton").addEventListener("click", changeLanguage);
     $("onlineToggle").addEventListener("click", toggleOnline);
     $("notifToggle").addEventListener("click", toggleOnline);
-    $("refreshButton").addEventListener("click", () => {
-      refreshCurrentTab();
-    });
-    $("loadMoreJobs").addEventListener("click", async () => {
-      jobsPage++;
-      await loadJobs();
-    });
-    $("loadMoreActive").addEventListener("click", async () => {
-      activePage++;
-      await loadActiveJobs();
-    });
-    $("loadMoreHistory").addEventListener("click", async () => {
-      historyPage++;
-      await loadHistory();
-    });
-    document.querySelectorAll("[data-tab]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        switchTab(btn.dataset.tab);
-      });
-    });
- 
-    // Telegram BackButton logic
+    $("refreshButton").addEventListener("click", refreshCurrentTab);
+    $("loadMoreJobs").addEventListener("click", async () => { jobsPage++; await loadJobs(); });
+    $("loadMoreActive").addEventListener("click", async () => { activePage++; await loadActiveJobs(); });
+    $("loadMoreHistory").addEventListener("click", async () => { historyPage++; await loadHistory(); });
+    document.querySelectorAll("[data-tab]").forEach(btn => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
+
+    // Telegram BackButton
     if (tg) {
       tg.BackButton.onClick(() => {
-        if (!$("jobModal").classList.contains("hidden")) {
-          $("jobModal").classList.add("hidden");
-        } else if (!$("bioModal").classList.contains("hidden")) {
-          $("bioModal").classList.add("hidden");
-        } else if (!$("skillsModal").classList.contains("hidden")) {
-          $("skillsModal").classList.add("hidden");
-        }
+        if (!$("jobModal").classList.contains("hidden")) $("jobModal").classList.add("hidden");
+        else if (!$("profileEditorModal").classList.contains("hidden")) $("profileEditorModal").classList.add("hidden");
+        else if (!$("skillsModal").classList.contains("hidden")) $("skillsModal").classList.add("hidden");
       });
- 
+
       const observer = new MutationObserver(() => {
         const modalOpen = !$("jobModal").classList.contains("hidden") || 
-                         !$("bioModal").classList.contains("hidden") || 
+                         !$("profileEditorModal").classList.contains("hidden") || 
                          !$("skillsModal").classList.contains("hidden");
-        if (modalOpen) tg.BackButton.show();
-        else tg.BackButton.hide();
+        modalOpen ? tg.BackButton.show() : tg.BackButton.hide();
       });
- 
+
       observer.observe($("jobModal"), { attributes: true });
-      observer.observe($("bioModal"), { attributes: true });
+      observer.observe($("profileEditorModal"), { attributes: true });
       observer.observe($("skillsModal"), { attributes: true });
     }
- 
+
+    // Инициализация
     document.addEventListener("DOMContentLoaded", async () => {
       if (tg?.initDataUnsafe?.user?.language_code) {
         const lc = tg.initDataUnsafe.user.language_code;
@@ -1638,8 +1466,12 @@
         else currentLanguage = "en";
       }
       updateTexts();
-      await initializeApp();
+
+      if (tg?.initDataUnsafe?.user?.id) {
+        await telegramLogin();
+      }
     });
   </script>
 </body>
 </html>
+
