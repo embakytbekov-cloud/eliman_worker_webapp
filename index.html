@@ -163,10 +163,6 @@
       background: rgba(31, 227, 136, 0.1);
     }
 
-    .refresh-icon.spinning {
-      animation: spin 1s linear infinite;
-    }
-
     .load-more-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -183,7 +179,6 @@
       background: rgba(31, 227, 136, 0.1);
     }
 
-    /* Profile stats */
     .stat-card {
       background: rgba(255, 255, 255, 0.04);
       border-radius: 16px;
@@ -305,7 +300,7 @@
             <i class="fas fa-bell mr-1"></i><span id="onlineToggleText">Online</span>
           </button>
           <button id="refreshButton" class="refresh-btn">
-            <i class="fas fa-sync-alt refresh-icon"></i>
+            <i class="fas fa-sync-alt"></i>
           </button>
         </div>
       </div>
@@ -324,7 +319,7 @@
         </div>
         <div id="jobsList" class="space-y-4"></div>
         <div id="loadMoreJobs" class="load-more-btn hidden">
-          <i class="fas fa-chevron-down mr-2"></i><span id="loadMoreJobsLabel">Load More</span>
+          <i class="fas fa-chevron-down mr-2"></i><span id="loadMoreJobsText">Load more</span>
         </div>
         <div id="noJobsText" class="text-center text-gray-400 py-8 hidden">
           <i class="fas fa-inbox text-4xl mb-4"></i>
@@ -342,7 +337,7 @@
         </div>
         <div id="activeJobsList" class="space-y-4"></div>
         <div id="loadMoreActive" class="load-more-btn hidden">
-          <i class="fas fa-chevron-down mr-2"></i><span id="loadMoreActiveLabel">Load More</span>
+          <i class="fas fa-chevron-down mr-2"></i><span id="loadMoreActiveText">Load more</span>
         </div>
         <div id="noActiveJobsText" class="text-center text-gray-400 py-8 hidden">
           <i class="fas fa-clock text-4xl mb-4"></i>
@@ -365,22 +360,19 @@
               <span id="profileInitials">WW</span>
             </div>
             <h3 id="profileName" class="text-2xl font-semibold mb-1">Worker</h3>
-            <p id="profileAddress" class="text-gray-400 text-sm mb-1">
-              Address not set
-            </p>
             <p id="profileId" class="text-gray-500 text-xs mb-3">
               ID: •••••••
             </p>
             <span
               id="profileStatus"
               class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-400/40">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span>
+              <span id="profileStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span>
               Online
             </span>
           </div>
 
           <!-- STATS -->
-          <div class="grid grid-cols-2 gap-3 mb-5 w-full">
+          <div class="grid grid-cols-2 gap-3 mb-5">
             <div class="stat-card">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-xs text-gray-400">Rating</span>
@@ -435,7 +427,7 @@
           <button id="editProfileButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-user-edit text-green-400"></i>
-              <span>Edit Profile (Bio + Address)</span>
+              <span>Edit Profile (Bio)</span>
             </div>
             <i class="fas fa-chevron-right text-xs text-gray-400"></i>
           </button>
@@ -448,7 +440,6 @@
             <i class="fas fa-chevron-right text-xs text-gray-400"></i>
           </button>
 
-          <!-- Language -->
           <button id="changeLangButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-language text-green-400"></i>
@@ -457,7 +448,6 @@
             <i class="fas fa-sync text-xs text-gray-400"></i>
           </button>
 
-          <!-- Notifications -->
           <button id="notifToggle" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-bell text-green-400"></i>
@@ -492,7 +482,7 @@
 
         <div id="historyList" class="space-y-3"></div>
         <div id="loadMoreHistory" class="load-more-btn hidden">
-          <i class="fas fa-chevron-down mr-2"></i><span id="loadMoreHistoryLabel">Load More</span>
+          <i class="fas fa-chevron-down mr-2"></i><span id="loadMoreHistoryText">Load more</span>
         </div>
         <div id="noHistoryText" class="text-center text-gray-400 py-8 hidden">
           <i class="fas fa-list-alt text-4xl mb-4"></i>
@@ -542,7 +532,7 @@
     </div>
   </div>
 
-  <!-- PROFILE EDITOR MODAL -->
+  <!-- PROFILE EDITOR MODAL (ONLY BIO) -->
   <div id="profileEditorModal" class="fixed inset-0 z-50 hidden modal-overlay">
     <div class="flex items-center justify-center min-h-screen p-4">
       <div class="glass-card modal-content">
@@ -554,12 +544,6 @@
             </button>
           </div>
           <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-semibold mb-2">Address</label>
-              <input id="addressInput" type="text"
-                     class="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white"
-                     placeholder="Enter your working area">
-            </div>
             <div>
               <label class="block text-sm font-semibold mb-2">Bio</label>
               <textarea id="bioInput" class="bio-textarea" placeholder="Write about your experience..."></textarea>
@@ -593,7 +577,7 @@
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    // 🔐 Supabase (твои реальные данные)
+    // Supabase
     const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
     const SUPABASE_ANON_KEY =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
@@ -606,7 +590,7 @@
       tg.disableVerticalSwipes();
     }
 
-    // 🌍 i18n (EN / RU / ES)
+    // i18n
     const i18n = {
       en: {
         welcomeTitle: "Welcome, worker",
@@ -614,32 +598,39 @@
         loginButton: "Login with Telegram",
         loginHint: "This mini app works only inside Telegram. Open from bot.",
         loginErrorNoWorker: "Worker not found. Please contact support.",
+
         jobsTabLabel: "Jobs",
         activeTabLabel: "Active",
         profileTabLabel: "Profile",
         historyTabLabel: "History",
+
         newJobsTitle: "New Jobs",
         newJobsSubtitle: "Available jobs matching your skills",
         activeJobsTitle: "Active Jobs",
         activeJobsSubtitle: "Jobs you're currently working on",
         profileTitle: "Profile",
-        profileRatingLabel: "rating",
-        profileJobsLabel: "jobs completed",
         historyTitle: "History",
         historySubtitle: "Completed jobs and your rank",
+
         noJobsText: "No jobs available right now",
         noActiveJobsText: "No active jobs",
         noHistoryText: "No completed jobs yet",
+
         viewDetailsButton: "View Details →",
         acceptJobButton: "Accept Job",
         startJobButton: "Start Job",
         completeJobButton: "Complete Job",
+
+        clientLabel: "Client",
         addressLabel: "Address",
         timeLabel: "Time",
-        clientLabel: "Client",
         priceLabel: "Price",
         notesLabel: "Notes",
+
         skillsLabel: "Skills",
+        profileRatingLabel: "rating",
+        profileJobsLabel: "jobs completed",
+
         errorLoadingJobs: "Error loading jobs",
         errorUpdatingJob: "Error updating job",
         jobAcceptedToast: "Job accepted!",
@@ -648,15 +639,18 @@
         skillsUpdatedToast: "Skills updated!",
         profileUpdatedToast: "Profile updated!",
         newJobToast: "New job available",
-        newJobPopup: "New job is available. Open Jobs tab to see details.",
+        newJobPopup: "New job is available. Open Jobs tab.",
+
         onlineText: "Online",
         offlineText: "Offline",
         notifOn: "ON",
         notifOff: "OFF",
+
         langEnglish: "English",
         langRussian: "Russian",
         langSpanish: "Spanish",
-        loadMoreButton: "Load More",
+
+        loadMoreButton: "Load more",
         initError: "Please open this app from Telegram bot",
       },
       ru: {
@@ -665,32 +659,39 @@
         loginButton: "Войти через Telegram",
         loginHint: "Это мини-приложение работает только внутри Telegram. Откройте через бота.",
         loginErrorNoWorker: "Работник не найден. Обратитесь в поддержку.",
+
         jobsTabLabel: "Заказы",
         activeTabLabel: "Активные",
         profileTabLabel: "Профиль",
         historyTabLabel: "История",
+
         newJobsTitle: "Новые заказы",
         newJobsSubtitle: "Доступные заказы по вашим навыкам",
         activeJobsTitle: "Активные заказы",
         activeJobsSubtitle: "Заказы, над которыми вы сейчас работаете",
         profileTitle: "Профиль",
-        profileRatingLabel: "рейтинг",
-        profileJobsLabel: "завершённых заказов",
         historyTitle: "История",
         historySubtitle: "Завершённые заказы и ваш рейтинг",
+
         noJobsText: "Нет доступных заказов",
         noActiveJobsText: "Нет активных заказов",
         noHistoryText: "Нет завершённых заказов",
+
         viewDetailsButton: "Подробнее →",
         acceptJobButton: "Принять заказ",
         startJobButton: "Начать работу",
         completeJobButton: "Завершить работу",
+
+        clientLabel: "Клиент",
         addressLabel: "Адрес",
         timeLabel: "Время",
-        clientLabel: "Клиент",
         priceLabel: "Цена",
         notesLabel: "Заметки",
+
         skillsLabel: "Навыки",
+        profileRatingLabel: "рейтинг",
+        profileJobsLabel: "завершённых заказов",
+
         errorLoadingJobs: "Ошибка загрузки заказов",
         errorUpdatingJob: "Ошибка обновления заказа",
         jobAcceptedToast: "Заказ принят!",
@@ -700,15 +701,18 @@
         profileUpdatedToast: "Профиль обновлён!",
         newJobToast: "Новый заказ доступен",
         newJobPopup: "Появился новый заказ. Откройте вкладку «Заказы».",
+
         onlineText: "Онлайн",
         offlineText: "Офлайн",
         notifOn: "ВКЛ",
         notifOff: "ВЫКЛ",
+
         langEnglish: "Английский",
         langRussian: "Русский",
         langSpanish: "Испанский",
+
         loadMoreButton: "Загрузить ещё",
-        initError: "Откройте это приложение из Telegram-бота",
+        initError: "Откройте это приложение через Telegram бота",
       },
       es: {
         welcomeTitle: "Bienvenido, trabajador",
@@ -716,32 +720,39 @@
         loginButton: "Entrar con Telegram",
         loginHint: "Esta mini app solo funciona dentro de Telegram. Ábrela desde el bot.",
         loginErrorNoWorker: "Trabajador no encontrado. Contacta soporte.",
+
         jobsTabLabel: "Trabajos",
         activeTabLabel: "Activos",
         profileTabLabel: "Perfil",
         historyTabLabel: "Historial",
+
         newJobsTitle: "Nuevos trabajos",
         newJobsSubtitle: "Trabajos disponibles según tus habilidades",
         activeJobsTitle: "Trabajos activos",
         activeJobsSubtitle: "Trabajos que estás realizando",
         profileTitle: "Perfil",
-        profileRatingLabel: "calificación",
-        profileJobsLabel: "trabajos completados",
         historyTitle: "Historial",
         historySubtitle: "Trabajos completados y tu ranking",
+
         noJobsText: "No hay trabajos disponibles",
         noActiveJobsText: "No hay trabajos activos",
         noHistoryText: "Aún no hay trabajos completados",
+
         viewDetailsButton: "Ver detalles →",
         acceptJobButton: "Aceptar trabajo",
         startJobButton: "Iniciar trabajo",
         completeJobButton: "Completar trabajo",
+
+        clientLabel: "Cliente",
         addressLabel: "Dirección",
         timeLabel: "Hora",
-        clientLabel: "Cliente",
         priceLabel: "Precio",
         notesLabel: "Notas",
+
         skillsLabel: "Habilidades",
+        profileRatingLabel: "calificación",
+        profileJobsLabel: "trabajos completados",
+
         errorLoadingJobs: "Error al cargar trabajos",
         errorUpdatingJob: "Error al actualizar trabajo",
         jobAcceptedToast: "¡Trabajo aceptado!",
@@ -751,15 +762,18 @@
         profileUpdatedToast: "¡Perfil actualizado!",
         newJobToast: "Nuevo trabajo disponible",
         newJobPopup: "Hay un nuevo trabajo disponible. Abre la pestaña Trabajos.",
+
         onlineText: "En línea",
         offlineText: "Desconectado",
         notifOn: "ON",
         notifOff: "OFF",
+
         langEnglish: "Inglés",
         langRussian: "Ruso",
         langSpanish: "Español",
+
         loadMoreButton: "Cargar más",
-        initError: "Abra esta app desde el bot de Telegram",
+        initError: "Abra esta aplicación desde el bot de Telegram",
       },
     };
 
@@ -769,7 +783,6 @@
     let activeJobs = [];
     let historyJobs = [];
     let isOnline = true;
-    let notificationsEnabled = true;
     let ordersChannel = null;
 
     const JOBS_PER_PAGE = 10;
@@ -803,8 +816,6 @@
       $("activeJobsTitle").textContent = t("activeJobsTitle");
       $("activeJobsSubtitle").textContent = t("activeJobsSubtitle");
       $("profileTitle").textContent = t("profileTitle");
-      $("profileRatingLabel").textContent = t("profileRatingLabel");
-      $("profileJobsLabel").textContent = t("profileJobsLabel");
       $("historyTitle").textContent = t("historyTitle");
       $("historySubtitle").textContent = t("historySubtitle");
 
@@ -813,22 +824,19 @@
       $("profileTabLabel").textContent = t("profileTabLabel");
       $("historyTabLabel").textContent = t("historyTabLabel");
 
+      $("profileRatingLabel").textContent = t("profileRatingLabel");
+      $("profileJobsLabel").textContent = t("profileJobsLabel");
       $("skillsLabel").textContent = t("skillsLabel");
 
       $("noJobsText").querySelector("p").textContent = t("noJobsText");
       $("noActiveJobsText").querySelector("p").textContent = t("noActiveJobsText");
       $("noHistoryText").querySelector("p").textContent = t("noHistoryText");
 
-      $("loadMoreJobsLabel").textContent = t("loadMoreButton");
-      $("loadMoreActiveLabel").textContent = t("loadMoreButton");
-      $("loadMoreHistoryLabel").textContent = t("loadMoreButton");
-
       $("onlineToggleText").textContent = isOnline ? t("onlineText") : t("offlineText");
-      $("profileStatus").innerHTML =
-        `<span class="w-2 h-2 rounded-full mr-2 ${isOnline ? "bg-emerald-400" : "bg-gray-400"}"></span>` +
-        (isOnline ? t("onlineText") : t("offlineText"));
+      $("notifToggleText").textContent = isOnline ? t("notifOn") : t("notifOff");
 
-      $("notifToggleText").textContent = notificationsEnabled ? t("notifOn") : t("notifOff");
+      const statusLabel = isOnline ? t("onlineText") : t("offlineText");
+      $("profileStatus").childNodes[1].nodeValue = " " + statusLabel;
 
       const langLabel =
         currentLanguage === "en"
@@ -837,6 +845,10 @@
           ? t("langRussian")
           : t("langSpanish");
       $("currentLangLabel").textContent = langLabel;
+
+      $("loadMoreJobsText").textContent = t("loadMoreButton");
+      $("loadMoreActiveText").textContent = t("loadMoreButton");
+      $("loadMoreHistoryText").textContent = t("loadMoreButton");
     }
 
     function showToast(message) {
@@ -891,14 +903,9 @@
       const idStr = String(currentWorker.id || "");
       $("profileId").textContent = "ID: ••••" + idStr.slice(-4);
       $("jobsCompleted").textContent = currentWorker.jobs_completed || 0;
-      $("profileAddress").textContent =
-        currentWorker.address && currentWorker.address.trim().length
-          ? currentWorker.address
-          : "Address not set";
       $("profileBio").textContent =
-        currentWorker.bio && currentWorker.bio.trim().length
-          ? currentWorker.bio
-          : "Professional worker with great experience.";
+        currentWorker.bio ||
+        "Professional worker with great experience.";
 
       const skills = currentWorker.skills || [];
       const skillsContainer = $("profileSkills");
@@ -931,7 +938,6 @@
       if (lang_code === "ru") currentLanguage = "ru";
       else if (lang_code === "es") currentLanguage = "es";
       else currentLanguage = "en";
-
       updateTexts();
 
       const btn = $("loginButton");
@@ -939,13 +945,14 @@
       btn.innerHTML = '<div class="loading-spinner mx-auto"></div>';
 
       try {
-        let { data: worker, error } = await supabase
+        const { data: worker, error } = await supabase
           .from("workers")
           .select("*")
           .eq("telegram_id", telegram_id)
           .single();
 
-        if (error || !worker) {
+        if (error) {
+          console.error(error);
           showLoginError(t("loginErrorNoWorker"));
           return;
         }
@@ -964,7 +971,7 @@
         setupRealtime();
       } catch (e) {
         console.error("Login error:", e);
-        showLoginError("Login failed. Try again.");
+        showLoginError("Login error. Try again.");
       } finally {
         btn.disabled = false;
         $("loginButtonText").textContent = t("loginButton");
@@ -981,13 +988,13 @@
     }
 
     function showLoadingSpinner() {
-      const icon = $("refreshButton").querySelector(".refresh-icon");
-      icon?.classList.add("spinning");
+      const icon = $("refreshButton").querySelector("i");
+      icon?.classList.add("fa-spin");
     }
 
     function hideLoadingSpinner() {
-      const icon = $("refreshButton").querySelector(".refresh-icon");
-      icon?.classList.remove("spinning");
+      const icon = $("refreshButton").querySelector("i");
+      icon?.classList.remove("fa-spin");
     }
 
     async function refreshCurrentTab() {
@@ -1023,16 +1030,17 @@
         if (error) throw error;
 
         const workerSkills = currentWorker.skills || [];
-        const filteredJobs = (orders || []).filter(
-          (o) => workerSkills.length === 0 || workerSkills.includes(o.service_type)
+        const filtered = orders.filter(
+          (o) =>
+            workerSkills.length === 0 || workerSkills.includes(o.service_type)
         );
 
-        jobs = reset ? filteredJobs : [...jobs, ...filteredJobs];
+        jobs = reset ? filtered : [...jobs, ...filtered];
         renderJobs();
 
         $("loadMoreJobs").classList.toggle(
           "hidden",
-          !orders || orders.length < JOBS_PER_PAGE
+          orders.length < JOBS_PER_PAGE
         );
       } catch (e) {
         console.error("loadJobs error:", e);
@@ -1061,12 +1069,12 @@
 
         if (error) throw error;
 
-        activeJobs = reset ? orders || [] : [...activeJobs, ...(orders || [])];
+        activeJobs = reset ? orders : [...activeJobs, ...orders];
         renderActiveJobs();
 
         $("loadMoreActive").classList.toggle(
           "hidden",
-          !orders || orders.length < JOBS_PER_PAGE
+          orders.length < JOBS_PER_PAGE
         );
       } catch (e) {
         console.error("loadActiveJobs error:", e);
@@ -1095,12 +1103,12 @@
 
         if (error) throw error;
 
-        historyJobs = reset ? orders || [] : [...historyJobs, ...(orders || [])];
+        historyJobs = reset ? orders : [...historyJobs, ...orders];
         renderHistory();
 
         $("loadMoreHistory").classList.toggle(
           "hidden",
-          !orders || orders.length < JOBS_PER_PAGE
+          orders.length < JOBS_PER_PAGE
         );
         $("historyTotal").textContent = historyJobs.length;
       } catch (e) {
@@ -1145,7 +1153,8 @@
         card.className = "job-card glass-card p-4 fade-in";
         const serviceName = job.service_name || job.service_type;
         const notes = job.notes || "No additional notes";
-        const shortAddress = (job.address || "").split(",")[0] || job.address || "";
+        const shortAddress =
+          (job.address || "").split(",")[0] || job.address || "";
         const when = [job.date, job.time].filter(Boolean).join(" ");
 
         card.innerHTML = `
@@ -1173,15 +1182,15 @@
               <div class="photo-placeholder"><i class="fas fa-camera text-xs"></i></div>
               <span class="text-xs text-gray-400 ml-2 self-center">3 photos</span>
             </div>
-            <button class="text-green-400 font-semibold text-sm view-details-btn">
-              ${t("viewDetailsButton")}
-            </button>
+            <button class="text-green-400 font-semibold text-sm view-details-btn">${t(
+              "viewDetailsButton"
+            )}</button>
           </div>
         `;
 
-        card.querySelector(".view-details-btn").addEventListener("click", () =>
-          showJobDetails(job)
-        );
+        card
+          .querySelector(".view-details-btn")
+          .addEventListener("click", () => showJobDetails(job));
 
         list.appendChild(card);
       });
@@ -1204,10 +1213,14 @@
         const card = document.createElement("div");
         card.className = "glass-card p-4 fade-in";
         const serviceName = job.service_name || job.service_type;
-        const shortAddress = (job.address || "").split(",")[0] || job.address || "";
+        const shortAddress =
+          (job.address || "").split(",")[0] || job.address || "";
         const when = [job.date, job.time].filter(Boolean).join(" ");
+
         const buttonLabel =
-          job.status === "accepted" ? t("startJobButton") : t("completeJobButton");
+          job.status === "accepted"
+            ? t("startJobButton")
+            : t("completeJobButton");
 
         card.innerHTML = `
           <div class="flex justify-between items-start mb-3">
@@ -1238,20 +1251,18 @@
               <span>${when}</span>
             </div>
           </div>
-          <button class="neon-button w-full status-btn">
-            ${buttonLabel}
-          </button>
+          <button class="neon-button w-full status-btn">${buttonLabel}</button>
         `;
 
-        card.querySelector(".open-map-btn").addEventListener("click", () =>
-          openMaps(job.address)
-        );
-        card.querySelector(".call-btn").addEventListener("click", () =>
-          callPhone(job.client_phone)
-        );
-        card.querySelector(".status-btn").addEventListener("click", () =>
-          updateJobStatus(job)
-        );
+        card
+          .querySelector(".open-map-btn")
+          .addEventListener("click", () => openMaps(job.address));
+        card
+          .querySelector(".call-btn")
+          .addEventListener("click", () => callPhone(job.client_phone));
+        card
+          .querySelector(".status-btn")
+          .addEventListener("click", () => updateJobStatus(job));
 
         list.appendChild(card);
       });
@@ -1274,17 +1285,15 @@
       historyJobs.forEach((job) => {
         const item = document.createElement("div");
         item.className = "glass-card p-3 text-sm";
-
         const serviceName = job.service_name || job.service_type;
         const when = [job.date, job.time].filter(Boolean).join(" ");
-        const shortAddress = (job.address || "").split(",")[0] || job.address || "";
+        const shortAddress =
+          (job.address || "").split(",")[0] || job.address || "";
 
         item.innerHTML = `
           <div class="flex justify-between items-center mb-1">
             <span class="font-semibold">${serviceName}</span>
-            <span class="text-green-400 font-bold">${
-              job.price ? `$${job.price}` : "$—"
-            }</span>
+            <span class="text-green-400 font-bold">${job.price ? `$${job.price}` : "$—"}</span>
           </div>
           <div class="flex justify-between text-xs text-gray-400">
             <span><i class="fas fa-map-marker-alt mr-1"></i>${shortAddress}</span>
@@ -1322,18 +1331,14 @@
           </div>
           <div>
             <h4 class="font-semibold mb-1">${t("priceLabel")}</h4>
-            <p class="text-2xl font-bold text-green-400">${
-              job.price ? `$${job.price}` : "$—"
-            }</p>
+            <p class="text-2xl font-bold text-green-400">${job.price ? `$${job.price}` : "$—"}</p>
           </div>
           ${
             notes
-              ? `
-          <div>
-            <h4 class="font-semibold mb-1">${t("notesLabel")}</h4>
-            <p class="text-gray-300">${notes}</p>
-          </div>
-          `
+              ? `<div>
+                  <h4 class="font-semibold mb-1">${t("notesLabel")}</h4>
+                  <p class="text-gray-300">${notes}</p>
+                </div>`
               : ""
           }
           <button class="neon-button w-full mt-4" id="modalAcceptBtn">
@@ -1382,7 +1387,6 @@
           .from("orders")
           .update({ status: nextStatus })
           .eq("id", job.id);
-
         if (error) throw error;
 
         if (nextStatus === "completed") {
@@ -1420,30 +1424,28 @@
       window.open("tel:" + clean, "_blank");
     }
 
-    // Upload profile photo
+    // Photo upload (оставил, чтобы потом включить)
     async function uploadProfilePhoto(file) {
       if (!currentWorker || !file) return;
       try {
-        const fileExt = file.name.split(".").pop();
-        const filePath = `${currentWorker.id}/${Date.now()}.${fileExt || "jpg"}`;
-
+        const filePath = `${currentWorker.id}/${Date.now()}.jpg`;
         const { error: uploadError } = await supabase.storage
           .from("avatars")
           .upload(filePath, file, {
             cacheControl: "3600",
             upsert: true,
           });
-
         if (uploadError) throw uploadError;
 
-        const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
-        const publicUrl = data.publicUrl;
+        const { data } = supabase.storage
+          .from("avatars")
+          .getPublicUrl(filePath);
 
+        const publicUrl = data?.publicUrl;
         const { error: updateError } = await supabase
           .from("workers")
           .update({ avatar_url: publicUrl })
           .eq("id", currentWorker.id);
-
         if (updateError) throw updateError;
 
         currentWorker.avatar_url = publicUrl;
@@ -1466,27 +1468,23 @@
       input.click();
     }
 
-    // Profile Editor
+    // Profile Editor (only bio)
     function openProfileEditor() {
-      $("addressInput").value = currentWorker?.address || "";
       $("bioInput").value = currentWorker?.bio || "";
       $("profileEditorModal").classList.remove("hidden");
     }
 
     async function saveProfile() {
       if (!currentWorker) return;
-      const address = $("addressInput").value.trim();
       const bio = $("bioInput").value.trim();
 
       try {
         const { error } = await supabase
           .from("workers")
-          .update({ address, bio })
+          .update({ bio })
           .eq("id", currentWorker.id);
-
         if (error) throw error;
 
-        currentWorker.address = address;
         currentWorker.bio = bio;
         updateProfileUI();
         $("profileEditorModal").classList.add("hidden");
@@ -1511,7 +1509,7 @@
           <input type="checkbox" id="skill-${skill}" value="${skill}" ${
           workerSkills.includes(skill) ? "checked" : ""
         }>
-          <label for="skill-${skill}" class="capitalize flex-1">
+          <label for="skill-${skill}" class="capitalize cursor-pointer flex-1">
             ${skill.replace("_", " ")}
           </label>
         `;
@@ -1533,7 +1531,6 @@
           .from("workers")
           .update({ skills: selectedSkills })
           .eq("id", currentWorker.id);
-
         if (error) throw error;
 
         currentWorker.skills = selectedSkills;
@@ -1549,15 +1546,14 @@
 
     function switchTab(tabName) {
       currentTab = tabName;
-      document.querySelectorAll(".tab-button").forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.tab === tabName);
-      });
-
-      ["jobs", "active", "profile", "history"].forEach((name) => {
-        const el = $(name + "Tab");
-        if (!el) return;
-        el.classList.toggle("hidden", name !== tabName);
-      });
+      document
+        .querySelectorAll(".tab-button")
+        .forEach((btn) =>
+          btn.classList.toggle("active", btn.dataset.tab === tabName)
+        );
+      ["jobs", "active", "profile", "history"].forEach((name) =>
+        $(name + "Tab")?.classList.toggle("hidden", name !== tabName)
+      );
     }
 
     function setupRealtime() {
@@ -1578,15 +1574,15 @@
           async (payload) => {
             const job = payload.new;
             const workerSkills = currentWorker.skills || [];
-            if (workerSkills.length && !workerSkills.includes(job.service_type)) {
+            if (
+              workerSkills.length &&
+              !workerSkills.includes(job.service_type)
+            ) {
               return;
             }
-
-            if (notificationsEnabled) {
-              showToast(t("newJobToast"));
-              if (tg?.showPopup) {
-                tg.showPopup({ message: t("newJobPopup") });
-              }
+            showToast(t("newJobToast"));
+            if (tg?.showPopup) {
+              tg.showPopup({ message: t("newJobPopup") });
             }
             await loadJobs(true);
           }
@@ -1596,18 +1592,28 @@
 
     function toggleOnline() {
       isOnline = !isOnline;
+
+      // статус и нотификации завязаны на онлайн
+      const dot = $("profileStatusDot");
+      if (isOnline) {
+        dot.classList.remove("bg-gray-400");
+        dot.classList.add("bg-emerald-400");
+      } else {
+        dot.classList.remove("bg-emerald-400");
+        dot.classList.add("bg-gray-400");
+      }
+
       updateTexts();
       setupRealtime();
     }
 
-    function toggleNotifications() {
-      notificationsEnabled = !notificationsEnabled;
-      updateTexts();
-    }
-
     function changeLanguage() {
       currentLanguage =
-        currentLanguage === "en" ? "ru" : currentLanguage === "ru" ? "es" : "en";
+        currentLanguage === "en"
+          ? "ru"
+          : currentLanguage === "ru"
+          ? "es"
+          : "en";
       updateTexts();
       if (currentWorker) {
         supabase
@@ -1617,7 +1623,7 @@
       }
     }
 
-    // EVENT LISTENERS
+    // Events
     $("loginButton").addEventListener("click", telegramLogin);
     $("closeModal").addEventListener("click", () =>
       $("jobModal").classList.add("hidden")
@@ -1628,20 +1634,14 @@
     $("closeSkillsModal").addEventListener("click", () =>
       $("skillsModal").classList.add("hidden")
     );
-
     $("editProfileButton").addEventListener("click", openProfileEditor);
     $("saveProfileButton").addEventListener("click", saveProfile);
-
     $("manageSkillsButton").addEventListener("click", showSkillsEditor);
     $("saveSkillsButton").addEventListener("click", saveSkills);
-
     $("changePhotoButton").addEventListener("click", changePhoto);
-
     $("changeLangButton").addEventListener("click", changeLanguage);
-
     $("onlineToggle").addEventListener("click", toggleOnline);
-    $("notifToggle").addEventListener("click", toggleNotifications);
-
+    $("notifToggle").addEventListener("click", toggleOnline);
     $("refreshButton").addEventListener("click", refreshCurrentTab);
 
     $("loadMoreJobs").addEventListener("click", async () => {
@@ -1682,8 +1682,7 @@
           !$("jobModal").classList.contains("hidden") ||
           !$("profileEditorModal").classList.contains("hidden") ||
           !$("skillsModal").classList.contains("hidden");
-        if (modalOpen) tg.BackButton.show();
-        else tg.BackButton.hide();
+        modalOpen ? tg.BackButton.show() : tg.BackButton.hide();
       });
 
       observer.observe($("jobModal"), { attributes: true });
@@ -1691,7 +1690,7 @@
       observer.observe($("skillsModal"), { attributes: true });
     }
 
-    // INIT
+    // Init
     document.addEventListener("DOMContentLoaded", async () => {
       if (tg?.initDataUnsafe?.user?.language_code) {
         const lc = tg.initDataUnsafe.user.language_code;
