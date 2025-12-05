@@ -283,97 +283,110 @@
         </div>
       </div>
 
-      <!-- PROFILE TAB -->
-      <div id="profileTab" class="tab-content hidden">
-        <div class="mb-6">
-          <h2 id="profileTitle" class="text-2xl font-bold mb-1">Profile</h2>
+<!-- PROFILE TAB -->
+<div id="profileTab" class="tab-content hidden">
+  <div class="mb-6">
+    <h2 id="profileTitle" class="text-2xl font-bold mb-1">Profile</h2>
+  </div>
+
+  <div class="glass-card p-6 mb-4">
+    <!-- АВАТАР + ИМЯ + ID -->
+    <div class="flex items-center mb-4">
+
+    <div id="profileAvatar"
+         class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-green-400 to-green-600 mr-4">
+        <span id="profileInitials" class="text-2xl font-bold"></span>
+    </div>
+
+    <div>
+        <h3 id="profileName" class="text-xl font-semibold">Worker</h3>
+        <p id="profileId" class="text-gray-400 text-sm">ID: •••••••</p>
+    </div>
+      <div>
+        <h3 id="profileName" class="text-xl font-semibold">Worker</h3>
+        <p id="profileId" class="text-gray-400 text-xs uppercase tracking-wide">
+          Tech ID: •••••••
+        </p>
+      </div>
+    </div>
+
+    <!-- РЕЙТИНГ + СТАТИСТИКА -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center">
+        <div class="text-yellow-400 text-lg mr-2">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
         </div>
+        <span id="profileRatingLabel" class="text-sm text-gray-400">5.0 rating</span>
+      </div>
+      <div class="text-right">
+        <div id="jobsCompleted" class="text-2xl font-bold text-green-400">0</div>
+        <div id="profileJobsLabel" class="text-sm text-gray-400">jobs completed</div>
+      </div>
+    </div>
 
-        <div class="glass-card p-6 mb-4">
-          <!-- АВАТАР + ИМЯ -->
-          <div class="flex items-center mb-4">
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-2xl font-bold mr-4 shadow-lg overflow-hidden">
-              <span id="profileInitials">WW</span>
-              <!-- если будет фото, можно заменить span на img -->
-            </div>
-            <div>
-              <h3 id="profileName" class="text-xl font-semibold">Worker</h3>
-              <p id="profileId" class="text-gray-400 text-sm">ID: •••••••</p>
-            </div>
-          </div>
-
-          <!-- РЕЙТИНГ + ЗАКАЗЫ -->
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center">
-              <div class="text-yellow-400 text-lg mr-2">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <span id="profileRatingLabel" class="text-sm text-gray-400">5.0 rating</span>
-            </div>
-            <div class="text-right">
-              <div id="jobsCompleted" class="text-2xl font-bold text-green-400">0</div>
-              <div id="profileJobsLabel" class="text-sm text-gray-400">jobs completed</div>
-            </div>
-          </div>
-
-          <!-- BIO -->
-          <div class="mb-4">
-            <div class="flex justify-between items-center mb-1">
-              <span class="text-sm font-semibold">About</span>
-              <button id="editBioButton" class="text-xs text-green-400 underline">Edit</button>
-            </div>
-            <p id="profileBio" class="text-sm text-gray-300">
-              Handyman with 5+ years experience. Professional and fast.
-            </p>
-          </div>
-
-          <!-- SKILLS -->
-          <div class="mb-4">
-            <div class="flex justify-between items-center mb-1">
-              <span class="text-sm font-semibold" id="skillsLabel">Skills</span>
-              <button id="editSkillsButton" class="text-xs text-green-400 underline">
-                <span id="editSkillsText">Edit skills</span>
-              </button>
-            </div>
-            <div id="profileSkills" class="flex flex-wrap">
-              <!-- chips -->
-            </div>
-          </div>
-
-          <!-- LANGUAGE -->
-          <div class="mb-4">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-sm font-semibold">Language</span>
-              <button id="changeLangButton" class="text-xs text-green-400 underline">
-                Change
-              </button>
-            </div>
-            <div id="currentLangLabel" class="text-sm text-gray-300">English</div>
-          </div>
-
-          <!-- NOTIFICATIONS -->
-          <div class="mb-2">
-            <div class="flex items-center justify-between">
-              <div class="flex flex-col">
-                <span class="text-sm font-semibold">Notifications</span>
-                <span class="text-xs text-gray-400">New jobs alert in Telegram</span>
-              </div>
-              <button id="notifToggle" class="status-pill">
-                <i class="fas fa-bell mr-1"></i><span id="notifToggleText">ON</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <button id="changePhotoButton" class="neon-button w-full mb-3">
-          Change profile photo
+    <!-- ABOUT (био, но имя нельзя менять) -->
+    <div class="mb-4">
+      <div class="flex justify-between items-center mb-1">
+        <span class="text-sm font-semibold">About</span>
+        <button id="editBioButton" class="text-xs text-green-400 underline">
+          Edit
         </button>
       </div>
+      <p id="profileBio" class="text-sm text-gray-300">
+        Handyman with 5+ years experience. Professional and fast.
+      </p>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="mb-4">
+      <div class="flex justify-between items-center mb-1">
+        <span class="text-sm font-semibold" id="skillsLabel">Skills</span>
+        <button id="editSkillsButton" class="text-xs text-green-400 underline">
+          <span id="editSkillsText">Edit skills</span>
+        </button>
+      </div>
+      <div id="profileSkills" class="flex flex-wrap">
+        <!-- chips из JS -->
+      </div>
+    </div>
+
+    <!-- LANGUAGE -->
+    <div class="mb-4">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-sm font-semibold">Language</span>
+        <button id="changeLangButton" class="text-xs text-green-400 underline">
+          Change
+        </button>
+      </div>
+      <div id="currentLangLabel" class="text-sm text-gray-300">English</div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="mb-2">
+      <div class="flex items-center justify-between">
+        <div class="flex flex-col">
+          <span class="text-sm font-semibold">Notifications</span>
+          <span class="text-xs text-gray-400">New jobs alert in Telegram</span>
+        </div>
+        <button id="notifToggle" class="status-pill">
+          <i class="fas fa-bell mr-1"></i><span id="notifToggleText">ON</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- КНОПКА СМЕНЫ ФОТО + СКРЫТЫЙ INPUT ДЛЯ ЗАГРУЗКИ -->
+  <button id="changePhotoButton" class="neon-button w-full mb-3">
+  Change profile photo
+</button>
+
+<!-- скрытый input -->
+<input id="photoFileInput" type="file" accept="image/*" class="hidden" />
+</div>
 
       <!-- HISTORY TAB -->
       <div id="historyTab" class="tab-content hidden">
@@ -729,45 +742,129 @@
       updateProfileUI();
       updateTexts();
     }
-
     function updateProfileUI() {
-      if (!currentWorker) return;
-      const name = currentWorker.full_name || "Worker";
-      const initials = name
-        .split(" ")
-        .filter(Boolean)
-        .map((n) => n[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase();
+  if (!currentWorker) return;
 
-      $("profileInitials").textContent = initials || "W";
-      $("profileName").textContent = name;
-      const idStr = String(currentWorker.id || "");
-      $("profileId").textContent = "ID: ••••" + idStr.slice(-4);
-      $("jobsCompleted").textContent = currentWorker.jobs_completed || 0;
+  // 🟢 ИМЯ (не редактируется)
+  const name = currentWorker.full_name || "Worker";
+  $("profileName").textContent = name;
 
-      const skills = currentWorker.skills || [];
-      const skillsContainer = $("profileSkills");
-      skillsContainer.innerHTML = "";
-      if (!skills.length) {
-        const span = document.createElement("span");
-        span.className = "text-xs text-gray-400";
-        span.textContent = "No skills selected";
-        skillsContainer.appendChild(span);
-      } else {
-        skills.forEach((s) => {
-          const chip = document.createElement("span");
-          chip.className = "chip";
-          chip.textContent = s.replace("_", " ");
-          skillsContainer.appendChild(chip);
-        });
-      }
+  // 🟢 ID
+  const idStr = String(currentWorker.id || "");
+  $("profileId").textContent = "ID: ••••" + idStr.slice(-4);
 
-      $("profileBio").textContent =
-        currentWorker.bio ||
-        "Handyman with 5+ years experience. Professional and fast.";
-    }
+  // 🟢 Заказы
+  $("jobsCompleted").textContent = currentWorker.jobs_completed || 0;
+
+  // 🟢 Рейтинг — фиксированный (пока нет системы)
+  $("profileRatingLabel").textContent = "5.0 rating";
+
+  // 🟢 Фото или инициалы
+  const avatarEl = $("profileAvatar");
+  const initialsEl = $("profileInitials");
+
+  if (currentWorker.photo_url) {
+    // Если фото есть → показываем фото
+    avatarEl.innerHTML = `
+      <img src="${currentWorker.photo_url}" 
+           class="w-full h-full object-cover rounded-full" />
+    `;
+  } else {
+    // Если фото нет → показываем инициалы
+    const initials = name
+      .split(" ")
+      .filter(Boolean)
+      .map((n) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+
+    initialsEl.textContent = initials || "W";
+  }
+
+  // 🟢 Skills
+  const skills = currentWorker.skills || [];
+  const skillsContainer = $("profileSkills");
+  skillsContainer.innerHTML = "";
+
+  if (!skills.length) {
+    const span = document.createElement("span");
+    span.className = "text-xs text-gray-400";
+    span.textContent = "No skills selected";
+    skillsContainer.appendChild(span);
+  } else {
+    skills.forEach((s) => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = s.replace("_", " ");
+      skillsContainer.appendChild(chip);
+    });
+  }
+
+  // 🟢 BIO текст
+  $("profileBio").textContent =
+    currentWorker.bio ||
+    "Handyman with 5+ years experience. Professional and fast.";
+}
+}  // конец updateProfileUI()
+
+// === PHOTO UPLOAD TO SUPABASE STORAGE ===
+async function uploadProfilePhoto(file) {
+  if (!file || !currentWorker) return;
+
+  const fileExt = file.name.split('.').pop();
+  const filePath = avatars/${currentWorker.id}.${fileExt};
+
+  const { error: uploadError } = await supabase.storage
+    .from("avatars")
+    .upload(filePath, file, {
+      cacheControl: "3600",
+      upsert: true
+    });
+
+  if (uploadError) {
+    console.error(uploadError);
+    showToast("Upload failed");
+    return;
+  }
+
+  const { data: publicUrlData } = supabase.storage
+    .from("avatars")
+    .getPublicUrl(filePath);
+
+  const publicUrl = publicUrlData.publicUrl;
+
+  const { error: updateError } = await supabase
+    .from("workers")
+    .update({ photo_url: publicUrl })
+    .eq("id", currentWorker.id);
+
+  if (updateError) {
+    console.error(updateError);
+    showToast("Error saving photo URL");
+    return;
+  }
+
+  currentWorker.photo_url = publicUrl;
+  updateProfileUI();
+  showToast("Photo updated!");
+}
+
+// === PHOTO BUTTON HANDLER ===
+$("changePhotoButton").addEventListener("click", () => {
+  $("photoFileInput").click();
+});
+
+// === FILE INPUT HANDLER ===
+$("photoFileInput").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (file) uploadProfilePhoto(file);
+});
+
+
+// ----------------------------------------------------------
+// И СЛЕДОМ ИДЁТ ТВОЯ ФУНКЦИЯ LOGIN
+// ----------------------------------------------------------
 
     async function telegramLogin() {
       if (!tg || !tg.initDataUnsafe?.user) {
@@ -1357,18 +1454,16 @@
     $("onlineToggle").addEventListener("click", toggleOnline);
     $("notifToggle").addEventListener("click", toggleOnline);
 
-    $("changePhotoButton").addEventListener("click", () => {
-      if (tg?.showAlert) {
-        tg.showAlert(
-          "For now, profile photos are changed by admin. Send your photo to support."
-        );
-      } else {
-        alert(
-          "For now, profile photos are changed by admin. Send your photo to support."
-        );
-      }
-    });
+   // PROFILE PHOTO UPLOAD EVENTS
+$("changePhotoButton").addEventListener("click", () => {
+  $("photoFileInput").click();
+});
 
+$("photoFileInput").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  await uploadProfilePhoto(file);
+});
     document.querySelectorAll("[data-tab]").forEach((btn) => {
       btn.addEventListener("click", () => {
         switchTab(btn.dataset.tab);
@@ -1412,4 +1507,3 @@
   </script>
 </body>
 </html>
-
