@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -201,13 +202,6 @@
       font-size: 12px;
       margin: 2px;
     }
-
-    .stat-card {
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 16px;
-      padding: 12px 14px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
   </style>
 </head>
 <body class="min-h-screen pb-20">
@@ -215,7 +209,6 @@
   <!-- LOGIN SCREEN -->
   <div id="loginScreen" class="min-h-screen flex flex-col items-center justify-center p-6">
     <div class="text-center mb-8">
-      <!-- ЛОГО -->
       <div class="w-20 h-20 rounded-2xl mx-auto mb-4 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-3xl font-extrabold">
         E
       </div>
@@ -290,61 +283,46 @@
         </div>
       </div>
 
-      <!-- PROFILE TAB – UBER PREMIUM STYLE -->
+      <!-- PROFILE TAB -->
       <div id="profileTab" class="tab-content hidden">
         <div class="mb-6">
           <h2 id="profileTitle" class="text-2xl font-bold mb-1">Profile</h2>
         </div>
 
         <div class="glass-card p-6 mb-4">
-          <!-- AVATAR + NAME + STATUS -->
-          <div class="flex flex-col items-center mb-5">
+          <!-- AVATAR + NAME -->
+          <div class="flex items-center mb-4">
             <div
-              id="profileAvatar"
-              class="w-32 h-32 rounded-full bg-gradient-to-br from-green-400 to-green-700 shadow-[0_0_25px_rgba(34,197,94,0.7)] flex items-center justify-center text-3xl font-bold overflow-hidden mb-3">
+              class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-2xl font-bold mr-4 shadow-lg overflow-hidden">
               <span id="profileInitials">WW</span>
             </div>
-            <h3 id="profileName" class="text-2xl font-semibold mb-1">Worker</h3>
-            <p id="profileAddress" class="text-gray-400 text-sm mb-1">
-              Address not set
-            </p>
-            <p id="profileId" class="text-gray-500 text-xs mb-3">
-              ID: •••••••
-            </p>
-            <span
-              id="profileStatus"
-              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-400/40">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span>
-              Online
-            </span>
+            <div>
+              <h3 id="profileName" class="text-xl font-semibold">Worker</h3>
+              <p id="profileAddress" class="text-gray-300 text-sm"></p>
+              <p id="profileId" class="text-gray-400 text-sm">ID: •••••••</p>
+            </div>
           </div>
 
-          <!-- STATS -->
-          <div class="grid grid-cols-2 gap-3 mb-5">
-            <div class="stat-card">
-              <div class="flex items-center justify-between mb-1">
-                <span class="text-xs text-gray-400">Rating</span>
-                <i class="fas fa-star text-yellow-400 text-sm"></i>
+          <!-- RATING + JOBS -->
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+              <div class="text-yellow-400 text-lg mr-2">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
               </div>
-              <div class="flex items-baseline gap-1">
-                <span class="text-xl font-bold">5.0</span>
-                <span id="profileRatingLabel" class="text-xs text-gray-400">rating</span>
-              </div>
+              <span id="profileRatingLabel" class="text-sm text-gray-400">5.0 rating</span>
             </div>
-            <div class="stat-card">
-              <div class="flex items-center justify-between mb-1">
-                <span class="text-xs text-gray-400">Completed</span>
-                <i class="fas fa-check-circle text-emerald-400 text-sm"></i>
-              </div>
-              <div class="flex items-baseline gap-1">
-                <span id="jobsCompleted" class="text-xl font-bold text-green-400">0</span>
-                <span id="profileJobsLabel" class="text-xs text-gray-400">jobs completed</span>
-              </div>
+            <div class="text-right">
+              <div id="jobsCompleted" class="text-2xl font-bold text-green-400">0</div>
+              <div id="profileJobsLabel" class="text-sm text-gray-400">jobs completed</div>
             </div>
           </div>
 
           <!-- BIO -->
-          <div class="mb-4 w-full">
+          <div class="mb-4">
             <div class="flex justify-between items-center mb-1">
               <span class="text-sm font-semibold">About</span>
               <button id="editBioButton" class="text-xs text-green-400 underline">Edit</button>
@@ -355,58 +333,43 @@
           </div>
 
           <!-- SKILLS -->
-          <div class="mb-3 w-full">
+          <div class="mb-4">
             <div class="flex justify-between items-center mb-1">
               <span class="text-sm font-semibold" id="skillsLabel">Skills</span>
-              <button id="editSkillsButton" class="text-xs text-green-400 underline">
-                <span id="editSkillsText">Edit skills</span>
-              </button>
             </div>
             <div id="profileSkills" class="flex flex-wrap">
               <!-- chips -->
             </div>
           </div>
+
+          <!-- LANGUAGE -->
+          <div class="mb-4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-sm font-semibold">Language</span>
+              <button id="changeLangButton" class="text-xs text-green-400 underline">
+                Change
+              </button>
+            </div>
+            <div id="currentLangLabel" class="text-sm text-gray-300">English</div>
+          </div>
+
+          <!-- NOTIFICATIONS -->
+          <div class="mb-2">
+            <div class="flex items-center justify-between">
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold">Notifications</span>
+                <span class="text-xs text-gray-400">New jobs alert in Telegram</span>
+              </div>
+              <button id="notifToggle" class="status-pill">
+                <i class="fas fa-bell mr-1"></i><span id="notifToggleText">ON</span>
+              </button>
+            </div>
+          </div>
         </div>
 
-        <!-- BIG ACTION BUTTONS -->
-        <div class="space-y-3">
-          <button id="changePhotoButton" class="neon-button w-full flex items-center justify-center gap-2">
-            <i class="fas fa-camera"></i>
-            <span>Change profile photo</span>
-          </button>
-
-          <button id="editProfileButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
-            <div class="flex items-center gap-2">
-              <i class="fas fa-user-edit text-green-400"></i>
-              <span>Edit profile (address & bio)</span>
-            </div>
-            <i class="fas fa-chevron-right text-xs text-gray-400"></i>
-          </button>
-
-          <button id="openSkillsFromButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
-            <div class="flex items-center gap-2">
-              <i class="fas fa-tools text-green-400"></i>
-              <span>Manage skills</span>
-            </div>
-            <i class="fas fa-chevron-right text-xs text-gray-400"></i>
-          </button>
-
-          <button id="changeLangButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
-            <div class="flex items-center gap-2">
-              <i class="fas fa-language text-green-400"></i>
-              <span>Language: <span id="currentLangLabel">English</span></span>
-            </div>
-            <i class="fas fa-sync text-xs text-gray-400"></i>
-          </button>
-
-          <button id="notifToggle" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
-            <div class="flex items-center gap-2">
-              <i class="fas fa-bell text-green-400"></i>
-              <span>Notifications</span>
-            </div>
-            <span class="status-pill text-xs" id="notifToggleText">ON</span>
-          </button>
-        </div>
+        <button id="changePhotoButton" class="neon-button w-full mb-3">
+          Change profile photo
+        </button>
       </div>
 
       <!-- HISTORY TAB -->
@@ -506,14 +469,11 @@
     </div>
   </div>
 
-  <!-- HIDDEN FILE INPUT FOR PHOTO -->
-  <input type="file" id="photoInput" accept="image/*" class="hidden" />
-
   <!-- APP LOGIC -->
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    // 🔐 Supabase
+    // Supabase
     const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
     const SUPABASE_ANON_KEY =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
@@ -526,7 +486,7 @@
       tg.disableVerticalSwipes();
     }
 
-    // 🌍 i18n (EN / RU / ES)
+    // i18n (EN / RU / ES)
     const i18n = {
       en: {
         welcomeTitle: "Welcome, worker",
@@ -730,7 +690,6 @@
       $("skillsModalTitle").textContent = t("editSkillsButton");
       $("saveButtonText").textContent = t("saveButton");
       $("cancelButtonText").textContent = t("cancelButton");
-      $("editSkillsText").textContent = t("editSkillsButton");
       $("skillsLabel").textContent = t("skillsLabel");
 
       $("noJobsText").querySelector("p").textContent = t("noJobsText");
@@ -743,10 +702,6 @@
       if (currentLanguage === "en") $("currentLangLabel").textContent = t("langEnglish");
       if (currentLanguage === "ru") $("currentLangLabel").textContent = t("langRussian");
       if (currentLanguage === "es") $("currentLangLabel").textContent = t("langSpanish");
-
-      if ($("profileStatus")) {
-        $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
-      }
     }
 
     function showToast(message) {
@@ -782,30 +737,12 @@
         .slice(0, 2)
         .toUpperCase();
 
-      const avatar = $("profileAvatar");
-      if (avatar) {
-        avatar.innerHTML = "";
-        if (currentWorker.photo_url) {
-          const img = document.createElement("img");
-          img.src = currentWorker.photo_url;
-          img.alt = name;
-          img.className = "w-full h-full object-cover";
-          avatar.appendChild(img);
-        } else {
-          const span = document.createElement("span");
-          span.id = "profileInitials";
-          span.textContent = initials || "W";
-          avatar.appendChild(span);
-        }
-      }
-
+      $("profileInitials").textContent = initials || "W";
       $("profileName").textContent = name;
       const idStr = String(currentWorker.id || "");
       $("profileId").textContent = "ID: ••••" + idStr.slice(-4);
       $("jobsCompleted").textContent = currentWorker.jobs_completed || 0;
-
-      const address = currentWorker.address || "";
-      $("profileAddress").textContent = address || "Address not set";
+      $("profileAddress").textContent = currentWorker.address || "";
 
       const skills = currentWorker.skills || [];
       const skillsContainer = $("profileSkills");
@@ -827,10 +764,6 @@
       $("profileBio").textContent =
         currentWorker.bio ||
         "Handyman with 5+ years experience. Professional and fast.";
-
-      if ($("profileStatus")) {
-        $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
-      }
     }
 
     async function telegramLogin() {
@@ -840,13 +773,8 @@
       }
 
       const u = tg.initDataUnsafe.user;
+      const telegramLang = u.language_code || "en";
       const telegram_id = String(u.id);
-      const lang_code = u.language_code || "en";
-
-      if (lang_code === "ru") currentLanguage = "ru";
-      else if (lang_code === "es") currentLanguage = "es";
-      else currentLanguage = "en";
-      updateTexts();
 
       const btn = $("loginButton");
       btn.disabled = true;
@@ -859,17 +787,25 @@
           .eq("telegram_id", telegram_id)
           .single();
 
-        if (error) {
+        if (error || !worker) {
           showLoginError(t("loginErrorNoWorker"));
           return;
         }
 
         currentWorker = worker;
+
+        // язык: если в воркере уже есть language — используем его, иначе берем из Telegram
+        let preferredLang = currentWorker.language || telegramLang;
+        if (!["en", "ru", "es"].includes(preferredLang)) preferredLang = "en";
+        currentLanguage = preferredLang;
+        updateTexts();
+
         if (!currentWorker.language || currentWorker.language !== currentLanguage) {
           await supabase
             .from("workers")
             .update({ language: currentLanguage })
             .eq("id", currentWorker.id);
+          currentWorker.language = currentLanguage;
         }
 
         showMainScreen();
@@ -924,7 +860,7 @@
 
         if (error) throw error;
 
-        activeJobs = orders;
+        activeJobs = orders || [];
         renderActiveJobs();
       } catch (e) {
         console.error("loadActiveJobs error:", e);
@@ -999,7 +935,7 @@
           <div class="flex justify-between items-start mb-3">
             <div class="flex-1">
               <h3 class="font-semibold text-lg mb-1">${serviceName}</h3>
-              <p class="text-gray-400 text-sm">${notes}</p>
+              <p class="text-gray-400 text-sm line-clamp-2">${notes}</p>
             </div>
             <div class="price-tag ml-3">${job.price ? `$${job.price}` : "$—"}</div>
           </div>
@@ -1315,82 +1251,6 @@
       }
     }
 
-    async function uploadProfilePhoto(file) {
-      if (!currentWorker || !file) return;
-
-      try {
-        const fileExt = file.name.split(".").pop();
-        const filePath = `${currentWorker.id}/${Date.now()}.${fileExt || "jpg"}`;
-
-        const { error: uploadError } = await supabase
-          .storage
-          .from("worker-photos") // Бакет в Supabase Storage
-          .upload(filePath, file, {
-            cacheControl: "3600",
-            upsert: true,
-          });
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicData } = supabase
-          .storage
-          .from("worker-photos")
-          .getPublicUrl(filePath);
-
-        const publicUrl = publicData?.publicUrl;
-        if (!publicUrl) throw new Error("No public URL");
-
-        const { error: updateError } = await supabase
-          .from("workers")
-          .update({ photo_url: publicUrl })
-          .eq("id", currentWorker.id);
-
-        if (updateError) throw updateError;
-
-        currentWorker.photo_url = publicUrl;
-        updateProfileUI();
-        showToast("Profile photo updated");
-      } catch (e) {
-        console.error("uploadProfilePhoto error:", e);
-        showToast("Error uploading photo");
-      }
-    }
-
-    async function editProfile() {
-      if (!currentWorker) return;
-
-      const currentAddress = currentWorker.address || "";
-      const currentBio = currentWorker.bio || $("profileBio").textContent || "";
-
-      const newAddress = prompt("Your main working area / address:", currentAddress);
-      if (newAddress === null) return;
-
-      const newBio = prompt("Edit your short bio:", currentBio);
-      if (newBio === null) return;
-
-      try {
-        const updates = {
-          address: newAddress.trim(),
-          bio: newBio.trim(),
-        };
-
-        const { error } = await supabase
-          .from("workers")
-          .update(updates)
-          .eq("id", currentWorker.id);
-
-        if (error) throw error;
-
-        currentWorker.address = updates.address;
-        currentWorker.bio = updates.bio;
-        updateProfileUI();
-        showToast("Profile updated");
-      } catch (e) {
-        console.error("editProfile error:", e);
-        showToast("Error updating profile");
-      }
-    }
-
     function switchTab(tabName) {
       document.querySelectorAll(".tab-button").forEach((btn) => {
         btn.classList.toggle("active", btn.dataset.tab === tabName);
@@ -1417,21 +1277,16 @@
         .channel("orders_listener")
         .on(
           "postgres_changes",
-          { event: "INSERT", schema: "public", table: "orders" },
+          { event: "*", schema: "public", table: "orders" },
           (payload) => {
-            const job = payload.new;
-            const workerSkills = currentWorker.skills || [];
-            if (
-              workerSkills.length &&
-              !workerSkills.includes(job.service_type)
-            ) {
-              return;
+            // при любом изменении заказов обновляем списки
+            if (payload.eventType === "INSERT") {
+              showToast(t("newJobToast"));
+              if (tg?.showPopup) {
+                tg.showPopup({ message: t("newJobPopup") });
+              }
             }
-            showToast(t("newJobToast"));
-            if (tg?.showPopup) {
-              tg.showPopup({ message: t("newJobPopup") });
-            }
-            loadJobs();
+            loadAllData();
           }
         )
         .subscribe();
@@ -1441,9 +1296,6 @@
       isOnline = !isOnline;
       $("onlineToggleText").textContent = isOnline ? t("onlineText") : t("offlineText");
       $("notifToggleText").textContent = isOnline ? t("notifOn") : t("notifOff");
-      if ($("profileStatus")) {
-        $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
-      }
       setupRealtime();
     }
 
@@ -1457,20 +1309,22 @@
           .from("workers")
           .update({ language: currentLanguage })
           .eq("id", currentWorker.id);
+        currentWorker.language = currentLanguage;
       }
     }
 
     function editBio() {
-      if (!currentWorker) return;
-      const current = currentWorker.bio || $("profileBio").textContent;
+      const current = currentWorker?.bio || $("profileBio").textContent;
       const newBio = prompt("Edit your short bio:", current);
       if (!newBio || !newBio.trim()) return;
       $("profileBio").textContent = newBio.trim();
-      currentWorker.bio = newBio.trim();
-      supabase
-        .from("workers")
-        .update({ bio: newBio.trim() })
-        .eq("id", currentWorker.id);
+      if (currentWorker) {
+        supabase
+          .from("workers")
+          .update({ bio: newBio.trim() })
+          .eq("id", currentWorker.id);
+        currentWorker.bio = newBio.trim();
+      }
     }
 
     // EVENTS
@@ -1491,8 +1345,12 @@
     });
 
     $("saveSkills").addEventListener("click", saveSkills);
-    $("editSkillsButton").addEventListener("click", showSkillsEditor);
-    $("openSkillsFromButton").addEventListener("click", showSkillsEditor);
+
+    const editSkillsBtn = $("editSkillsButton");
+    if (editSkillsBtn) {
+      editSkillsBtn.addEventListener("click", showSkillsEditor);
+    }
+
     $("editBioButton").addEventListener("click", editBio);
 
     $("changeLangButton").addEventListener("click", changeLanguage);
@@ -1501,18 +1359,15 @@
     $("notifToggle").addEventListener("click", toggleOnline);
 
     $("changePhotoButton").addEventListener("click", () => {
-      $("photoInput").click();
-    });
-
-    $("photoInput").addEventListener("change", async (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      await uploadProfilePhoto(file);
-      e.target.value = "";
-    });
-
-    $("editProfileButton").addEventListener("click", () => {
-      editProfile();
+      if (tg?.showAlert) {
+        tg.showAlert(
+          "For now, profile photos are changed by admin. Send your photo to support."
+        );
+      } else {
+        alert(
+          "For now, profile photos are changed by admin. Send your photo to support."
+        );
+      }
     });
 
     document.querySelectorAll("[data-tab]").forEach((btn) => {
@@ -1558,3 +1413,4 @@
   </script>
 </body>
 </html>
+
