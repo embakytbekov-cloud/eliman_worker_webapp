@@ -11,23 +11,23 @@
   <!-- Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <base target="_blank" />
-
+ 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
+ 
     * {
       font-family: 'Inter', sans-serif;
       -webkit-tap-highlight-color: transparent;
       box-sizing: border-box;
     }
-
+ 
     body {
       background: radial-gradient(circle at 50% 0%, #0a0e1a 0%, #020613 100%);
       color: #ffffff;
       overflow-x: hidden;
       margin: 0;
     }
-
+ 
     .glass-card {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(20px);
@@ -35,7 +35,7 @@
       border-radius: 20px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
-
+ 
     .neon-button {
       background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
       color: #020613;
@@ -48,18 +48,18 @@
       transition: all 0.3s ease;
       box-shadow: 0 4px 20px rgba(31, 227, 136, 0.3);
     }
-
+ 
     .neon-button:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 30px rgba(31, 227, 136, 0.5);
     }
-
+ 
     .neon-button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
       transform: none;
     }
-
+ 
     .status-pill {
       background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
       color: #020613;
@@ -70,60 +70,35 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-
+ 
     .job-card {
       transition: all 0.3s ease;
       cursor: pointer;
     }
-
+ 
     .job-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
     }
-
+ 
     .tab-button {
       transition: all 0.3s ease;
       border-radius: 12px;
       padding: 10px;
       color: #64748b;
     }
-
+ 
     .tab-button.active {
       background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
       color: #020613;
       font-weight: 600;
     }
-
+ 
     .modal-overlay {
       background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(10px);
     }
-
-    .skill-checkbox {
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      border: 2px solid #1FE388;
-      border-radius: 6px;
-      background: transparent;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .skill-checkbox:checked {
-      background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
-    }
-
-    .skill-checkbox:checked::after {
-      content: '✓';
-      position: absolute;
-      top: -2px;
-      left: 3px;
-      color: #020613;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
+ 
     .loading-spinner {
       border: 2px solid rgba(31, 227, 136, 0.3);
       border-top: 2px solid #1FE388;
@@ -132,21 +107,21 @@
       height: 20px;
       animation: spin 1s linear infinite;
     }
-
+ 
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
+ 
     .fade-in {
       animation: fadeIn 0.4s ease-in;
     }
-
+ 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
+ 
     .price-tag {
       background: linear-gradient(135deg, #1FE388 0%, #6BFF9D 100%);
       color: #020613;
@@ -155,7 +130,7 @@
       font-weight: 700;
       font-size: 18px;
     }
-
+ 
     .photo-placeholder {
       width: 36px;
       height: 36px;
@@ -167,13 +142,13 @@
       justify-content: center;
       color: #1FE388;
     }
-
+ 
     .bottom-nav {
       background: rgba(2, 6, 19, 0.96);
       backdrop-filter: blur(20px);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
-
+ 
     .textarea-field {
       width: 100%;
       background: rgba(255, 255, 255, 0.04);
@@ -185,13 +160,13 @@
       resize: vertical;
       min-height: 60px;
     }
-
+ 
     .textarea-field:focus {
       outline: none;
       border-color: #1FE388;
       box-shadow: 0 0 0 2px rgba(31, 227, 136, 0.3);
     }
-
+ 
     .chip {
       display: inline-flex;
       align-items: center;
@@ -201,17 +176,51 @@
       font-size: 12px;
       margin: 2px;
     }
-
+ 
     .stat-card {
       background: rgba(255, 255, 255, 0.04);
       border-radius: 16px;
       padding: 12px 14px;
       border: 1px solid rgba(255, 255, 255, 0.06);
     }
+
+    .refresh-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(31, 227, 136, 0.3);
+      border-radius: 12px;
+      padding: 8px 12px;
+      color: #1FE388;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .refresh-btn:hover {
+      background: rgba(31, 227, 136, 0.1);
+    }
+
+    .load-more-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 12px;
+      text-align: center;
+      color: #1FE388;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .load-more-btn:hover {
+      background: rgba(31, 227, 136, 0.1);
+    }
+
+    .refresh-icon.spinning {
+      animation: spin 1s linear infinite;
+    }
   </style>
 </head>
 <body class="min-h-screen pb-20">
-
+ 
   <!-- LOGIN SCREEN -->
   <div id="loginScreen" class="min-h-screen flex flex-col items-center justify-center p-6">
     <div class="text-center mb-8">
@@ -225,7 +234,7 @@
         Sign in via Telegram to start accepting jobs in your area
       </p>
     </div>
-
+ 
     <div class="w-full max-w-sm">
       <div class="glass-card p-6 mb-4 text-center">
         <p id="loginHint" class="text-gray-400 text-sm mb-4">
@@ -238,10 +247,10 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- MAIN APP -->
   <div id="mainScreen" class="hidden min-h-screen">
-
+ 
     <!-- HEADER -->
     <div class="sticky top-0 z-40 bg-black/60 backdrop-blur-lg border-b border-white/10">
       <div class="flex items-center justify-between p-4">
@@ -253,13 +262,16 @@
           <button id="onlineToggle" class="status-pill">
             <i class="fas fa-bell mr-1"></i><span id="onlineToggleText">Online</span>
           </button>
+          <button id="refreshButton" class="refresh-btn">
+            <i class="fas fa-sync-alt"></i>
+          </button>
         </div>
       </div>
     </div>
-
+ 
     <!-- CONTENT -->
     <div id="tabContent" class="p-4 pb-24">
-
+ 
       <!-- JOBS TAB -->
       <div id="jobsTab" class="tab-content">
         <div class="mb-6">
@@ -269,12 +281,15 @@
           </p>
         </div>
         <div id="jobsList" class="space-y-4"></div>
+        <div id="loadMoreJobs" class="load-more-btn hidden">
+          <i class="fas fa-chevron-down mr-2"></i>Load More
+        </div>
         <div id="noJobsText" class="text-center text-gray-400 py-8 hidden">
           <i class="fas fa-inbox text-4xl mb-4"></i>
           <p>No jobs available right now</p>
         </div>
       </div>
-
+ 
       <!-- ACTIVE TAB -->
       <div id="activeTab" class="tab-content hidden">
         <div class="mb-6">
@@ -284,18 +299,21 @@
           </p>
         </div>
         <div id="activeJobsList" class="space-y-4"></div>
+        <div id="loadMoreActive" class="load-more-btn hidden">
+          <i class="fas fa-chevron-down mr-2"></i>Load More
+        </div>
         <div id="noActiveJobsText" class="text-center text-gray-400 py-8 hidden">
           <i class="fas fa-clock text-4xl mb-4"></i>
           <p>No active jobs</p>
         </div>
       </div>
-
+ 
       <!-- PROFILE TAB – UBER PREMIUM STYLE -->
       <div id="profileTab" class="tab-content hidden">
         <div class="mb-6">
           <h2 id="profileTitle" class="text-2xl font-bold mb-1">Profile</h2>
         </div>
-
+ 
         <div class="glass-card p-6 mb-4">
           <!-- AVATAR + NAME + STATUS -->
           <div class="flex flex-col items-center mb-5">
@@ -318,7 +336,7 @@
               Online
             </span>
           </div>
-
+ 
           <!-- STATS -->
           <div class="grid grid-cols-2 gap-3 mb-5">
             <div class="stat-card">
@@ -342,7 +360,7 @@
               </div>
             </div>
           </div>
-
+ 
           <!-- BIO -->
           <div class="mb-4 w-full">
             <div class="flex justify-between items-center mb-1">
@@ -353,44 +371,25 @@
               Handyman with 5+ years experience. Professional and fast.
             </p>
           </div>
-
+ 
           <!-- SKILLS -->
           <div class="mb-3 w-full">
             <div class="flex justify-between items-center mb-1">
               <span class="text-sm font-semibold" id="skillsLabel">Skills</span>
-              <button id="editSkillsButton" class="text-xs text-green-400 underline">
-                <span id="editSkillsText">Edit skills</span>
-              </button>
             </div>
             <div id="profileSkills" class="flex flex-wrap">
               <!-- chips -->
             </div>
           </div>
         </div>
-
+ 
         <!-- BIG ACTION BUTTONS -->
         <div class="space-y-3">
           <button id="changePhotoButton" class="neon-button w-full flex items-center justify-center gap-2">
             <i class="fas fa-camera"></i>
             <span>Change profile photo</span>
           </button>
-
-          <button id="editProfileButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
-            <div class="flex items-center gap-2">
-              <i class="fas fa-user-edit text-green-400"></i>
-              <span>Edit profile (address & bio)</span>
-            </div>
-            <i class="fas fa-chevron-right text-xs text-gray-400"></i>
-          </button>
-
-          <button id="openSkillsFromButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
-            <div class="flex items-center gap-2">
-              <i class="fas fa-tools text-green-400"></i>
-              <span>Manage skills</span>
-            </div>
-            <i class="fas fa-chevron-right text-xs text-gray-400"></i>
-          </button>
-
+ 
           <button id="changeLangButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-language text-green-400"></i>
@@ -398,7 +397,7 @@
             </div>
             <i class="fas fa-sync text-xs text-gray-400"></i>
           </button>
-
+ 
           <button id="notifToggle" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
             <div class="flex items-center gap-2">
               <i class="fas fa-bell text-green-400"></i>
@@ -408,7 +407,7 @@
           </button>
         </div>
       </div>
-
+ 
       <!-- HISTORY TAB -->
       <div id="historyTab" class="tab-content hidden">
         <div class="mb-6">
@@ -417,7 +416,7 @@
             Completed jobs and your rank
           </p>
         </div>
-
+ 
         <div class="glass-card p-4 mb-4">
           <div class="flex items-center justify-between mb-2">
             <div>
@@ -430,16 +429,19 @@
             </div>
           </div>
         </div>
-
+ 
         <div id="historyList" class="space-y-3"></div>
+        <div id="loadMoreHistory" class="load-more-btn hidden">
+          <i class="fas fa-chevron-down mr-2"></i>Load More
+        </div>
         <div id="noHistoryText" class="text-center text-gray-400 py-8 hidden">
           <i class="fas fa-list-alt text-4xl mb-4"></i>
           <p>No completed jobs yet</p>
         </div>
       </div>
-
+ 
     </div>
-
+ 
     <!-- BOTTOM NAV -->
     <div class="fixed bottom-0 left-0 right-0 bottom-nav z-50">
       <div class="flex justify-around p-2">
@@ -462,7 +464,7 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- JOB DETAILS MODAL -->
   <div id="jobModal" class="fixed inset-0 z-50 hidden modal-overlay">
     <div class="flex items-center justify-center min-h-screen p-4">
@@ -479,53 +481,23 @@
       </div>
     </div>
   </div>
-
-  <!-- SKILLS EDITOR MODAL -->
-  <div id="skillsModal" class="fixed inset-0 z-50 hidden modal-overlay">
-    <div class="flex items-center justify-center min-h-screen p-4">
-      <div class="glass-card max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div class="p-6">
-          <div class="flex justify-between items-start mb-4">
-            <h3 id="skillsModalTitle" class="text-xl font-bold">Edit Skills</h3>
-            <button id="closeSkillsModal" class="text-gray-400 hover:text-white">
-              <i class="fas fa-times text-xl"></i>
-            </button>
-          </div>
-          <div id="skillsList" class="space-y-3 mb-6"></div>
-          <div class="flex gap-3">
-            <button id="saveSkills" class="neon-button flex-1">
-              <span id="saveButtonText">Save</span>
-            </button>
-            <button id="cancelSkills"
-              class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-2xl font-semibold text-sm">
-              <span id="cancelButtonText">Cancel</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- HIDDEN FILE INPUT FOR PHOTO -->
-  <input type="file" id="photoInput" accept="image/*" class="hidden" />
-
+ 
   <!-- APP LOGIC -->
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
+ 
     // 🔐 Supabase
     const SUPABASE_URL = "https://zmjvhedwxdopieuteiky.supabase.co";
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptanZoZWR3eGRvcGlldXRlaWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3MTI1MTksImV4cCI6MjA4MDI4ODUxOX0.1_YyxVTJK2MvDTKmeSjrcgXHNbCr73dEv_1fr1tkeAA";
-
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+ 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+ 
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.expand();
       tg.disableVerticalSwipes();
     }
-
+ 
     // 🌍 i18n (EN / RU / ES)
     const i18n = {
       en: {
@@ -560,16 +532,13 @@
         priceLabel: "Price",
         notesLabel: "Notes",
         skillsLabel: "Skills",
-        editSkillsButton: "Edit Skills",
         saveButton: "Save",
         cancelButton: "Cancel",
         errorLoadingJobs: "Error loading jobs",
         errorUpdatingJob: "Error updating job",
-        errorSavingSkills: "Error saving skills",
         jobAcceptedToast: "Job accepted!",
         jobStartedToast: "Job started!",
         jobCompletedToast: "Job completed!",
-        skillsUpdatedToast: "Skills updated!",
         newJobToast: "New job available",
         newJobPopup: "New job is available. Open Jobs tab to see details.",
         onlineText: "Online",
@@ -579,6 +548,8 @@
         langEnglish: "English",
         langRussian: "Russian",
         langSpanish: "Spanish",
+        loadMoreButton: "Load More",
+        refreshing: "Refreshing...",
       },
       ru: {
         welcomeTitle: "Добро пожаловать, работник",
@@ -612,16 +583,13 @@
         priceLabel: "Цена",
         notesLabel: "Заметки",
         skillsLabel: "Навыки",
-        editSkillsButton: "Изменить навыки",
         saveButton: "Сохранить",
         cancelButton: "Отмена",
         errorLoadingJobs: "Ошибка загрузки заказов",
         errorUpdatingJob: "Ошибка обновления заказа",
-        errorSavingSkills: "Ошибка сохранения навыков",
         jobAcceptedToast: "Заказ принят!",
         jobStartedToast: "Работа начата!",
         jobCompletedToast: "Работа завершена!",
-        skillsUpdatedToast: "Навыки обновлены!",
         newJobToast: "Новый заказ доступен",
         newJobPopup: "Появился новый заказ. Откройте вкладку «Заказы».",
         onlineText: "Онлайн",
@@ -631,6 +599,8 @@
         langEnglish: "Английский",
         langRussian: "Русский",
         langSpanish: "Испанский",
+        loadMoreButton: "Загрузить ещё",
+        refreshing: "Обновление...",
       },
       es: {
         welcomeTitle: "Bienvenido, trabajador",
@@ -664,16 +634,13 @@
         priceLabel: "Precio",
         notesLabel: "Notas",
         skillsLabel: "Habilidades",
-        editSkillsButton: "Editar habilidades",
         saveButton: "Guardar",
         cancelButton: "Cancelar",
         errorLoadingJobs: "Error al cargar trabajos",
         errorUpdatingJob: "Error al actualizar trabajo",
-        errorSavingSkills: "Error al guardar habilidades",
         jobAcceptedToast: "¡Trabajo aceptado!",
         jobStartedToast: "¡Trabajo iniciado!",
         jobCompletedToast: "¡Trabajo completado!",
-        skillsUpdatedToast: "¡Habilidades actualizadas!",
         newJobToast: "Nuevo trabajo disponible",
         newJobPopup: "Hay un nuevo trabajo disponible. Abre la pestaña Trabajos.",
         onlineText: "En línea",
@@ -683,9 +650,11 @@
         langEnglish: "Inglés",
         langRussian: "Ruso",
         langSpanish: "Español",
+        loadMoreButton: "Cargar más",
+        refreshing: "Actualizando...",
       },
     };
-
+ 
     let currentLanguage = "en";
     let currentWorker = null;
     let jobs = [];
@@ -694,26 +663,22 @@
     let isOnline = true;
     let ordersChannel = null;
 
-    const availableSkills = [
-      "cleaning",
-      "handyman",
-      "locksmith",
-      "moving",
-      "appliance_repair",
-      "painting",
-      "plumbing",
-      "electrical",
-    ];
-
+    // Пагинация
+    const JOBS_PER_PAGE = 10;
+    let jobsPage = 0;
+    let activePage = 0;
+    let historyPage = 0;
+    let currentTab = 'jobs';
+ 
     const $ = (id) => document.getElementById(id);
     const t = (key) => i18n[currentLanguage][key] || key;
-
+ 
     function updateTexts() {
       $("welcomeTitle").textContent = t("welcomeTitle");
       $("welcomeSubtitle").textContent = t("welcomeSubtitle");
       $("loginButtonText").textContent = t("loginButton");
       $("loginHint").textContent = t("loginHint");
-
+ 
       $("newJobsTitle").textContent = t("newJobsTitle");
       $("newJobsSubtitle").textContent = t("newJobsSubtitle");
       $("activeJobsTitle").textContent = t("activeJobsTitle");
@@ -727,28 +692,31 @@
       $("activeTabLabel").textContent = t("activeTabLabel");
       $("profileTabLabel").textContent = t("profileTabLabel");
       $("historyTabLabel").textContent = t("historyTabLabel");
-      $("skillsModalTitle").textContent = t("editSkillsButton");
-      $("saveButtonText").textContent = t("saveButton");
-      $("cancelButtonText").textContent = t("cancelButton");
-      $("editSkillsText").textContent = t("editSkillsButton");
-      $("skillsLabel").textContent = t("skillsLabel");
-
+ 
       $("noJobsText").querySelector("p").textContent = t("noJobsText");
       $("noActiveJobsText").querySelector("p").textContent = t("noActiveJobsText");
       $("noHistoryText").querySelector("p").textContent = t("noHistoryText");
-
+ 
       $("onlineToggleText").textContent = isOnline ? t("onlineText") : t("offlineText");
       $("notifToggleText").textContent = isOnline ? t("notifOn") : t("notifOff");
-
+ 
       if (currentLanguage === "en") $("currentLangLabel").textContent = t("langEnglish");
       if (currentLanguage === "ru") $("currentLangLabel").textContent = t("langRussian");
       if (currentLanguage === "es") $("currentLangLabel").textContent = t("langSpanish");
-
+ 
       if ($("profileStatus")) {
         $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
       }
-    }
 
+      // Обновить тексты кнопок пагинации
+      document.querySelectorAll('.load-more-btn').forEach(btn => {
+        const text = btn.querySelector('i') ? btn.innerHTML : btn.textContent;
+        if (btn.innerHTML.includes('Load More') || btn.innerHTML.includes('Загрузить ещё') || btn.innerHTML.includes('Cargar más')) {
+          btn.innerHTML = `<i class="fas fa-chevron-down mr-2"></i>${t("loadMoreButton")}`;
+        }
+      });
+    }
+ 
     function showToast(message) {
       const toast = document.createElement("div");
       toast.className =
@@ -757,13 +725,13 @@
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 2500);
     }
-
+ 
     function showLoginError(msg) {
       const el = $("loginError");
       el.textContent = msg;
       el.classList.remove("hidden");
     }
-
+ 
     function showMainScreen() {
       $("loginScreen").classList.add("hidden");
       $("mainScreen").classList.remove("hidden");
@@ -771,6 +739,16 @@
       updateTexts();
     }
 
+    function showLoadingSpinner(tab) {
+      const icon = $('refreshButton').querySelector('i');
+      icon.classList.add('fa-spin');
+    }
+
+    function hideLoadingSpinner() {
+      const icon = $('refreshButton').querySelector('i');
+      icon.classList.remove('fa-spin');
+    }
+ 
     function updateProfileUI() {
       if (!currentWorker) return;
       const name = currentWorker.full_name || "Worker";
@@ -781,7 +759,7 @@
         .join("")
         .slice(0, 2)
         .toUpperCase();
-
+ 
       const avatar = $("profileAvatar");
       if (avatar) {
         avatar.innerHTML = "";
@@ -798,15 +776,15 @@
           avatar.appendChild(span);
         }
       }
-
+ 
       $("profileName").textContent = name;
       const idStr = String(currentWorker.id || "");
       $("profileId").textContent = "ID: ••••" + idStr.slice(-4);
       $("jobsCompleted").textContent = currentWorker.jobs_completed || 0;
-
+ 
       const address = currentWorker.address || "";
       $("profileAddress").textContent = address || "Address not set";
-
+ 
       const skills = currentWorker.skills || [];
       const skillsContainer = $("profileSkills");
       skillsContainer.innerHTML = "";
@@ -823,47 +801,47 @@
           skillsContainer.appendChild(chip);
         });
       }
-
+ 
       $("profileBio").textContent =
         currentWorker.bio ||
         "Handyman with 5+ years experience. Professional and fast.";
-
+ 
       if ($("profileStatus")) {
         $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
       }
     }
-
+ 
     async function telegramLogin() {
       if (!tg || !tg.initDataUnsafe?.user) {
         showLoginError("Open this app from Telegram bot.");
         return;
       }
-
+ 
       const u = tg.initDataUnsafe.user;
       const telegram_id = String(u.id);
       const lang_code = u.language_code || "en";
-
+ 
       if (lang_code === "ru") currentLanguage = "ru";
       else if (lang_code === "es") currentLanguage = "es";
       else currentLanguage = "en";
       updateTexts();
-
+ 
       const btn = $("loginButton");
       btn.disabled = true;
       btn.innerHTML = '<div class="loading-spinner mx-auto"></div>';
-
+ 
       try {
         let { data: worker, error } = await supabase
           .from("workers")
           .select("*")
           .eq("telegram_id", telegram_id)
           .single();
-
+ 
         if (error) {
           showLoginError(t("loginErrorNoWorker"));
           return;
         }
-
+ 
         currentWorker = worker;
         if (!currentWorker.language || currentWorker.language !== currentLanguage) {
           await supabase
@@ -871,7 +849,7 @@
             .update({ language: currentLanguage })
             .eq("id", currentWorker.id);
         }
-
+ 
         showMainScreen();
         await loadAllData();
         setupRealtime();
@@ -883,74 +861,142 @@
         $("loginButtonText").textContent = t("loginButton");
       }
     }
-
+ 
     async function loadAllData() {
-      await Promise.all([loadJobs(), loadActiveJobs(), loadHistory(), loadRank()]);
+      await Promise.all([loadJobs(true), loadActiveJobs(true), loadHistory(true)]);
     }
 
-    async function loadJobs() {
+    async function refreshCurrentTab() {
+      showLoadingSpinner();
+      try {
+        if (currentTab === 'jobs') {
+          await loadJobs(true);
+        } else if (currentTab === 'active') {
+          await loadActiveJobs(true);
+        } else if (currentTab === 'history') {
+          await loadHistory(true);
+        }
+      } finally {
+        hideLoadingSpinner();
+      }
+    }
+ 
+    async function loadJobs(reset = false) {
       if (!currentWorker) return;
+      
+      if (reset) {
+        jobsPage = 0;
+        jobs = [];
+      }
+      
+      const from = jobsPage * JOBS_PER_PAGE;
+      const to = from + JOBS_PER_PAGE - 1;
+ 
       try {
         const { data: orders, error } = await supabase
           .from("orders")
           .select("*")
           .is("worker_id", null)
           .eq("status", "pending")
-          .order("created_at", { ascending: false });
-
+          .order("created_at", { ascending: false })
+          .range(from, to);
+ 
         if (error) throw error;
-
+ 
         const workerSkills = currentWorker.skills || [];
-        jobs = orders.filter(
+        const filteredJobs = orders.filter(
           (o) => workerSkills.length === 0 || workerSkills.includes(o.service_type)
         );
-
+ 
+        jobs = reset ? filteredJobs : [...jobs, ...filteredJobs];
         renderJobs();
+        
+        // Показать/скрыть кнопку Load More
+        const loadMoreBtn = $("loadMoreJobs");
+        if (orders.length === JOBS_PER_PAGE) {
+          loadMoreBtn.classList.remove("hidden");
+        } else {
+          loadMoreBtn.classList.add("hidden");
+        }
       } catch (e) {
         console.error("loadJobs error:", e);
         showToast(t("errorLoadingJobs"));
       }
     }
-
-    async function loadActiveJobs() {
+ 
+    async function loadActiveJobs(reset = false) {
       if (!currentWorker) return;
+      
+      if (reset) {
+        activePage = 0;
+        activeJobs = [];
+      }
+      
+      const from = activePage * JOBS_PER_PAGE;
+      const to = from + JOBS_PER_PAGE - 1;
+ 
       try {
         const { data: orders, error } = await supabase
           .from("orders")
           .select("*")
           .eq("worker_id", currentWorker.id)
           .in("status", ["accepted", "in_progress"])
-          .order("created_at", { ascending: false });
-
+          .order("created_at", { ascending: false })
+          .range(from, to);
+ 
         if (error) throw error;
-
-        activeJobs = orders;
+ 
+        activeJobs = reset ? orders : [...activeJobs, ...orders];
         renderActiveJobs();
+        
+        const loadMoreBtn = $("loadMoreActive");
+        if (orders.length === JOBS_PER_PAGE) {
+          loadMoreBtn.classList.remove("hidden");
+        } else {
+          loadMoreBtn.classList.add("hidden");
+        }
       } catch (e) {
         console.error("loadActiveJobs error:", e);
         showToast(t("errorLoadingJobs"));
       }
     }
-
-    async function loadHistory() {
+ 
+    async function loadHistory(reset = false) {
       if (!currentWorker) return;
+      
+      if (reset) {
+        historyPage = 0;
+        historyJobs = [];
+      }
+      
+      const from = historyPage * JOBS_PER_PAGE;
+      const to = from + JOBS_PER_PAGE - 1;
+ 
       try {
         const { data: orders, error } = await supabase
           .from("orders")
           .select("*")
           .eq("worker_id", currentWorker.id)
           .eq("status", "completed")
-          .order("created_at", { ascending: false });
-
+          .order("created_at", { ascending: false })
+          .range(from, to);
+ 
         if (error) throw error;
-
-        historyJobs = orders || [];
+ 
+        historyJobs = reset ? orders : [...historyJobs, ...orders];
         renderHistory();
+        
+        const loadMoreBtn = $("loadMoreHistory");
+        if (orders.length === JOBS_PER_PAGE) {
+          loadMoreBtn.classList.remove("hidden");
+        } else {
+          loadMoreBtn.classList.add("hidden");
+        }
       } catch (e) {
         console.error("loadHistory error:", e);
       }
     }
-
+ 
     async function loadRank() {
       if (!currentWorker) return;
       try {
@@ -958,10 +1004,10 @@
           .from("workers")
           .select("id, jobs_completed")
           .order("jobs_completed", { ascending: false });
-
+ 
         if (error) throw error;
         if (!workers) return;
-
+ 
         const index = workers.findIndex((w) => w.id === currentWorker.id);
         if (index === -1) {
           $("historyRank").textContent = "—";
@@ -973,28 +1019,36 @@
         console.error("loadRank error:", e);
       }
     }
-
+ 
     function renderJobs() {
       const list = $("jobsList");
       const empty = $("noJobsText");
-
+ 
       if (!jobs.length) {
         list.innerHTML = "";
         empty.classList.remove("hidden");
+        $("loadMoreJobs").classList.add("hidden");
         return;
       }
-
+ 
       empty.classList.add("hidden");
-      list.innerHTML = "";
-
-      jobs.forEach((job) => {
+      
+      // Если это не подгрузка, очистить список
+      if (jobsPage === 0) {
+        list.innerHTML = "";
+      }
+ 
+      jobs.forEach((job, index) => {
+        // Пропускать уже отрендеренные элементы при пагинации
+        if (jobsPage > 0 && index < jobsPage * JOBS_PER_PAGE) return;
+        
         const card = document.createElement("div");
         card.className = "job-card glass-card p-4 fade-in";
         const serviceName = job.service_name || job.service_type;
         const notes = job.notes || "No additional notes";
         const shortAddress = (job.address || "").split(",")[0] || job.address || "";
         const when = [job.date, job.time].filter(Boolean).join(" ");
-
+ 
         card.innerHTML = `
           <div class="flex justify-between items-start mb-3">
             <div class="flex-1">
@@ -1031,39 +1085,45 @@
             </button>
           </div>
         `;
-
+ 
         card.querySelector(".view-details-btn").addEventListener("click", (e) => {
           e.stopPropagation();
           showJobDetails(job);
         });
-
+ 
         list.appendChild(card);
       });
     }
-
+ 
     function renderActiveJobs() {
       const list = $("activeJobsList");
       const empty = $("noActiveJobsText");
-
+ 
       if (!activeJobs.length) {
         list.innerHTML = "";
         empty.classList.remove("hidden");
+        $("loadMoreActive").classList.add("hidden");
         return;
       }
-
+ 
       empty.classList.add("hidden");
-      list.innerHTML = "";
-
-      activeJobs.forEach((job) => {
+      
+      if (activePage === 0) {
+        list.innerHTML = "";
+      }
+ 
+      activeJobs.forEach((job, index) => {
+        if (activePage > 0 && index < activePage * JOBS_PER_PAGE) return;
+        
         const card = document.createElement("div");
         card.className = "glass-card p-4 fade-in";
         const serviceName = job.service_name || job.service_type;
         const shortAddress = (job.address || "").split(",")[0] || job.address || "";
         const when = [job.date, job.time].filter(Boolean).join(" ");
-
+ 
         const buttonLabel =
           job.status === "accepted" ? t("startJobButton") : t("completeJobButton");
-
+ 
         card.innerHTML = `
           <div class="flex justify-between items-start mb-3">
             <h3 class="font-semibold text-lg">${serviceName}</h3>
@@ -1097,7 +1157,7 @@
             ${buttonLabel}
           </button>
         `;
-
+ 
         card.querySelector(".open-map-btn").addEventListener("click", () => {
           openMaps(job.address);
         });
@@ -1107,35 +1167,40 @@
         card.querySelector(".status-btn").addEventListener("click", () => {
           updateJobStatus(job);
         });
-
+ 
         list.appendChild(card);
       });
     }
-
+ 
     function renderHistory() {
       const list = $("historyList");
       const empty = $("noHistoryText");
-
+ 
       if (!historyJobs.length) {
         list.innerHTML = "";
         empty.classList.remove("hidden");
+        $("loadMoreHistory").classList.add("hidden");
         $("historyTotal").textContent = "0";
         return;
       }
-
+ 
       empty.classList.add("hidden");
-      list.innerHTML = "";
-
-      $("historyTotal").textContent = historyJobs.length;
-
-      historyJobs.forEach((job) => {
+      
+      if (historyPage === 0) {
+        list.innerHTML = "";
+      }
+ 
+      const startIndex = historyPage * JOBS_PER_PAGE;
+      const newJobs = historyJobs.slice(startIndex, startIndex + JOBS_PER_PAGE);
+ 
+      newJobs.forEach((job) => {
         const item = document.createElement("div");
         item.className = "glass-card p-3 text-sm";
-
+ 
         const serviceName = job.service_name || job.service_type;
         const when = [job.date, job.time].filter(Boolean).join(" ");
         const shortAddress = (job.address || "").split(",")[0] || job.address || "";
-
+ 
         item.innerHTML = `
           <div class="flex justify-between items-center mb-1">
             <span class="font-semibold">${serviceName}</span>
@@ -1148,13 +1213,23 @@
         `;
         list.appendChild(item);
       });
+      
+      // Показать/скрыть кнопку Load More
+      const loadMoreBtn = $("loadMoreHistory");
+      if (historyJobs.length > (historyPage + 1) * JOBS_PER_PAGE) {
+        loadMoreBtn.classList.remove("hidden");
+      } else {
+        loadMoreBtn.classList.add("hidden");
+      }
+      
+      $("historyTotal").textContent = historyJobs.length;
     }
-
+ 
     function showJobDetails(job) {
       $("modalTitle").textContent = job.service_name || job.service_type;
       const when = [job.date, job.time].filter(Boolean).join(" ");
       const notes = job.notes || "";
-
+ 
       $("modalContent").innerHTML = `
         <div class="space-y-4 text-sm">
           <div>
@@ -1192,27 +1267,27 @@
           </button>
         </div>
       `;
-
+ 
       $("jobModal").classList.remove("hidden");
-
+ 
       $("modalOpenMap")?.addEventListener("click", () => openMaps(job.address));
       $("modalAcceptBtn")?.addEventListener("click", () => acceptJob(job));
     }
-
+ 
     async function acceptJob(job) {
       if (!currentWorker) return;
       const btn = $("modalAcceptBtn");
       btn.disabled = true;
       btn.innerHTML = '<div class="loading-spinner mx-auto"></div>';
-
+ 
       try {
         const { error } = await supabase
           .from("orders")
           .update({ worker_id: currentWorker.id, status: "accepted" })
           .eq("id", job.id);
-
+ 
         if (error) throw error;
-
+ 
         $("jobModal").classList.add("hidden");
         await loadAllData();
         showToast(t("jobAcceptedToast"));
@@ -1224,29 +1299,29 @@
         btn.textContent = t("acceptJobButton");
       }
     }
-
+ 
     async function updateJobStatus(job) {
       const nextStatus = job.status === "accepted" ? "in_progress" : "completed";
-
+ 
       try {
         const { error } = await supabase
           .from("orders")
           .update({ status: nextStatus })
           .eq("id", job.id);
-
+ 
         if (error) throw error;
-
+ 
         if (nextStatus === "completed") {
           const newCount = (currentWorker.jobs_completed || 0) + 1;
           await supabase
             .from("workers")
             .update({ jobs_completed: newCount })
             .eq("id", currentWorker.id);
-
+ 
           currentWorker.jobs_completed = newCount;
           updateProfileUI();
         }
-
+ 
         await loadAllData();
         showToast(
           nextStatus === "completed" ? t("jobCompletedToast") : t("jobStartedToast")
@@ -1256,97 +1331,51 @@
         showToast(t("errorUpdatingJob"));
       }
     }
-
+ 
     function openMaps(address) {
       if (!address) return;
       const url = "https://www.google.com/maps?q=" + encodeURIComponent(address);
       window.open(url, "_blank");
     }
-
+ 
     function callPhone(phone) {
       if (!phone) return;
       const clean = phone.replace(/[^+\d]/g, "");
       window.open("tel:" + clean, "_blank");
     }
 
-    function showSkillsEditor() {
-      if (!currentWorker) return;
-      const workerSkills = currentWorker.skills || [];
-      const container = $("skillsList");
-      container.innerHTML = "";
-
-      availableSkills.forEach((skill) => {
-        const label = document.createElement("label");
-        label.className = "flex items-center p-3 glass-card cursor-pointer";
-
-        label.innerHTML = `
-          <input type="checkbox" class="skill-checkbox mr-3" value="${skill}"
-            ${workerSkills.includes(skill) ? "checked" : ""} />
-          <span class="capitalize">${skill.replace("_", " ")}</span>
-        `;
-
-        container.appendChild(label);
-      });
-
-      $("skillsModal").classList.remove("hidden");
-    }
-
-    async function saveSkills() {
-      if (!currentWorker) return;
-      const checkboxes = $("skillsList").querySelectorAll("input.skill-checkbox:checked");
-      const selected = Array.from(checkboxes).map((cb) => cb.value);
-
-      try {
-        const { error } = await supabase
-          .from("workers")
-          .update({ skills: selected })
-          .eq("id", currentWorker.id);
-
-        if (error) throw error;
-
-        currentWorker.skills = selected;
-        $("skillsModal").classList.add("hidden");
-        updateProfileUI();
-        await loadAllData();
-        showToast(t("skillsUpdatedToast"));
-      } catch (e) {
-        console.error("saveSkills error:", e);
-        showToast(t("errorSavingSkills"));
-      }
-    }
-
     async function uploadProfilePhoto(file) {
       if (!currentWorker || !file) return;
-
+ 
       try {
         const fileExt = file.name.split(".").pop();
         const filePath = `${currentWorker.id}/${Date.now()}.${fileExt || "jpg"}`;
-
+ 
         const { error: uploadError } = await supabase
           .storage
-          .from("worker-photos") // Бакет в Supabase Storage
+          .from("worker-photos")
           .upload(filePath, file, {
             cacheControl: "3600",
             upsert: true,
           });
-
+ 
         if (uploadError) throw uploadError;
-
+ 
         const { data: publicData } = supabase
           .storage
           .from("worker-photos")
           .getPublicUrl(filePath);
-
+ 
         const publicUrl = publicData?.publicUrl;
         if (!publicUrl) throw new Error("No public URL");
-
+ 
         const { error: updateError } = await supabase
           .from("workers")
           .update({ photo_url: publicUrl })
           .eq("id", currentWorker.id);
-
+ 
         if (updateError) throw updateError;
-
+ 
         currentWorker.photo_url = publicUrl;
         updateProfileUI();
         showToast("Profile photo updated");
@@ -1356,63 +1385,66 @@
       }
     }
 
-    async function editProfile() {
+    async function changePhoto() {
       if (!currentWorker) return;
-
-      const currentAddress = currentWorker.address || "";
-      const currentBio = currentWorker.bio || $("profileBio").textContent || "";
-
-      const newAddress = prompt("Your main working area / address:", currentAddress);
-      if (newAddress === null) return;
-
-      const newBio = prompt("Edit your short bio:", currentBio);
-      if (newBio === null) return;
-
-      try {
-        const updates = {
-          address: newAddress.trim(),
-          bio: newBio.trim(),
-        };
-
-        const { error } = await supabase
-          .from("workers")
-          .update(updates)
-          .eq("id", currentWorker.id);
-
-        if (error) throw error;
-
-        currentWorker.address = updates.address;
-        currentWorker.bio = updates.bio;
-        updateProfileUI();
-        showToast("Profile updated");
-      } catch (e) {
-        console.error("editProfile error:", e);
-        showToast("Error updating profile");
-      }
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = async (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+          await uploadProfilePhoto(file);
+        }
+      };
+      input.click();
     }
 
+    async function editBio() {
+      if (!currentWorker) return;
+      const current = currentWorker.bio || $("profileBio").textContent;
+      const newBio = prompt("Edit your short bio:", current);
+      if (!newBio || !newBio.trim()) return;
+      
+      try {
+        const { error } = await supabase
+          .from("workers")
+          .update({ bio: newBio.trim() })
+          .eq("id", currentWorker.id);
+ 
+        if (error) throw error;
+ 
+        currentWorker.bio = newBio.trim();
+        $("profileBio").textContent = newBio.trim();
+        showToast("Profile updated");
+      } catch (e) {
+        console.error("editBio error:", e);
+        showToast("Error updating bio");
+      }
+    }
+ 
     function switchTab(tabName) {
+      currentTab = tabName;
       document.querySelectorAll(".tab-button").forEach((btn) => {
         btn.classList.toggle("active", btn.dataset.tab === tabName);
       });
-
+ 
       ["jobs", "active", "profile", "history"].forEach((tname) => {
         const el = $(tname + "Tab");
         if (!el) return;
         el.classList.toggle("hidden", tname !== tabName);
       });
     }
-
+ 
     function setupRealtime() {
       if (!supabase || !currentWorker) return;
-
+ 
       if (ordersChannel) {
         ordersChannel.unsubscribe();
         ordersChannel = null;
       }
-
+ 
       if (!isOnline) return;
-
+ 
       ordersChannel = supabase
         .channel("orders_listener")
         .on(
@@ -1431,12 +1463,12 @@
             if (tg?.showPopup) {
               tg.showPopup({ message: t("newJobPopup") });
             }
-            loadJobs();
+            loadJobs(true);
           }
         )
         .subscribe();
     }
-
+ 
     function toggleOnline() {
       isOnline = !isOnline;
       $("onlineToggleText").textContent = isOnline ? t("onlineText") : t("offlineText");
@@ -1446,7 +1478,7 @@
       }
       setupRealtime();
     }
-
+ 
     function changeLanguage() {
       const next =
         currentLanguage === "en" ? "ru" : currentLanguage === "ru" ? "es" : "en";
@@ -1459,89 +1491,68 @@
           .eq("id", currentWorker.id);
       }
     }
-
-    function editBio() {
-      if (!currentWorker) return;
-      const current = currentWorker.bio || $("profileBio").textContent;
-      const newBio = prompt("Edit your short bio:", current);
-      if (!newBio || !newBio.trim()) return;
-      $("profileBio").textContent = newBio.trim();
-      currentWorker.bio = newBio.trim();
-      supabase
-        .from("workers")
-        .update({ bio: newBio.trim() })
-        .eq("id", currentWorker.id);
-    }
-
+ 
     // EVENTS
     $("loginButton").addEventListener("click", () => {
       telegramLogin();
     });
-
+ 
     $("closeModal").addEventListener("click", () => {
       $("jobModal").classList.add("hidden");
     });
-
-    $("closeSkillsModal").addEventListener("click", () => {
-      $("skillsModal").classList.add("hidden");
-    });
-
-    $("cancelSkills").addEventListener("click", () => {
-      $("skillsModal").classList.add("hidden");
-    });
-
-    $("saveSkills").addEventListener("click", saveSkills);
-    $("editSkillsButton").addEventListener("click", showSkillsEditor);
-    $("openSkillsFromButton").addEventListener("click", showSkillsEditor);
+ 
     $("editBioButton").addEventListener("click", editBio);
-
+    $("changePhotoButton").addEventListener("click", changePhoto);
+ 
     $("changeLangButton").addEventListener("click", changeLanguage);
-
+ 
     $("onlineToggle").addEventListener("click", toggleOnline);
     $("notifToggle").addEventListener("click", toggleOnline);
 
-    $("changePhotoButton").addEventListener("click", () => {
-      $("photoInput").click();
+    // Кнопка обновления
+    $("refreshButton").addEventListener("click", () => {
+      refreshCurrentTab();
+    });
+ 
+    // Кнопки Load More
+    $("loadMoreJobs").addEventListener("click", async () => {
+      jobsPage++;
+      await loadJobs();
     });
 
-    $("photoInput").addEventListener("change", async (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      await uploadProfilePhoto(file);
-      e.target.value = "";
+    $("loadMoreActive").addEventListener("click", async () => {
+      activePage++;
+      await loadActiveJobs();
     });
 
-    $("editProfileButton").addEventListener("click", () => {
-      editProfile();
+    $("loadMoreHistory").addEventListener("click", async () => {
+      historyPage++;
+      await loadHistory();
     });
-
+ 
     document.querySelectorAll("[data-tab]").forEach((btn) => {
       btn.addEventListener("click", () => {
         switchTab(btn.dataset.tab);
       });
     });
-
+ 
     // Telegram BackButton logic for modals
     if (tg) {
       tg.BackButton.onClick(() => {
         if (!$("jobModal").classList.contains("hidden")) {
           $("jobModal").classList.add("hidden");
-        } else if (!$("skillsModal").classList.contains("hidden")) {
-          $("skillsModal").classList.add("hidden");
         }
       });
-
+ 
       const observer = new MutationObserver(() => {
         const modalOpen = !$("jobModal").classList.contains("hidden");
-        const skillsOpen = !$("skillsModal").classList.contains("hidden");
-        if (modalOpen || skillsOpen) tg.BackButton.show();
+        if (modalOpen) tg.BackButton.show();
         else tg.BackButton.hide();
       });
-
+ 
       observer.observe($("jobModal"), { attributes: true });
-      observer.observe($("skillsModal"), { attributes: true });
     }
-
+ 
     document.addEventListener("DOMContentLoaded", async () => {
       if (tg?.initDataUnsafe?.user?.language_code) {
         const lc = tg.initDataUnsafe.user.language_code;
@@ -1550,7 +1561,7 @@
         else currentLanguage = "en";
       }
       updateTexts();
-
+ 
       if (tg?.initDataUnsafe?.user?.id) {
         await telegramLogin();
       }
