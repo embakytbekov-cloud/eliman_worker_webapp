@@ -13,6 +13,7 @@
   <base target="_blank" />
  
   <style>
+    /* Стили остаются без изменений */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
  
     * {
@@ -149,41 +150,6 @@
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
  
-    .textarea-field {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 14px;
-      padding: 10px 12px;
-      color: #fff;
-      font-size: 14px;
-      resize: vertical;
-      min-height: 60px;
-    }
- 
-    .textarea-field:focus {
-      outline: none;
-      border-color: #1FE388;
-      box-shadow: 0 0 0 2px rgba(31, 227, 136, 0.3);
-    }
- 
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      font-size: 12px;
-      margin: 2px;
-    }
- 
-    .stat-card {
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 16px;
-      padding: 12px 14px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
     .refresh-btn {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(31, 227, 136, 0.3);
@@ -193,11 +159,11 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-
+ 
     .refresh-btn:hover {
       background: rgba(31, 227, 136, 0.1);
     }
-
+ 
     .load-more-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -209,47 +175,72 @@
       margin-top: 16px;
       transition: all 0.3s ease;
     }
-
+ 
     .load-more-btn:hover {
       background: rgba(31, 227, 136, 0.1);
     }
-
+ 
     .refresh-icon.spinning {
       animation: spin 1s linear infinite;
+    }
+
+    /* Новые стили для редактирования bio */
+    .bio-modal-content {
+      max-width: 500px;
+      width: 100%;
+    }
+    
+    .bio-textarea {
+      width: 100%;
+      min-height: 120px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 12px;
+      color: #fff;
+      font-size: 14px;
+      resize: vertical;
+      margin-bottom: 16px;
+    }
+    
+    .bio-textarea:focus {
+      outline: none;
+      border-color: #1FE388;
+      box-shadow: 0 0 0 2px rgba(31, 227, 136, 0.3);
+    }
+
+    /* Новые стили для управления навыками */
+    .skills-list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .skill-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .skill-item:hover {
+      background: rgba(31, 227, 136, 0.1);
+      border-color: rgba(31, 227, 136, 0.3);
+    }
+    
+    .skill-item input {
+      margin-right: 12px;
     }
   </style>
 </head>
 <body class="min-h-screen pb-20">
  
-  <!-- LOGIN SCREEN -->
-  <div id="loginScreen" class="min-h-screen flex flex-col items-center justify-center p-6">
-    <div class="text-center mb-8">
-      <!-- ЛОГО -->
-      <div class="w-20 h-20 rounded-2xl mx-auto mb-4 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-3xl font-extrabold">
-        E
-      </div>
-      <h1 class="text-3xl font-black mb-2">ELIMAN</h1>
-      <h2 id="welcomeTitle" class="text-xl font-semibold mb-2">Welcome, worker</h2>
-      <p id="welcomeSubtitle" class="text-gray-400 text-sm">
-        Sign in via Telegram to start accepting jobs in your area
-      </p>
-    </div>
- 
-    <div class="w-full max-w-sm">
-      <div class="glass-card p-6 mb-4 text-center">
-        <p id="loginHint" class="text-gray-400 text-sm mb-4">
-          This mini app works only inside Telegram. Open from bot and press "Login".
-        </p>
-        <button id="loginButton" class="neon-button w-full">
-          <span id="loginButtonText">Login with Telegram</span>
-        </button>
-        <div id="loginError" class="text-red-400 text-sm mt-3 text-center hidden"></div>
-      </div>
-    </div>
-  </div>
- 
   <!-- MAIN APP -->
-  <div id="mainScreen" class="hidden min-h-screen">
+  <div id="mainScreen" class="min-h-screen">
  
     <!-- HEADER -->
     <div class="sticky top-0 z-40 bg-black/60 backdrop-blur-lg border-b border-white/10">
@@ -308,7 +299,7 @@
         </div>
       </div>
  
-      <!-- PROFILE TAB – UBER PREMIUM STYLE -->
+      <!-- PROFILE TAB -->
       <div id="profileTab" class="tab-content hidden">
         <div class="mb-6">
           <h2 id="profileTitle" class="text-2xl font-bold mb-1">Profile</h2>
@@ -383,11 +374,29 @@
           </div>
         </div>
  
-        <!-- BIG ACTION BUTTONS -->
+        <!-- ACTION BUTTONS -->
         <div class="space-y-3">
           <button id="changePhotoButton" class="neon-button w-full flex items-center justify-center gap-2">
             <i class="fas fa-camera"></i>
             <span>Change profile photo</span>
+          </button>
+
+          <!-- ДОБАВЛЕНО: Кнопка редактирования Bio -->
+          <button id="editProfileButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-user-edit text-green-400"></i>
+              <span>Edit Profile (Bio)</span>
+            </div>
+            <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+          </button>
+
+          <!-- ДОБАВЛЕНО: Кнопка управления навыками -->
+          <button id="manageSkillsButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-tools text-green-400"></i>
+              <span>Manage Skills</span>
+            </div>
+            <i class="fas fa-chevron-right text-xs text-gray-400"></i>
           </button>
  
           <button id="changeLangButton" class="w-full py-3 rounded-2xl font-semibold text-sm bg-white/5 border border-white/10 flex items-center justify-between px-4">
@@ -481,6 +490,44 @@
       </div>
     </div>
   </div>
+
+  <!-- MODAL FOR EDITING BIO -->
+  <div id="bioModal" class="fixed inset-0 z-50 hidden modal-overlay">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="glass-card bio-modal-content max-w-md w-full">
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="text-xl font-bold">Edit Profile (Bio)</h3>
+            <button id="closeBioModal" class="text-gray-400 hover:text-white">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <textarea id="bioTextarea" class="bio-textarea" placeholder="Write something about yourself..."></textarea>
+            <button id="saveBioButton" class="neon-button w-full">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FOR MANAGING SKILLS -->
+  <div id="skillsModal" class="fixed inset-0 z-50 hidden modal-overlay">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="glass-card max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="text-xl font-bold">Manage Skills</h3>
+            <button id="closeSkillsModal" class="text-gray-400 hover:text-white">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div class="skills-list" id="skillsList"></div>
+          <button id="saveSkillsButton" class="neon-button w-full">Save Skills</button>
+        </div>
+      </div>
+    </div>
+  </div>
  
   <!-- APP LOGIC -->
   <script type="module">
@@ -501,11 +548,6 @@
     // 🌍 i18n (EN / RU / ES)
     const i18n = {
       en: {
-        welcomeTitle: "Welcome, worker",
-        welcomeSubtitle: "Sign in via Telegram to start accepting jobs in your area",
-        loginButton: "Login with Telegram",
-        loginHint: "This mini app works only inside Telegram. Open via bot.",
-        loginErrorNoWorker: "Worker not found. Please contact support.",
         jobsTabLabel: "Jobs",
         activeTabLabel: "Active",
         profileTabLabel: "Profile",
@@ -532,8 +574,6 @@
         priceLabel: "Price",
         notesLabel: "Notes",
         skillsLabel: "Skills",
-        saveButton: "Save",
-        cancelButton: "Cancel",
         errorLoadingJobs: "Error loading jobs",
         errorUpdatingJob: "Error updating job",
         jobAcceptedToast: "Job accepted!",
@@ -549,14 +589,9 @@
         langRussian: "Russian",
         langSpanish: "Spanish",
         loadMoreButton: "Load More",
-        refreshing: "Refreshing...",
+        initError: "Please open this app from Telegram bot",
       },
       ru: {
-        welcomeTitle: "Добро пожаловать, работник",
-        welcomeSubtitle: "Войдите через Telegram, чтобы начать принимать заказы рядом с вами",
-        loginButton: "Войти через Telegram",
-        loginHint: "Это мини-приложение работает только внутри Telegram. Откройте через бота.",
-        loginErrorNoWorker: "Работник не найден. Обратитесь в поддержку.",
         jobsTabLabel: "Заказы",
         activeTabLabel: "Активные",
         profileTabLabel: "Профиль",
@@ -583,8 +618,6 @@
         priceLabel: "Цена",
         notesLabel: "Заметки",
         skillsLabel: "Навыки",
-        saveButton: "Сохранить",
-        cancelButton: "Отмена",
         errorLoadingJobs: "Ошибка загрузки заказов",
         errorUpdatingJob: "Ошибка обновления заказа",
         jobAcceptedToast: "Заказ принят!",
@@ -600,14 +633,9 @@
         langRussian: "Русский",
         langSpanish: "Испанский",
         loadMoreButton: "Загрузить ещё",
-        refreshing: "Обновление...",
+        initError: "Откройте это приложение через Telegram бот",
       },
       es: {
-        welcomeTitle: "Bienvenido, trabajador",
-        welcomeSubtitle: "Inicia sesión con Telegram para aceptar trabajos en tu área",
-        loginButton: "Entrar con Telegram",
-        loginHint: "Esta mini app solo funciona dentro de Telegram. Ábrela desde el bot.",
-        loginErrorNoWorker: "Trabajador no encontrado. Contacta soporte.",
         jobsTabLabel: "Trabajos",
         activeTabLabel: "Activos",
         profileTabLabel: "Perfil",
@@ -634,8 +662,6 @@
         priceLabel: "Precio",
         notesLabel: "Notas",
         skillsLabel: "Habilidades",
-        saveButton: "Guardar",
-        cancelButton: "Cancelar",
         errorLoadingJobs: "Error al cargar trabajos",
         errorUpdatingJob: "Error al actualizar trabajo",
         jobAcceptedToast: "¡Trabajo aceptado!",
@@ -651,7 +677,7 @@
         langRussian: "Ruso",
         langSpanish: "Español",
         loadMoreButton: "Cargar más",
-        refreshing: "Actualizando...",
+        initError: "Abra esta aplicación desde el bot de Telegram",
       },
     };
  
@@ -673,12 +699,18 @@
     const $ = (id) => document.getElementById(id);
     const t = (key) => i18n[currentLanguage][key] || key;
  
-    function updateTexts() {
-      $("welcomeTitle").textContent = t("welcomeTitle");
-      $("welcomeSubtitle").textContent = t("welcomeSubtitle");
-      $("loginButtonText").textContent = t("loginButton");
-      $("loginHint").textContent = t("loginHint");
+    // Доступные навыки
+    const availableSkills = [
+      "appliance",
+      "cleaning",
+      "handyman",
+      "locksmith",
+      "moving",
+      "smarthome",
+      "tire service"
+    ];
  
+    function updateTexts() {
       $("newJobsTitle").textContent = t("newJobsTitle");
       $("newJobsSubtitle").textContent = t("newJobsSubtitle");
       $("activeJobsTitle").textContent = t("activeJobsTitle");
@@ -704,10 +736,6 @@
       if (currentLanguage === "ru") $("currentLangLabel").textContent = t("langRussian");
       if (currentLanguage === "es") $("currentLangLabel").textContent = t("langSpanish");
  
-      if ($("profileStatus")) {
-        $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
-      }
-
       // Обновить тексты кнопок пагинации
       document.querySelectorAll('.load-more-btn').forEach(btn => {
         const text = btn.querySelector('i') ? btn.innerHTML : btn.textContent;
@@ -716,7 +744,7 @@
         }
       });
     }
- 
+
     function showToast(message) {
       const toast = document.createElement("div");
       toast.className =
@@ -725,30 +753,7 @@
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 2500);
     }
- 
-    function showLoginError(msg) {
-      const el = $("loginError");
-      el.textContent = msg;
-      el.classList.remove("hidden");
-    }
- 
-    function showMainScreen() {
-      $("loginScreen").classList.add("hidden");
-      $("mainScreen").classList.remove("hidden");
-      updateProfileUI();
-      updateTexts();
-    }
 
-    function showLoadingSpinner(tab) {
-      const icon = $('refreshButton').querySelector('i');
-      icon.classList.add('fa-spin');
-    }
-
-    function hideLoadingSpinner() {
-      const icon = $('refreshButton').querySelector('i');
-      icon.classList.remove('fa-spin');
-    }
- 
     function updateProfileUI() {
       if (!currentWorker) return;
       const name = currentWorker.full_name || "Worker";
@@ -810,10 +815,10 @@
         $("profileStatus").textContent = isOnline ? t("onlineText") : t("offlineText");
       }
     }
- 
-    async function telegramLogin() {
+
+    async function initializeApp() {
       if (!tg || !tg.initDataUnsafe?.user) {
-        showLoginError("Open this app from Telegram bot.");
+        showToast(t("initError"));
         return;
       }
  
@@ -826,10 +831,6 @@
       else currentLanguage = "en";
       updateTexts();
  
-      const btn = $("loginButton");
-      btn.disabled = true;
-      btn.innerHTML = '<div class="loading-spinner mx-auto"></div>';
- 
       try {
         let { data: worker, error } = await supabase
           .from("workers")
@@ -838,7 +839,7 @@
           .single();
  
         if (error) {
-          showLoginError(t("loginErrorNoWorker"));
+          showToast(t("initError"));
           return;
         }
  
@@ -850,20 +851,27 @@
             .eq("id", currentWorker.id);
         }
  
-        showMainScreen();
+        updateProfileUI();
         await loadAllData();
         setupRealtime();
       } catch (e) {
-        console.error("Telegram login error:", e);
-        showLoginError("Login error. Try again.");
-      } finally {
-        btn.disabled = false;
-        $("loginButtonText").textContent = t("loginButton");
+        console.error("App initialization error:", e);
+        showToast("Initialization error. Try again.");
       }
     }
  
     async function loadAllData() {
       await Promise.all([loadJobs(true), loadActiveJobs(true), loadHistory(true)]);
+    }
+
+    function showLoadingSpinner() {
+      const icon = $('refreshButton').querySelector('i');
+      icon.classList.add('fa-spin');
+    }
+
+    function hideLoadingSpinner() {
+      const icon = $('refreshButton').querySelector('i');
+      icon.classList.remove('fa-spin');
     }
 
     async function refreshCurrentTab() {
@@ -911,7 +919,6 @@
         jobs = reset ? filteredJobs : [...jobs, ...filteredJobs];
         renderJobs();
         
-        // Показать/скрыть кнопку Load More
         const loadMoreBtn = $("loadMoreJobs");
         if (orders.length === JOBS_PER_PAGE) {
           loadMoreBtn.classList.remove("hidden");
@@ -1033,13 +1040,11 @@
  
       empty.classList.add("hidden");
       
-      // Если это не подгрузка, очистить список
       if (jobsPage === 0) {
         list.innerHTML = "";
       }
  
       jobs.forEach((job, index) => {
-        // Пропускать уже отрендеренные элементы при пагинации
         if (jobsPage > 0 && index < jobsPage * JOBS_PER_PAGE) return;
         
         const card = document.createElement("div");
@@ -1214,7 +1219,6 @@
         list.appendChild(item);
       });
       
-      // Показать/скрыть кнопку Load More
       const loadMoreBtn = $("loadMoreHistory");
       if (historyJobs.length > (historyPage + 1) * JOBS_PER_PAGE) {
         loadMoreBtn.classList.remove("hidden");
@@ -1385,7 +1389,7 @@
       }
     }
 
-    async function changePhoto() {
+    function changePhoto() {
       if (!currentWorker) return;
       const input = document.createElement('input');
       input.type = 'file';
@@ -1402,26 +1406,90 @@
     async function editBio() {
       if (!currentWorker) return;
       const current = currentWorker.bio || $("profileBio").textContent;
-      const newBio = prompt("Edit your short bio:", current);
-      if (!newBio || !newBio.trim()) return;
+      
+      // Показать модальное окно для редактирования bio
+      $("bioTextarea").value = current;
+      $("bioModal").classList.remove("hidden");
+    }
+
+    async function saveBio() {
+      if (!currentWorker) return;
+      
+      const newBio = $("bioTextarea").value.trim();
+      if (!newBio) {
+        $("bioModal").classList.add("hidden");
+        return;
+      }
       
       try {
         const { error } = await supabase
           .from("workers")
-          .update({ bio: newBio.trim() })
+          .update({ bio: newBio })
           .eq("id", currentWorker.id);
  
         if (error) throw error;
  
-        currentWorker.bio = newBio.trim();
-        $("profileBio").textContent = newBio.trim();
+        currentWorker.bio = newBio;
+        $("profileBio").textContent = newBio;
+        $("bioModal").classList.add("hidden");
         showToast("Profile updated");
       } catch (e) {
-        console.error("editBio error:", e);
+        console.error("saveBio error:", e);
         showToast("Error updating bio");
       }
     }
+
+    function showSkillsEditor() {
+      if (!currentWorker) return;
+      
+      // Очистить список навыков
+      const skillsList = $("skillsList");
+      skillsList.innerHTML = "";
+      
+      // Получить текущие навыки работника
+      const workerSkills = currentWorker.skills || [];
+      
+      // Создать список с чекбоксами для каждого навыка
+      availableSkills.forEach(skill => {
+        const skillItem = document.createElement("div");
+        skillItem.className = "skill-item";
+        skillItem.innerHTML = `
+          <input type="checkbox" id="skill-${skill}" value="${skill}" ${workerSkills.includes(skill) ? 'checked' : ''}>
+          <label for="skill-${skill}" class="capitalize cursor-pointer flex-1">${skill.replace('_', ' ')}</label>
+        `;
+        skillsList.appendChild(skillItem);
+      });
+      
+      // Показать модальное окно
+      $("skillsModal").classList.remove("hidden");
+    }
+
+    async function saveSkills() {
+      if (!currentWorker) return;
+      
+      // Получить выбранные навыки
+      const checkboxes = document.querySelectorAll('#skillsList input[type="checkbox"]:checked');
+      const selectedSkills = Array.from(checkboxes).map(cb => cb.value);
+      
+      try {
+        const { error } = await supabase
+          .from("workers")
+          .update({ skills: selectedSkills })
+          .eq("id", currentWorker.id);
  
+        if (error) throw error;
+ 
+        currentWorker.skills = selectedSkills;
+        updateProfileUI();
+        $("skillsModal").classList.add("hidden");
+        await loadAllData();
+        showToast("Skills updated!");
+      } catch (e) {
+        console.error("saveSkills error:", e);
+        showToast("Error saving skills");
+      }
+    }
+
     function switchTab(tabName) {
       currentTab = tabName;
       document.querySelectorAll(".tab-button").forEach((btn) => {
@@ -1493,64 +1561,73 @@
     }
  
     // EVENTS
-    $("loginButton").addEventListener("click", () => {
-      telegramLogin();
-    });
- 
     $("closeModal").addEventListener("click", () => {
       $("jobModal").classList.add("hidden");
     });
+
+    // События для Bio Modal
+    $("editProfileButton").addEventListener("click", editBio);
+    $("closeBioModal").addEventListener("click", () => {
+      $("bioModal").classList.add("hidden");
+    });
+    $("saveBioButton").addEventListener("click", saveBio);
+
+    // События для Skills Modal
+    $("manageSkillsButton").addEventListener("click", showSkillsEditor);
+    $("closeSkillsModal").addEventListener("click", () => {
+      $("skillsModal").classList.add("hidden");
+    });
+    $("saveSkillsButton").addEventListener("click", saveSkills);
  
     $("editBioButton").addEventListener("click", editBio);
     $("changePhotoButton").addEventListener("click", changePhoto);
- 
     $("changeLangButton").addEventListener("click", changeLanguage);
- 
     $("onlineToggle").addEventListener("click", toggleOnline);
     $("notifToggle").addEventListener("click", toggleOnline);
-
-    // Кнопка обновления
     $("refreshButton").addEventListener("click", () => {
       refreshCurrentTab();
     });
- 
-    // Кнопки Load More
     $("loadMoreJobs").addEventListener("click", async () => {
       jobsPage++;
       await loadJobs();
     });
-
     $("loadMoreActive").addEventListener("click", async () => {
       activePage++;
       await loadActiveJobs();
     });
-
     $("loadMoreHistory").addEventListener("click", async () => {
       historyPage++;
       await loadHistory();
     });
- 
     document.querySelectorAll("[data-tab]").forEach((btn) => {
       btn.addEventListener("click", () => {
         switchTab(btn.dataset.tab);
       });
     });
  
-    // Telegram BackButton logic for modals
+    // Telegram BackButton logic
     if (tg) {
       tg.BackButton.onClick(() => {
         if (!$("jobModal").classList.contains("hidden")) {
           $("jobModal").classList.add("hidden");
+        } else if (!$("bioModal").classList.contains("hidden")) {
+          $("bioModal").classList.add("hidden");
+        } else if (!$("skillsModal").classList.contains("hidden")) {
+          $("skillsModal").classList.add("hidden");
         }
       });
  
       const observer = new MutationObserver(() => {
-        const modalOpen = !$("jobModal").classList.contains("hidden");
+        const modalOpen = !$("jobModal").classList.contains("hidden") || 
+                         !$("bioModal").classList.contains("hidden") || 
+                         !$("skillsModal").classList.contains("hidden");
         if (modalOpen) tg.BackButton.show();
         else tg.BackButton.hide();
       });
  
       observer.observe($("jobModal"), { attributes: true });
+      observer.observe($("bioModal"), { attributes: true });
+      observer.observe($("skillsModal"), { attributes: true });
     }
  
     document.addEventListener("DOMContentLoaded", async () => {
@@ -1561,10 +1638,7 @@
         else currentLanguage = "en";
       }
       updateTexts();
- 
-      if (tg?.initDataUnsafe?.user?.id) {
-        await telegramLogin();
-      }
+      await initializeApp();
     });
   </script>
 </body>
